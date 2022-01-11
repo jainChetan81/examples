@@ -91,7 +91,7 @@ const Home: NextPage = () => {
 								<div className="streamer">
 									<div className="icon">
 										<img
-											src="https://ik.imagekit.io/clhowstalgz/icons/css-icon.svg?tr=w-30,h-30"
+											src="https://ik.imagekit.io/clhowstalgz/icons/css-icon.svg?tr=w-30,h-30,f-png"
 											width={30}
 											height={30}
 											alt="a"

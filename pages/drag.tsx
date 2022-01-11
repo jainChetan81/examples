@@ -1,5 +1,6 @@
 import { Layout } from "../components";
 import { FaPaperPlane } from "react-icons/fa";
+import Link from "next/link";
 
 const Drag = () => {
 	const richestPeople = [
@@ -15,15 +16,17 @@ const Drag = () => {
 		"Larry Page",
 		"Charles Koch",
 		"David Koch",
-	]; 
+	];
 	return (
 		<Layout title="Draggable list">
 			<h1>Draggable List</h1>
 			<p>Drag and drop the items into their own corresponding components</p>
 			<ul className="draggable-list" id="draggable-list"></ul>
-			<button className="check-btn" id="check">
-				Check Order <FaPaperPlane />
-			</button>
+			<Link href="/">
+				<a className="check-btn" id="check">
+					Check Order <FaPaperPlane />
+				</a>
+			</Link>
 		</Layout>
 	);
 };
