@@ -210,3 +210,19 @@ img {
 		opacity: 1;
 	}
 }
+.rick {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 20px;
+	justify-content: space-evenly;
+	align-items: center;
+	.card {
+		width: 250px;
+		img {
+			border-radius: 10px;
+		}
+		h2 {
+			text-align: center;
+		}
+	}
+}

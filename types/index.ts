@@ -7,6 +7,7 @@ export type Characters = {
 	origin: CharacterOrigin;
 	image: string;
 	episode: string[];
+	location: CharacterOrigin;
 	url: string;
 };
 export type CharacterOrigin = {

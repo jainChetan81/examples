@@ -2,9 +2,11 @@
 import Head from "next/head";
 import PropTypes from "prop-types";
 import { FC } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { LayoutType } from "../types";
 
 const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
+	const queryClient = new QueryClient();
 	return (
 		<>
 			<Head>
@@ -16,7 +18,9 @@ const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<link rel="manifest" href="manifest.json" />
 			</Head>
-			<main>{children}</main>
+			<QueryClientProvider client={queryClient}>
+				<main>{children}</main>
+			</QueryClientProvider>
 		</>
 	);
 };

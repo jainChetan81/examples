@@ -11,21 +11,19 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	useEffect(() => {
-		const handleRouteChange = (url: string, { shallow }) => {
+		const handleRouteChange = (url: string, { shallow }: any) => {
 			if (!shallow) {
 				setLoading(true);
-				console.log(`App IS CHANGING to ${url} ${shallow ? "with" : "without"} shallow routing`);
 			}
 		};
-		const handleRouteComplete = (url: string, { shallow }) => {
+		const handleRouteComplete = (url: string, { shallow }: any) => {
 			setTimeout(() => {
-				// if (!shallow) {
-				setLoading(false);
-				// console.log(`App HAS CHANGED to ${url} ${shallow ? "with" : "without"} shallow routing`);
-				// }
+				if (!shallow) {
+					setLoading(false);
+				}
 			}, 3000);
 		};
-		const handleRouteChangeError = (err, url: string) => {
+		const handleRouteChangeError = (err: any, url: string) => {
 			if (err.cancelled) {
 				console.log(`Route to ${url} was cancelled!`);
 			}

@@ -7,7 +7,7 @@ module.exports = {
 	swcMinify: true,
 	sassOptions: { includePaths: [path.join(__dirname, "styles")] },
 	images: {
-		domains: ["res.imagekit.io", "ik.imagekit.io"],
+		domains: ["res.imagekit.io", "res.imagekit.io", "rickandmortyapi.com"],
 		minimumCacheTTL: 3600,
 		disableStaticImages: true,
 	},
