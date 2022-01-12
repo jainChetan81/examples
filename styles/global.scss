@@ -27,7 +27,8 @@ p {
 img {
 	max-width: 100%;
 }
-.btn {
+.btn,
+.check-btn {
 	cursor: pointer;
 	border: 0;
 	background-color: var(--clr-secondary);
@@ -37,6 +38,10 @@ img {
 	font-weight: bold;
 	margin-bottom: 1rem;
 }
+.check-btn {
+	margin-top: 200px;
+}
+
 .card {
 	position: relative;
 	width: 12.5em;

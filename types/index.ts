@@ -1,10 +1,17 @@
-export type Pokemon = {
+export type Characters = {
+	id: number;
 	name: string;
+	status: string;
+	species: string;
+	gender: string;
+	origin: CharacterOrigin;
 	image: string;
-	index: number;
+	episode: string[];
+	url: string;
 };
-export type PokemonUrl = {
+export type CharacterOrigin = {
 	name: string;
+	url: string;
 };
 export type LayoutType = {
 	title: string;

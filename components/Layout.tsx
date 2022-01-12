@@ -1,9 +1,10 @@
 /* eslint-disable no-restricted-globals */
 import Head from "next/head";
 import PropTypes from "prop-types";
+import { FC } from "react";
 import { LayoutType } from "../types";
 
-function Home({ title, keywords, description, children }: LayoutType) {
+const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
 	return (
 		<>
 			<Head>
@@ -18,14 +19,13 @@ function Home({ title, keywords, description, children }: LayoutType) {
 			<main>{children}</main>
 		</>
 	);
-}
+};
 Home.defaultProps = {
-	title: "Card App",
 	description: "A gallery of various Games",
 	keywords: "",
 };
 Home.propTypes = {
-	title: PropTypes.string,
+	title: PropTypes.string.isRequired,
 	description: PropTypes.string,
 	keywords: PropTypes.string,
 };

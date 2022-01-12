@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Layout } from "../components";
+import Loading from "../hoc/Loading";
 
 const Home: NextPage = () => {
 	return (
@@ -45,7 +46,7 @@ const Home: NextPage = () => {
 							<div className="stats">
 								<p className="viewers">539.9k</p>
 								<div className="streamers">
-									<img
+									<Image
 										src="https://ik.imagekit.io/clhowstalgz/chetan"
 										width={30}
 										height={30}
@@ -90,7 +91,7 @@ const Home: NextPage = () => {
 								</div>
 								<div className="streamer">
 									<div className="icon">
-										<img
+										<Image
 											src="https://ik.imagekit.io/clhowstalgz/icons/css-icon.svg?tr=w-30,h-30,f-png"
 											width={30}
 											height={30}
@@ -105,8 +106,13 @@ const Home: NextPage = () => {
 					</div>
 				))}
 			</div>
+			<Link href="/loader">
+				<a className="check-btn" id="check">
+					drag
+				</a>
+			</Link>
 		</Layout>
 	);
 };
 
-export default Home;
+export default Loading(Home);

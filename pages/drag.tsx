@@ -1,8 +1,10 @@
-import { Layout } from "../components";
 import { FaPaperPlane } from "react-icons/fa";
 import Link from "next/link";
+import Loading from "../hoc/Loading";
+import { Layout } from "../components";
+import { NextPage } from "next";
 
-const Drag = () => {
+const Drag: NextPage = () => {
 	const richestPeople = [
 		"Jeff Bezos",
 		"Bill Gates",
@@ -27,8 +29,13 @@ const Drag = () => {
 					Check Order <FaPaperPlane />
 				</a>
 			</Link>
+			<Link href="/loader">
+				<a className="check-btn" id="check">
+					drag
+				</a>
+			</Link>
 		</Layout>
 	);
 };
 
-export default Drag;
+export default Loading(Drag);

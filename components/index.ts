@@ -1,2 +1,5 @@
 import Layout from "./Layout";
-export { Layout };
+import Loader from "./Loader";
+import Characters from "./Characters";
+
+export { Layout, Characters, Loader };

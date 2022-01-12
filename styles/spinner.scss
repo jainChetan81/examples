@@ -1,0 +1,48 @@
+.loader {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	background-color: #000000;
+	overflow: hidden;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	animation: expand 1.5s 2;
+	animation-direction: alternate;
+	background: rgb(48, 45, 45);
+	background: radial-gradient(circle, rgba(48, 45, 45, 1) 60%, rgba(89, 102, 98, 1) 100%);
+
+	.spinner {
+		height: 250px;
+		width: 250px;
+		border-radius: 10px;
+		color: #000;
+		animation: flip 1s linear infinite;
+		background-color: #fff;
+	}
+	h1 {
+		position: absolute;
+		text-transform: uppercase;
+		z-index: 10;
+		background: -webkit-linear-gradient(135deg, rgb(218, 21, 21), rgb(54, 50, 50), rgb(35, 35, 228));
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+}
+@keyframes flip {
+	50% {
+		transform: rotateX(180deg);
+	}
+	100% {
+		transform: rotateX(180deg) rotateY(180deg);
+	}
+}
+@keyframes expand {
+	0% {
+		transform: translateY(-100vh);
+	}
+	100% {
+		height: translateY(0);
+	}
+}
