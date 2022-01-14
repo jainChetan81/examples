@@ -6,7 +6,7 @@ import Loading from "../hoc/Loading";
 
 const Home: NextPage = () => {
 	return (
-		<Layout>
+		<Layout title="Cards">
 			<div className="flex">
 				{[0, 1, 2].map((i) => (
 					<div className="card" key={i}>

@@ -13,10 +13,13 @@
 body {
 	min-height: 100vh;
 	font-family: sans-serif;
-	display: grid;
-	place-items: center;
 	background-color: var(--clr-dark);
 	color: var(--clr-light);
+}
+
+main {
+	display: grid;
+	place-items: center;
 }
 h1,
 h2,
@@ -225,4 +228,21 @@ img {
 			text-align: center;
 		}
 	}
+}
+
+.logo {
+	color: white;
+}
+.title {
+	flex-grow: 1;
+	margin-left: 20px;
+	font-size: 0.6em;
+}
+.pizza-svg {
+	width: 80px;
+	overflow: visible;
+	stroke: #fff;
+	stroke-width: 4;
+	stroke-linejoin: round;
+	stroke-linecap: round;
 }
