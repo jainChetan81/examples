@@ -4,7 +4,7 @@ import "../styles/spinner.scss";
 import type { AppProps } from "next/app";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Loader } from "../components";
+import { Loader, MatrixRain } from "../components";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		};
 	});
 
-	return <>{loading ? <Loader /> : <Component {...pageProps} />}</>;
+	return <>{loading ? <MatrixRain /> : <Component {...pageProps} />}</>;
 }
 
 export default MyApp;
