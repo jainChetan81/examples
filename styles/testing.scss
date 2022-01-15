@@ -1,0 +1,27 @@
+.test-container {
+	width: 90%;
+	margin-inline: auto;
+	margin-top: 100px;
+	form {
+		width: 100%;
+		padding: 20px;
+		background-color: #fff;
+		border-radius: 20px;
+		color: #000;
+		.form-group {
+			width: 100%;
+			margin-bottom: 20px;
+			input:not([type="checkbox"]) {
+				width: 100%;
+				padding: 10px;
+				border-radius: 10px;
+				outline: none;
+				box-shadow: none;
+			}
+			label {
+				margin-bottom: 10px;
+				margin-left: 10px;
+			}
+		}
+	}
+}

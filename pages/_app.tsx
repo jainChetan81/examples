@@ -1,6 +1,7 @@
 import "../styles/normalize.css";
 import "../styles/global.scss";
 import "../styles/spinner.scss";
+import "../styles/testing.scss";
 import type { AppProps } from "next/app";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
