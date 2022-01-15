@@ -1,11 +1,14 @@
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
 import { MatrixRain } from "../components";
 
-const matrix = () => {
+const Matrix: NextPage = () => {
 	return (
 		<div>
+			{" "}
 			<MatrixRain />
 		</div>
 	);
 };
 
-export default matrix;
+export default Matrix;

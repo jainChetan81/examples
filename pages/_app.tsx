@@ -9,6 +9,7 @@ import { Loader, MatrixRain } from "../components";
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
+	const [display, setDisplay] = useState<boolean>(false);
 
 	useEffect(() => {
 		const handleRouteChange = (url: string, { shallow }: any) => {
@@ -37,9 +38,16 @@ function MyApp({ Component, pageProps }: AppProps) {
 			router.events.off("routeChangeComplete", handleRouteComplete);
 			router.events.off("routeChangeError", handleRouteChangeError);
 		};
-	});
+	}, [router]);
 
-	return <>{loading ? <MatrixRain /> : <Component {...pageProps} />}</>;
+	useEffect(() => {
+		setDisplay(true);
+		setTimeout(() => {
+			setDisplay(false);
+		}, 3000);
+	}, []);
+
+	return <>{loading ? <Loader /> : <div>{display ? <MatrixRain /> : <Component {...pageProps} />}</div>}</>;
 }
 
 export default MyApp;
