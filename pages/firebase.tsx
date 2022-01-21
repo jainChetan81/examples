@@ -20,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { NextPage } from "next";
 import { FormEvent, useEffect, useState } from "react";
+import { Layout } from "../components";
 import { firestore } from "../firebase";
 
 const Firebase: NextPage = () => {
@@ -84,7 +85,7 @@ const Firebase: NextPage = () => {
 			});
 	};
 	return (
-		<div>
+		<Layout title="Firebase 9">
 			<ul>
 				{docs?.map((doc: DocumentData, i: number) => (
 					<li key={doc.uid + i} id={doc.id} onClick={() => handleDelete(doc.uid)}>
@@ -92,7 +93,7 @@ const Firebase: NextPage = () => {
 					</li>
 				))}
 			</ul>
-			<h1>Filtered Values</h1>
+			<h1>Filtered Values for author = &apos;aaaa&apos;</h1>
 			<ul>
 				{filteredDocs?.map((doc: DocumentData, i: number) => (
 					<li key={doc.uid + i} id={doc.uid} onClick={() => handleDelete(doc.uid)}>
@@ -105,7 +106,7 @@ const Firebase: NextPage = () => {
 				<input type="text" name="author" placeholder="author" required />
 				<button type="submit">Submit</button>
 			</form>
-		</div>
+		</Layout>
 	);
 };
 
