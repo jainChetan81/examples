@@ -15,42 +15,42 @@ const Home: NextPage = () => {
 				</li>
 				<li>
 					<Link href="/firebase">
-						<a>firebase</a>
+						<a>Firebase</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/drag">
-						<a>drag</a>
+						<a>Drag & Drop</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/loader">
-						<a>loader</a>
+						<a>Page Loader</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/parallax">
-						<a>parallax</a>
+						<a>Parallax Effect</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/query">
-						<a>query</a>
+						<a>React Query</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/testing">
-						<a>testing</a>
+						<a>React Testing Library</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/matrix">
-						<a>matrix</a>
+						<a>Matrix Rain</a>
 					</Link>
 				</li>
 				<li>
-					<Link href="/OBSERVER">
-						<a>OBSERVER</a>
+					<Link href="/observer">
+						<a>Intersection Observer</a>
 					</Link>
 				</li>
 			</ul>
