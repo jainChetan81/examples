@@ -19,8 +19,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/drag">
-						<a>Drag & Drop</a>
+					<Link href="/dribble">
+						<a>Dribble Cards</a>
 					</Link>
 				</li>
 				<li>
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
 				</li>
 				<li>
 					<Link href="/query">
-						<a>React Query</a>
+						<a>React Query pagination</a>
 					</Link>
 				</li>
 				<li>

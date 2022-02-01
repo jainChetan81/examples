@@ -1,0 +1,212 @@
+// property ordr
+.order {
+	// 1.) positioning;
+	position: relative;
+	z-index: 1;
+	display: flex;
+	// 2.) BOX Model
+	padding: 4px;
+	margin: 2px;
+	border: 3px solid #000;
+	// 3.) typography
+	font-size: 1px;
+	font-family: "Courier New", Courier, monospace;
+	line-height: 20px;
+	// 4.) visuals
+	background-color: white;
+	color: red;
+	box-shadow: #000;
+	// 5.) misc/animation
+	cursor: pointer;
+}
+
+$clr-neutral-900: hsl(0, 0%, 9%);
+$clr-neutral-400: hsl(210, 1%, 64%);
+$clr-neutral-100: hsl(210, 20%, 94%);
+$clr-primary: hsl(12, 74%, 50%);
+$card-padding: 1rem;
+.fancy-card-grid {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(4, 1fr);
+
+	margin: 6rem auto;
+	width: min(100% - 2rem, 70rem);
+
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+
+	background-color: $clr-neutral-100;
+	* {
+		outline: 1px solid green;
+	}
+	h1,
+	h2,
+	h3 {
+		font-weight: 400;
+	}
+	.fancy-card {
+		position: relative;
+		display: grid;
+		grid-row: 2;
+
+		padding: $card-padding;
+		border: 1px solid $clr-neutral-400;
+		border-bottom: 5px solid $clr-primary;
+		aspect-ratio: 1 / 0.7;
+
+		text-decoration: none;
+
+		color: inherit;
+		background-color: $clr-neutral-100;
+
+		z-index: 1;
+		transition: transform 350ms ease, background-color 350ms ease, color 350ms ease, z-index 0ms 75ms linear;
+		&__image {
+			position: absolute;
+			z-index: -2;
+			bottom: 0;
+
+			max-width: 70%;
+			max-height: 70%;
+		}
+		&__number {
+			width: min-content;
+			margin-left: auto;
+
+			text-align: right;
+
+			color: $clr-primary;
+		}
+
+		&__title {
+			margin-top: auto;
+			width: min-content;
+
+			font-size: 2rem;
+			font-weight: 600;
+			line-height: 1;
+		}
+		&__arrow {
+			position: absolute;
+			inset: auto $card-padding calc($card-padding / 4) auto;
+
+			font-size: 2rem;
+
+			color: $clr-primary;
+			opacity: 0;
+
+			transform: translateX(-100%);
+			transition: transform 200ms ease-in, opacity 200ms linear;
+		}
+		&:nth-of-type(2),
+		&:nth-of-type(3) {
+			aspect-ratio: 1/1;
+		}
+		&:nth-of-type(2) {
+			grid-row: 1 / span 2;
+		}
+		&:nth-of-type(3) {
+			grid-row: 2 / span 2;
+		}
+		&::before,
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+		}
+		&::after {
+			background-color: $clr-neutral-100;
+
+			z-index: -1;
+			transition: background-color 350ms ease;
+		}
+		&::before {
+			box-shadow: 0 0 3rem rgb(black, 01);
+			opacity: 0;
+			background-color: black;
+			filter: blur(2em);
+
+			z-index: -3;
+			transition: opacity 350ms ease, transform 350ms ease;
+			pointer-events: none;
+		}
+		&:hover,
+		&:focus {
+			border: 0;
+
+			background-color: $clr-neutral-900;
+			z-index: 10;
+			transition: transform 500ms ease, background-color 350ms ease, color 350ms ease, z-index 0ms 0ms ease;
+			animation: shake 750ms linear 500ms;
+			transform: scale(1.35);
+			.fancy-card__title {
+				color: $clr-neutral-100;
+			}
+			.fancy-card__arrow {
+				transform: translateX(0);
+				opacity: 1;
+			}
+			@for $image from 0 to 6 {
+				.fancy-card__image:nth-of-type(#{$image + 1}) {
+					transition-delay: 800ms + ($image * 150);
+				}
+			}
+
+			.fancy-card__image {
+				box-shadow: -2rem 2rem 1.5rem rgb(black, 0.1);
+
+				transition: transform 350ms ease-in, box-shadow 0ms linear;
+				&:nth-of-type(1) {
+					transform: translate(220%, -15%) rotate(10deg);
+				}
+				&:nth-of-type(2) {
+					transform: translate(176%, 85%) rotate(-10deg);
+				}
+				&:nth-of-type(3) {
+					transform: translate(71%, 90%) rotate(10deg);
+				}
+				&:nth-of-type(4) {
+					transform: translate(-32%, 87%) rotate(-5deg);
+				}
+				&:nth-of-type(5) {
+					transform: translate(-107%, 47%) rotate(25deg);
+				}
+				&:nth-of-type(6) {
+					transform: translate(-90%, -50%) rotate(5deg);
+				}
+			}
+			&::before {
+				opacity: 0.4;
+				transform: translate(-50%, 50%);
+			}
+			&::after {
+				background-color: $clr-neutral-900;
+			}
+		}
+	}
+}
+
+@keyframes shake {
+	20% {
+		transform: scale(1.35);
+	}
+	25% {
+		transform: scale(1.35) rotate(5deg);
+	}
+	40% {
+		transform: scale(1.35) rotate(-5deg);
+	}
+	50% {
+		transform: scale(1.35) rotate(2deg);
+	}
+	60% {
+		transform: scale(1.35) rotate(-5deg);
+	}
+	75% {
+		transform: scale(1.35) rotate(-2deg);
+	}
+	100% {
+		transform: scale(1.35);
+	}
+}

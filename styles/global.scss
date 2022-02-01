@@ -11,15 +11,15 @@
 	--transition: transform 200ms cubic-bezier(0.21, 1.06, 0.81, 1);
 }
 body {
-	min-height: 100vh;
 	font-family: sans-serif;
-	background-color: var(--clr-dark);
-	color: var(--clr-light);
 }
 
-main {
+.main {
 	display: grid;
 	place-items: center;
+	min-height: 100vh;
+	margin-top: 100px;
+	color: var(--clr-dark);
 }
 h1,
 h2,
