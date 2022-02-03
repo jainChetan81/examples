@@ -1,0 +1,56 @@
+.query {
+	width: 960px;
+	min-height: 100vh;
+	margin: 0 auto;
+	background-color: #000;
+	padding-inline: 40px;
+	color: #fff;
+	h1 {
+		color: #ffff57;
+		font-size: 4em;
+		letter-spacing: 2px;
+	}
+	h2 {
+		text-align: center;
+	}
+	button {
+		margin: 0 10px;
+		background: transparent;
+		border: 3px solid #ccc;
+		border-radius: 20px;
+		padding: 10px;
+		color: #ccc;
+		font-size: 1.2em;
+		cursor: pointer;
+	}
+	button:hover {
+		color: #fff;
+		border-color: #fff;
+	}
+	.content {
+		text-align: left;
+	}
+	.card {
+		padding: 8px 16px;
+		background: #1b1b1b;
+		margin: 16px 0;
+		border-radius: 20px;
+		width: 100%;
+		list-style-type: none;
+	}
+	ul {
+		padding: 0;
+	}
+	.card p {
+		margin: 6px 0;
+		color: #999;
+	}
+	.card h3 {
+		margin: 10px 0;
+		color: #ffff57;
+	}
+	button:disabled {
+		opacity: 0.2;
+		cursor: not-allowed;
+	}
+}

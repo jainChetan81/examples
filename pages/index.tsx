@@ -35,7 +35,12 @@ const Home: NextPage = () => {
 				</li>
 				<li>
 					<Link href="/query">
-						<a>React Query pagination</a>
+						<a>React Query pagination(Laith Harb)</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/react-query">
+						<a>React Query Detailed(Net Ninja)</a>
 					</Link>
 				</li>
 				<li>
