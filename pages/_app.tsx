@@ -5,6 +5,7 @@ import "../styles/testing.scss";
 import "../styles/parallax.scss";
 import "../styles/dribble.scss";
 import "../styles/react-query.scss";
+import "../styles/mobile_cards.scss";
 import type { AppProps } from "next/app";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";

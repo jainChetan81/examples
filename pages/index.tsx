@@ -24,6 +24,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/mobile_cards">
+						<a>Animated Cards With Mobile Fallback(Kevin)</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/loader">
 						<a>Page Loader</a>
 					</Link>

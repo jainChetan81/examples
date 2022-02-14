@@ -1,0 +1,114 @@
+$clr-neutral-900: hsl(207, 19%, 9%);
+$clr-neutral-100: hsl(0, 0%, 100%);
+$clr-neutral-400: hsl(142, 90%, 62%);
+$transition-time: 0.5s;
+$card-padding: 1.5em; // property ordr
+.order {
+	// 1.) positioning;
+	position: relative;
+	z-index: 1;
+	display: flex;
+	// 2.) BOX Model
+	padding: 4px;
+	margin: 2px;
+	border: 3px solid #000;
+	// 3.) typography
+	font-size: 1px;
+	font-family: "Courier New", Courier, monospace;
+	line-height: 20px;
+	// 4.) visuals
+	background-color: white;
+	color: red;
+	box-shadow: #000;
+	// 5.) misc/animation
+	cursor: pointer;
+}
+.animated--cards {
+	display: grid;
+	place-items: center;
+	min-height: 100vh;
+	line-height: 1.6;
+	background-color: $clr-neutral-900;
+	.card__animation {
+		background-image: url("../public/cool-background.png");
+		padding: 10rem 0 0;
+		border-radius: 1rem;
+		max-width: 35ch;
+		font-family: sans-serif;
+		color: $clr-neutral-100;
+		overflow: hidden;
+		transition: transform $transition-time ease $transition-time;
+		&:focus-within .card__content {
+			transition-duration: 0ms;
+		}
+		.card__content {
+			background: linear-gradient(hsl(0 0% 0% / 0), hsl(20 0% 0% / 0.3) 20%, hsl(0 0% 0% / 1));
+			padding: $card-padding;
+			transform: translateY(70%);
+			transition: transform $transition-time ease;
+			> *:not(h2) {
+				opacity: 0;
+				transition: opacity $transition-time linear;
+			}
+
+			h2 {
+				width: max-content;
+				&::after {
+					content: "";
+					margin-left: calc(-1 * $card-padding + 0.5em);
+					display: block;
+					width: 100%;
+					height: 4px;
+					background-color: $clr-neutral-400;
+					transform: scaleX(0);
+					transform-origin: left;
+					transition: transform $transition-time ease;
+				}
+			}
+			p {
+				color: rgb(255 255 255/0.85);
+			}
+			a {
+				position: relative;
+				display: inline-block;
+				padding: 0.5em 1.25em;
+				margin-top: 0.5em;
+				border-radius: 0.25em;
+				text-decoration: none;
+				color: $clr-neutral-900;
+				background-color: $clr-neutral-400;
+				cursor: pointer;
+				&:after {
+					content: "";
+					position: absolute;
+					width: 100%;
+					transform: scaleX(0);
+					height: 4px;
+					bottom: -4px;
+					left: 0;
+					background-color: $clr-neutral-400;
+					transform-origin: bottom right;
+					transition: transform 0.25s ease-out;
+				}
+				&:hover:after {
+					transform: scaleX(1);
+					transform-origin: bottom left;
+				}
+			}
+		}
+		&:hover,
+		&:focus-within {
+			transform: scale(1.1);
+			.card__content {
+				transform: translateY(0);
+				> *:not(h2) {
+					opacity: 1;
+					transition-delay: calc(2 * $transition-time);
+				}
+			}
+			h2::after {
+				transform: scaleX(1);
+			}
+		}
+	}
+}
