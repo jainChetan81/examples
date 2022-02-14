@@ -5,7 +5,7 @@ import { People as PeopleType, Person } from "../../types";
 const People: FC = () => {
 	const [page, setPage] = useState(1);
 	const fetchPeople = async (): Promise<PeopleType> => {
-		const response: Response = await fetch("https://swapi.dev/api/people/?page=" + page);
+		const response: Response = await fetch("https://swapi.dev/api/people?page=" + page);
 		return response.json();
 	};
 	const { data, isPreviousData, status }: UseQueryResult<PeopleType, string> = useQuery(

@@ -5,7 +5,7 @@ import type { Planet, Planets as PlanetTypes } from "../../types";
 const Planets: FC = () => {
 	const [page, setPage] = useState(1);
 	const fetchPlanets = async () => {
-		const response: Response = await fetch("https://swapi.dev/api/planets/?page=" + page);
+		const response: Response = await fetch("https://swapi.dev/api/planets?page=" + page);
 		return response.json();
 	};
 	const { data, status }: UseQueryResult<PlanetTypes, string> = useQuery(["planets", page], fetchPlanets, {
