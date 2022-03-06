@@ -19,7 +19,9 @@ const Audio = () => {
 
 		document.addEventListener("keypress", (e) => {
 			if (e.code !== "Space") return;
-			canvas.getContext("2d")?.drawImage(this, 0, 0, this?.width, this?.height);
+			canvas
+				.getContext("2d")
+				?.drawImage(this as CanvasImageSource, 0, 0, this?.width as number, this?.height as number);
 			worker.recognize(canvas).then((result) => {
 				console.log("result:", result.data.text);
 			});

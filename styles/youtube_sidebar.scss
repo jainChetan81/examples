@@ -1,0 +1,102 @@
+.example {
+	// 1.) positioning;
+	position: relative;
+	z-index: 1;
+	display: flex;
+	// 2.) BOX Model
+	padding: 4px;
+	margin: 2px;
+	border: 3px solid #000;
+	// 3.) typography
+	font-size: 1px;
+	font-family: "Courier New", Courier, monospace;
+	line-height: 20px;
+	// 4.) visuals
+	background-color: white;
+	color: red;
+	box-shadow: #000;
+	// 5.) misc/animation
+	cursor: pointer;
+}
+.contain {
+	$accent-color: rgb(204, 0, 0);
+	$lightest-gray: rgb(249, 249, 249);
+	$light-gray: rgb(144, 144, 144);
+	$medium-gray: rgb(96, 96, 96);
+	$dark-gray: rgb(13, 13, 13);
+	$header-height: 40px;
+	*,
+	*:before,
+	*:after {
+		outline: 1px solid green;
+	}
+	display: flex;
+	flex-direction: column;
+	header {
+		position: sticky;
+		top: 0;
+		height: $header-height;
+		padding: 0.25rem 0.5rem;
+		display: flex;
+		align-items: center;
+		box-shadow: 0 1px 5px 0px rgba(0 0 0 / 0.4);
+		background-color: #fff;
+	}
+	.menu-icon-btn {
+		border: none;
+		padding: 0;
+		background-color: transparent;
+		.menu-icon {
+			width: 24px;
+			height: 24px;
+			fill: $medium-gray;
+			&:hover {
+				fill: $dark-gray;
+			}
+		}
+	}
+	.container {
+		display: flex;
+		flex-direction: row;
+	}
+	aside {
+		width: 75px;
+		display: flex;
+		flex-shrink: 0;
+		flex-flow: column nowrap;
+		align-items: center;
+		height: calc(100vh - $header-height);
+		padding-top: 1rem;
+		border-right: 1px solid $light-gray;
+		overflow: hidden;
+
+		&.open {
+		}
+		.top-sidebar {
+			display: flex;
+			align-items: center;
+			figure {
+				margin: 0;
+			}
+			a {
+				display: block;
+				width: 30px;
+				height: 30px;
+				margin-inline: auto;
+				img {
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
+		.middle-sidebar {
+			flex-grow: 1;
+			overflow-y: auto;
+			overflow-x: auto;
+		}
+	}
+	.content {
+		margin-inline: 1rem;
+		margin-bottom: 1rem;
+	}
+}

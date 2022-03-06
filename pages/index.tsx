@@ -29,8 +29,18 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/youtube_sidebar">
+						<a>Youtube Sidebar(Kyle Web Dev Simplified)</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/loader">
 						<a>Page Loader</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/audio_book_reader">
+						<a>Audio Book Reader</a>
 					</Link>
 				</li>
 				<li>
