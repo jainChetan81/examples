@@ -1,3 +1,4 @@
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { createStore } from "redux";
 const reducerFunction = (state = { counter: 10 }, action: any) => {
 	console.log(action);
@@ -15,3 +16,26 @@ const reducerFunction = (state = { counter: 10 }, action: any) => {
 const store = createStore(reducerFunction);
 export default store;
 export type RootState = ReturnType<typeof reducerFunction>;
+
+// ---------------REDUX TOOLKIT-------------
+export const counterSlice = createSlice({
+	name: "counter",
+	initialState: {
+		toolkitCounter: 20,
+	},
+	reducers: {
+		increment: (state) => {
+			state.toolkitCounter++;
+		},
+		decrement: (state) => {
+			state.toolkitCounter--;
+		},
+		incrementByAmount: (state, action: any) => {
+			state.toolkitCounter += action.payload;
+		},
+	},
+});
+export const actions = counterSlice.actions;
+export const toolkitStore = configureStore({
+	reducer: counterSlice.reducer,
+});

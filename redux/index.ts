@@ -1,2 +1,2 @@
-import store from "./store";
-export { store };
+import store, { toolkitStore, actions, counterSlice, RootState } from "./store";
+export { store, toolkitStore, actions, counterSlice, RootState };
