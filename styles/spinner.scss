@@ -8,7 +8,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	animation: expand 1.5s 1;
+	animation: expand 1.5s;
 	animation-direction: alternate;
 	background: rgb(48, 45, 45);
 	background: radial-gradient(circle, rgba(48, 45, 45, 1) 60%, rgba(89, 102, 98, 1) 100%);
@@ -19,6 +19,7 @@
 		border-radius: 10px;
 		color: #000;
 		animation: flip 1s linear infinite;
+		animation-delay: 1s;
 		background-color: #fff;
 	}
 	h1 {

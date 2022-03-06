@@ -14,11 +14,6 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/firebase">
-						<a>Firebase</a>
-					</Link>
-				</li>
-				<li>
 					<Link href="/dribble">
 						<a>Dribble Cards</a>
 					</Link>

@@ -8,14 +8,13 @@ import "../styles/react-query.scss";
 import "../styles/mobile_cards.scss";
 import "../styles/youtube_sidebar.scss";
 import type { AppProps } from "next/app";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Loader, MatrixRain } from "../components";
+import { Loader } from "../components";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
-	const [display, setDisplay] = useState<boolean>(false);
 
 	useEffect(() => {
 		const handleRouteChange = (url: string, { shallow }: any) => {
@@ -46,14 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		};
 	}, [router]);
 
-	// useEffect(() => {
-	// 	setDisplay(true);
-	// 	setTimeout(() => {
-	// 		setDisplay(false);
-	// 	}, 3000);
-	// }, []);
-
-	return <>{loading ? <Loader /> : <div>{display ? <MatrixRain /> : <Component {...pageProps} />}</div>}</>;
+	return <>{loading ? <Loader /> : <Component {...pageProps} />}</>;
 }
 
 export default MyApp;
