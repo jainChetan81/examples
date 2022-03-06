@@ -236,3 +236,54 @@ img {
 		inset: 0;
 	}
 }
+// ----------------------- Imagekit -------------------------
+.container_image {
+	/* width: clamp(300px, 95vw, 1600px); */
+	max-width: 1600px;
+	padding: 50px 20px;
+	margin: 0 auto;
+	h1 {
+		text-align: center;
+		font-size: 56px;
+		margin-top: 0;
+	}
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		grid-gap: 20px;
+		align-items: center;
+	}
+	.gallery img {
+		max-width: 100%;
+		height: auto;
+		aspect-ratio: 1/1;
+		border-radius: 10px;
+		position: relative;
+		transition: transform 250ms;
+		cursor: pointer;
+		object-fit: contain;
+	}
+	.gallery img:hover {
+		transform: translateY(-1rem);
+		box-shadow: 3px 3px 10px black;
+	}
+}
+.popup {
+	position: fixed;
+	cursor: pointer;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.95);
+	justify-content: center;
+	align-items: center;
+	transition: all 250ms ease-in-out;
+	padding: 50px;
+	display: none;
+}
+.popup .popup__selected {
+	max-width: 100%;
+	border-radius: 10px;
+	cursor: default;
+	height: 90vh;
+	margin: auto;
+}
+// ------------------- END IMAGEKIT -------------------

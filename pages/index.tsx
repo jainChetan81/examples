@@ -69,6 +69,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/imagekit">
+						<a>ImageKit Example</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/observer">
 						<a>Intersection Observer</a>
 					</Link>
