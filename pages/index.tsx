@@ -34,6 +34,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/redux">
+						<a>Redux Tutorial</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/audio_book_reader">
 						<a>Audio Book Reader</a>
 					</Link>

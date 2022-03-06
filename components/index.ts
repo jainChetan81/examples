@@ -6,5 +6,6 @@ import Form from "./Form";
 import Navbar from "./ReactQuery/Navbar";
 import People from "./ReactQuery/People";
 import Planets from "./ReactQuery/Planets";
+import Counter from "./Redux/Counter";
 
-export { Layout, Characters, Loader, MatrixRain, Form, People, Planets, Navbar };
+export { Layout, Characters, Loader, MatrixRain, Form, People, Planets, Navbar, Counter };
