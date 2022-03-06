@@ -69,6 +69,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/grid">
+						<a>Grid Basics</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/imagekit">
 						<a>ImageKit Example</a>
 					</Link>
