@@ -1,0 +1,18 @@
+.skribbl {
+	width: 90%;
+	margin-inline: auto;
+	margin-top: 5rem;
+	ul {
+		display: flex;
+		flex-flow: row wrap;
+		gap: 10px 15px;
+		margin-top: 10px;
+		li {
+			padding: 5px 10px;
+			background-color: rgba(116, 111, 106, 0.808);
+			border-radius: 2px;
+			color: #fff;
+			font-weight: bold;
+		}
+	}
+}

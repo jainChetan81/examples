@@ -3,6 +3,9 @@
 *::after {
 	box-sizing: border-box;
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
 	--clr-dark: rgb(13, 17, 19);
 	--clr-light: rgb(255, 255, 255);

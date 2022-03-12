@@ -1,7 +1,8 @@
+import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../../redux";
 
-const ReduxToolkitCounter = () => {
+const ReduxToolkitCounter: FC = () => {
 	const toolkitCounter = useSelector((state: any) => state.toolkitCounter);
 	const dispatch = useDispatch();
 	return (
