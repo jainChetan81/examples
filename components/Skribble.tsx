@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react";
 import { useQuery, UseQueryResult } from "react-query";
 type WordType = {
 	word: string;
@@ -6,6 +6,7 @@ type WordType = {
 };
 const Skribble: FC = () => {
 	const [word, setWord] = useState("");
+	const [wordCount, setWordCount] = useState(1);
 	const fetchWords = async () => {
 		const response: Response = await fetch("https://api.datamuse.com/words?sp=" + word);
 		return response.json();
@@ -13,8 +14,13 @@ const Skribble: FC = () => {
 	const { data, status }: UseQueryResult<WordType[], string> = useQuery(["words", word], fetchWords, {
 		staleTime: 20000,
 		cacheTime: 20000,
-		onSuccess: (data) => console.log("no problem"),
 	});
+	const handleWordChange = (e: ChangeEvent<HTMLInputElement>) => {
+		// replace whitespace with a character that is not a whitespace
+		setWord(e.target.value.replace(/\s/g, "?"));
+		// ensure word count remains greater than zero
+		setWordCount(e.target.value.length > 1 ? e.target.value.length : 1);
+	};
 	return (
 		<>
 			<div>
@@ -22,18 +28,21 @@ const Skribble: FC = () => {
 					Enter the word You want to search for
 				</label>
 				<div className="mt-1">
-					<input
-						type="text"
-						name="word"
-						id="word"
-						className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-						placeholder="you@example.com"
-						value={word}
-						onChange={(e: ChangeEvent<HTMLInputElement>) => setWord(e.target.value)}
-					/>
+					<div className="divOuter" style={{ width: `${3 * wordCount}rem` }}>
+						<div>
+							<input className="partitioned" type="text" value={word} onChange={handleWordChange} />
+						</div>
+					</div>
 				</div>
-				<p className="mt-2 text-sm text-gray-500" id="email-description">
-					If the letter between the word is unknown use <em>?</em>{" "}
+				<p className="mt-2 text-sm text-gray-500">
+					Press
+					<em>
+						<strong> Space </strong>
+					</em>
+					to increase word count and fill up unknown word
+				</p>
+				<p className="mt-2 text-sm text-gray-500">
+					The letter <strong>?</strong> indicates unknown letter
 				</p>
 			</div>
 			{status === "error" && <p>Error fetching words</p>}
@@ -41,7 +50,7 @@ const Skribble: FC = () => {
 			{status === "success" && (
 				<ul>
 					{data?.map((word: WordType) => (
-						<li key={word.score}>
+						<li key={word.word}>
 							<h3>{word.word}</h3>
 						</li>
 					))}
