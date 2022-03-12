@@ -1,2 +1,3 @@
 import store, { toolkitStore, actions, counterSlice, RootState } from "./store";
-export { store, toolkitStore, actions, counterSlice, RootState };
+export { store, toolkitStore, actions, counterSlice };
+export type { RootState };

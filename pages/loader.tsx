@@ -6,16 +6,11 @@ import Loading from "../hoc/Loading";
 
 const loader: NextPage = () => {
 	return (
-		<Layout>
+		<Layout title="Loader">
 			<Loader />
 			<Link href="/">
 				<a className="check-btn" id="check">
 					index
-				</a>
-			</Link>
-			<Link href="/drag">
-				<a className="check-btn" id="check">
-					drag
 				</a>
 			</Link>
 		</Layout>
