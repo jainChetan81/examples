@@ -24,6 +24,28 @@ body {
 	margin-top: 100px;
 	color: var(--clr-dark);
 }
+.main-list {
+	width: 500px;
+	margin-inline: auto;
+	margin-top: 40px;
+	li {
+		a {
+			border: 1px solid black;
+			padding: 10px;
+			border-radius: 10px;
+			margin-bottom: 10px;
+			cursor: pointer;
+			transition: all 200ms ease-in;
+			display: block;
+			&:hover,
+			&:focus {
+				color: white;
+				background-color: black;
+				transform: scale(1.2);
+			}
+		}
+	}
+}
 h1,
 h2,
 h3,
