@@ -39,6 +39,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/react-charts">
+						<a>Example for React Charts</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/redux">
 						<a>Redux Tutorial</a>
 					</Link>
