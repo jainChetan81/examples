@@ -1,5 +1,7 @@
+import { Layout } from "../../components/Portfolio";
+
 const Portfolio = () => {
-	return <div>Portfolio</div>;
+	return <Layout title="Homepage | Portfolio">Portfolio</Layout>;
 };
 
 export default Portfolio;

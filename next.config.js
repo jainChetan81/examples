@@ -7,6 +7,5 @@ module.exports = {
 	images: {
 		domains: ["res.imagekit.io", "ik.imagekit.io", "rickandmortyapi.com", "i.giphy.com"],
 		minimumCacheTTL: 3600,
-		disableStaticImages: true,
 	},
 };
