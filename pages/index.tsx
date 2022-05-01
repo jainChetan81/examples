@@ -7,7 +7,12 @@ import Loading from "../hoc/Loading";
 const Home: NextPage = () => {
 	return (
 		<Layout title="Home">
-			<ul>
+			<ul className="main-list">
+				<li>
+					<Link href="/portfolio">
+						<a>Portfolio</a>
+					</Link>
+				</li>
 				<li>
 					<Link href="/cards">
 						<a>Cards</a>

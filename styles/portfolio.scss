@@ -1,0 +1,11 @@
+$primary-color: #ffd700;
+$primary-font-color: #444;
+$primary-background-color: #022c43;
+@import "animate.css";
+.portfolio {
+	font-size: 62.5%;
+	margin: 0;
+	font-family: 300 11px/1.4 "sans-serif";
+	color: $primary-font-color;
+	background-color: $primary-background-color;
+}
