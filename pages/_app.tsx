@@ -11,10 +11,10 @@ import "../styles/skribble.scss";
 import "../styles/portfolio.scss";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Loader } from "../components";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: any) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
 
@@ -47,7 +47,17 @@ function MyApp({ Component, pageProps }: AppProps) {
 		};
 	}, [router]);
 
-	return <>{loading ? <Loader /> : <Component {...pageProps} />}</>;
+	return (
+		<>
+			{loading ? (
+				<Loader />
+			) : (
+				<Fragment>
+					<Component {...pageProps} />
+				</Fragment>
+			)}
+		</>
+	);
 }
 
 export default MyApp;
