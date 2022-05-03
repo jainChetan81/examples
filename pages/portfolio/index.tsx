@@ -36,7 +36,7 @@ const Portfolio = () => {
 				</div>
 				<Logo />
 			</div>
-			<Loader active={true} type="pacman" />
+			{/* <Loader active type="pacman" /> */}
 		</Layout>
 	);
 };
