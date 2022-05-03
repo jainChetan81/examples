@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Loader from "react-loaders";
 import { AnimatedLetters, Layout } from "../../components/Portfolio";
 import Logo from "../../components/Portfolio/Logo";
 
@@ -22,6 +23,7 @@ const Portfolio = () => {
 						<span className={`${letterClass} _12`}>i,</span>
 						<br /> <span className={`${letterClass} _13`}>I</span>
 						<span className={`${letterClass} _14`}>&apos;m</span>
+						{/*  eslint-disable-next-line @next/next/no-img-element */}
 						<img src={"/portfolio/logo-s.png"} alt="developer" />
 						<AnimatedLetters letterClass={letterClass} strArray={nameArray} idx={15} />
 						<br />
@@ -34,6 +36,7 @@ const Portfolio = () => {
 				</div>
 				<Logo />
 			</div>
+			<Loader active={true} type="pacman" />
 		</Layout>
 	);
 };

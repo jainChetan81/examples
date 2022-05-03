@@ -4,7 +4,6 @@ import { FaEnvelope, FaGithub, FaHome, FaLinkedin, FaStackOverflow, FaTwitter, F
 
 const Sidebar = () => {
 	const router = useRouter();
-	console.log(router.pathname);
 	return (
 		<aside className="nav-bar">
 			<Link href="/">

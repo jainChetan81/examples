@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 interface IAnimatedLettersProps {
-	letterClass: string;
+	letterClass?: string;
 	strArray: string[];
 	idx: number;
 }
