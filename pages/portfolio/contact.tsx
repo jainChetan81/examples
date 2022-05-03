@@ -1,5 +1,4 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import Loader from "react-loaders";
 import { AnimatedLetters, Layout } from "../../components/Portfolio";
 
 const Contact = () => {

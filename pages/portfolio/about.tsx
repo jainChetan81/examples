@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { FaAngular, FaCss3, FaHtml5, FaJava, FaNode, FaReact } from "react-icons/fa";
-import Loader from "react-loaders";
 import { AnimatedLetters, Layout } from "../../components/Portfolio";
 
 const About = () => {

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Loader from "react-loaders";
 import { AnimatedLetters, Layout } from "../../components/Portfolio";
 import Logo from "../../components/Portfolio/Logo";
 
