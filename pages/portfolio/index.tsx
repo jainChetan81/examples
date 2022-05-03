@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatedLetters, Layout } from "../../components/Portfolio";
+import Logo from "../../components/Portfolio/Logo";
 
 const Portfolio = () => {
 	const [letterClass, setLetterClass] = useState<string>("text-animate");
@@ -31,6 +32,7 @@ const Portfolio = () => {
 						<a className="flat-button">CONTACT ME</a>
 					</Link>
 				</div>
+				<Logo />
 			</div>
 		</Layout>
 	);
