@@ -9,6 +9,22 @@
 		"Skribble",
 		"Tesseract",
 		"todolist",
+		"Traversy",
 		"webp"
+	],
+	"sqltools.connections": [
+		{
+			"mysqlOptions": {
+				"authProtocol": "default"
+			},
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 3306,
+			"driver": "MySQL",
+			"name": "mysql",
+			"username": "root",
+			"password": "root",
+			"database": "mysql"
+		}
 	]
 }

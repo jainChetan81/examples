@@ -9,6 +9,7 @@ import "../styles/mobile_cards.scss";
 import "../styles/youtube_sidebar.scss";
 import "../styles/skribble.scss";
 import "../styles/portfolio.scss";
+import "../styles/traversy_grid.scss";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
