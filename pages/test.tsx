@@ -44,6 +44,28 @@ const Test: NextPage = () => {
 			},
 		]);
 	};
+	const updateRunningTasks = (pause: boolean) => {
+		if (pause === undefined) return;
+		const oldTasks = [...tasks];
+		oldTasks.forEach((task) => {
+			if (!task.completed) {
+				task.running = pause;
+			}
+		});
+		setTasks([...oldTasks]);
+	};
+	const completeTasks = () => {
+		const oldTasks = [...tasks];
+		oldTasks.forEach((task) => {
+			if (!task.completed) {
+				task.completed = true;
+				task.running = false;
+				task.time = 0;
+			}
+		});
+		setTasks([...oldTasks]);
+	};
+
 	return (
 		<Layout title="Todo App | Test">
 			<section className="tasks">
@@ -68,6 +90,12 @@ const Test: NextPage = () => {
 					/>
 					<button type="submit">Submit</button>
 				</form>
+				<div className="overall_buttons">
+					<button onClick={() => updateRunningTasks(false)}>Pause All</button>
+					<button onClick={() => updateRunningTasks(true)}>Resume All</button>
+					<button onClick={completeTasks}>Complete All</button>
+					<button onClick={() => setTasks([])}>Remove All</button>
+				</div>
 				<ul className="tasks_container">
 					{tasks.length > 0 && <h3>Tasks ({tasks.length})</h3>}
 					{tasks.map((task, index) => (

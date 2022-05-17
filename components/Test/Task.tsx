@@ -15,14 +15,16 @@ const Task: FC<Props> = ({ task, setTasks, index, tasks }) => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (task.running && !task.completed) {
-				const oldTasks = [...tasks];
-				oldTasks[index].time--;
-				if (oldTasks[index].time === 0) {
-					oldTasks[index].running = false;
-					oldTasks[index].completed = true;
+				const currentTask = { ...task };
+				currentTask.time--;
+				if (currentTask.time === 0) {
+					currentTask.running = false;
+					currentTask.completed = true;
 				}
-				console.log(oldTasks);
-				setTasks([...oldTasks]);
+				setTasks((tasks) => {
+					tasks[index] = currentTask;
+					return [...tasks];
+				});
 			}
 		}, 1000);
 		return () => {
@@ -33,19 +35,33 @@ const Task: FC<Props> = ({ task, setTasks, index, tasks }) => {
 		const oldTasks = [...tasks];
 		oldTasks[index].time--;
 		oldTasks[index].running = !oldTasks[index].running;
-		console.log(oldTasks);
+		setTasks([...oldTasks]);
+	};
+	const updateCompletedTasks = () => {
+		const oldTasks = [...tasks];
+		oldTasks[index].time = 0;
+		oldTasks[index].completed = !oldTasks[index].completed;
+		setTasks([...oldTasks]);
+	};
+	const removeTask = () => {
+		const oldTasks = [...tasks];
+		oldTasks.splice(index, 1);
 		setTasks([...oldTasks]);
 	};
 
 	return (
-		<li className={`${task.completed ? "completed" : "incomplete"} ${task.running ? "paused" : "running"}`}>
+		<li className={`${task.completed ? "completed" : "incomplete"} ${task.running ? "running" : "paused"}`}>
 			<span>{task.time}</span>
 			<span>{task.name}</span>
-			{!task.completed && (
-				<div className="action_buttons">
-					<button onClick={updateRunningTasks}>{task.running ? "Pause" : "Resume"}</button>
-				</div>
-			)}
+			<div className="action_buttons">
+				{!task.completed && (
+					<>
+						<button onClick={updateRunningTasks}>{task.running ? "Pause" : "Resume"}</button>
+						<button onClick={updateCompletedTasks}>Complete</button>
+					</>
+				)}
+				<button onClick={removeTask}>Remove</button>
+			</div>
 		</li>
 	);
 };
