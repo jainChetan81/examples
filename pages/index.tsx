@@ -59,6 +59,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/todo-list">
+						<a>Todo List</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/audio_book_reader">
 						<a>Audio Book Reader</a>
 					</Link>

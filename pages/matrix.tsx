@@ -1,13 +1,11 @@
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { MatrixRain } from "../components";
+import { Layout, MatrixRain } from "../components";
 
 const Matrix: NextPage = () => {
 	return (
-		<div>
-			{" "}
+		<Layout title="Matrix Rain">
 			<MatrixRain />
-		</div>
+		</Layout>
 	);
 };
 

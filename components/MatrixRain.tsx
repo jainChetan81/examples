@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 class SymbolCanvas {
 	characters: string;
 	fontSize: number;
@@ -63,16 +63,13 @@ const MatrixRain: FC<any> = () => {
 
 		const effect: Effect = new Effect(canvas.width, canvas.height);
 		let lastTime: number = 0;
-		const fps: number = 120;
+		const fps: number = 60;
 		const nextFrame: number = 1000 / fps;
 		let timer: number = 0;
 		const animate = (timeStamp: number) => {
 			const deltaTime: number = timeStamp - lastTime;
 			lastTime = timeStamp;
-			if (timeStamp > 4000) {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-			}
-			if (timer > nextFrame && timeStamp < 4000) {
+			if (timer > nextFrame) {
 				ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
 				ctx.textAlign = "center";
 				ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -101,7 +98,7 @@ const MatrixRain: FC<any> = () => {
 	}, []);
 
 	return (
-		<div className="matrix loader">
+		<div className="matrix">
 			<canvas ref={ref} id="canvas"></canvas>
 		</div>
 	);

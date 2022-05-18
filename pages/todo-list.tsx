@@ -3,20 +3,6 @@ import { NextPage } from "next";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Layout } from "../components";
 import Task from "../components/Test/Task";
-
-// 1. Create two text fields to input a task name and time (in seconds, minimum 5 seconds) and a button to create the task.
-
-// 2. All tasks should be shown in a list view. Each list item should show the task name, time remaining in seconds (i.e., countdown), and a button. The button can be used to pause or resume the timer - i.e., when the timer is running it will pause the task and vice versa. This button should be removed from the UI once the task is completed. A task is considered completed when the countdown reaches zero.
-// 3. List items for tasks that are completed should have a light green color, items that are paused should have a light yellow color and those that are running should have a light blue color.
-
-// 4. User should be able to manually complete a task & manually remove a task from the list. Buttons for both can be added to the list item for the task.
-
-// 5. Once a task is created timer countdown should begin automatically
-// 6. On top of the list view there will be two buttons to pause and resume the tasks in bulk. These buttons should not affect the tasks that are completed.
-
-// 7. You can use any state management technique.
-
-// 8. Bonus: a) there will be bonus points for clean UI and app structure. b) Short tasks by remaining time.
 type TASK = {
 	name: string;
 	time: number;
@@ -67,7 +53,7 @@ const Test: NextPage = () => {
 	};
 
 	return (
-		<Layout title="Todo App | Test">
+		<Layout title="Todo App">
 			<section className="tasks">
 				<h2>Todo App</h2>
 				<form onSubmit={handleSubmit}>
