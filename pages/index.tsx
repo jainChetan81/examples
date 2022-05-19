@@ -79,6 +79,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/toggle_buttons">
+						<a>CSS Toggle Buttons</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/query">
 						<a>React Query pagination(Laith Harb)</a>
 					</Link>
