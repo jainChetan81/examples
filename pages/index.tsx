@@ -114,8 +114,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/observer">
-						<a>Intersection Observer</a>
+					<Link href="/auto_animate">
+						<a>Auto Animate example</a>
 					</Link>
 				</li>
 			</ul>
