@@ -11,6 +11,7 @@
 		"test:watch": "jest --watchAll --verbose --coverage"
 	},
 	"dependencies": {
+		"@formkit/auto-animate": "^1.0.0-beta.1",
 		"@fortawesome/free-brands-svg-icons": "^6.1.1",
 		"@fortawesome/react-fontawesome": "^0.1.18",
 		"@reduxjs/toolkit": "^1.8.0",
