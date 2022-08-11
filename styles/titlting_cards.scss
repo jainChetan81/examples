@@ -1,100 +1,3 @@
-.mouse_position-tracker {
-	position: absolute;
-	width: calc(100% / 3);
-	height: calc(100% / 3);
-	z-index: 2;
-}
-
-/* 1st, 4th, 7th */
-.mouse_position-tracker:nth-child(3n - 2) {
-	left: 0;
-}
-/* 2nd, 5th, 8th */
-.mouse_position-tracker:nth-child(3n - 1) {
-	left: calc(100% / 3);
-}
-
-/* 2nd, 5th, 8th */
-.mouse_position-tracker:nth-child(3n) {
-	right: 0;
-}
-
-/* 4 to 6 */
-.mouse_position-tracker:nth-child(n + 4):nth-child(-n + 6) {
-	top: calc(100% / 3);
-}
-/* 7 to 9 */
-.mouse_position-tracker:nth-child(n + 7):nth-child(-n + 9) {
-	bottom: 0;
-}
-
-.tilting_cards-wrapper {
-	position: relative;
-	width: 15rem;
-	aspect-ratio: 1 / 2;
-}
-
-.tilting_card-content {
-	position: absolute;
-	inset: 0;
-	background-image: url("../public/cool-background.png");
-	background-size: cover;
-	background-position: center;
-}
-
-.tilting_card-content > :where(h1, p) {
-	color: white;
-	padding: 0.2rem;
-	margin: 0;
-}
-
-.tilting_card-content {
-	--perspective: 500px;
-	--rotationX: 0;
-	--rotationY: 0;
-	--rotationZ: 0;
-	--angle: 15deg;
-	transform: perspective(var(--perspective)) rotateX(var(--rotationX)) rotateY(var(--rotationY))
-		rotateZ(var(--rotationZ));
-	transition: transform 500ms ease;
-}
-
-.mouse_position-tracker:nth-child(1):hover ~ .tilting_card-content {
-	--rotationX: var(--angle);
-	--rotationY: calc(var(--angle) * -1);
-}
-
-.mouse_position-tracker:nth-child(2):hover ~ .tilting_card-content {
-	--rotationX: var(--angle);
-}
-
-.mouse_position-tracker:nth-child(3):hover ~ .tilting_card-content {
-	--rotationX: var(--angle);
-	--rotationY: var(--angle);
-}
-
-.mouse_position-tracker:nth-child(4):hover ~ .tilting_card-content {
-	--rotationY: calc(var(--angle) * -1);
-}
-
-.mouse_position-tracker:nth-child(6):hover ~ .tilting_card-content {
-	--rotationY: var(--angle);
-}
-
-.mouse_position-tracker:nth-child(7):hover ~ .tilting_card-content {
-	--rotationY: calc(var(--angle) * -1);
-	--rotationX: calc(var(--angle) * -1);
-}
-
-.mouse_position-tracker:nth-child(8):hover ~ .tilting_card-content {
-	--rotationX: calc(var(--angle) * -1);
-}
-
-.mouse_position-tracker:nth-child(9):hover ~ .tilting_card-content {
-	--rotationY: var(--angle);
-	--rotationX: calc(var(--angle) * -1);
-}
-
 .tilting_cards-container {
 	display: grid;
 	place-content: center;
@@ -107,5 +10,90 @@
 		place-content: center;
 		text-align: center;
 		box-shadow: $shadow;
+		--perspective: 500px;
+		--rotationX: 0;
+		--rotationY: 0;
+		--rotationZ: 0;
+		--angle: 15deg;
+		transform: perspective(var(--perspective)) rotateX(var(--rotationX)) rotateY(var(--rotationY))
+			rotateZ(var(--rotationZ));
+		transition: transform 500ms ease;
+		position: absolute;
+		inset: 0;
+		background-image: url("../public/cool-background.png");
+		background-size: cover;
+		background-position: center;
+		& > :where(h1, p) {
+			color: white;
+			padding: 0.2rem;
+			margin: 0;
+		}
+	}
+	.tilting_cards-wrapper {
+		position: relative;
+		width: 15rem;
+		aspect-ratio: 1 / 2;
+	}
+	.mouse_position-tracker {
+		position: absolute;
+		width: calc(100% / 3);
+		height: calc(100% / 3);
+		z-index: 2; /* 1st, 4th, 7th */
+		&:nth-child(3n - 2) {
+			left: 0;
+		}
+		/* 2nd, 5th, 8th */
+		&:nth-child(3n - 1) {
+			left: calc(100% / 3);
+		}
+
+		/* 2nd, 5th, 8th */
+		&:nth-child(3n) {
+			right: 0;
+		}
+
+		/* 4 to 6 */
+		&:nth-child(n + 4):nth-child(-n + 6) {
+			top: calc(100% / 3);
+		}
+		/* 7 to 9 */
+		&:nth-child(n + 7):nth-child(-n + 9) {
+			bottom: 0;
+		}
+		&:nth-child(1):hover ~ .tilting_card-content {
+			--rotationX: var(--angle);
+			--rotationY: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(2):hover ~ .tilting_card-content {
+			--rotationX: var(--angle);
+		}
+
+		&:nth-child(3):hover ~ .tilting_card-content {
+			--rotationX: var(--angle);
+			--rotationY: var(--angle);
+		}
+
+		&:nth-child(4):hover ~ .tilting_card-content {
+			--rotationY: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(6):hover ~ .tilting_card-content {
+			--rotationY: var(--angle);
+		}
+
+		&:nth-child(7):hover ~ .tilting_card-content {
+			--rotationY: calc(var(--angle) * -1);
+			--rotationX: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(8):hover ~ .tilting_card-content {
+			--rotationX: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(9):hover ~ .tilting_card-content {
+			--rotationY: var(--angle);
+			--rotationX: calc(var(--angle) * -1);
+		}
 	}
 }
