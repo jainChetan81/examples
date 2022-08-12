@@ -13,6 +13,7 @@ import "../styles/traversy_grid.scss";
 import "../styles/test.scss";
 import "../styles/toggle_buttons.scss";
 import "../styles/titlting_cards.scss";
+import "../styles/flipping_cards.scss";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import { Loader } from "../components";

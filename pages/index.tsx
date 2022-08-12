@@ -59,6 +59,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/flipping_cards">
+						<a>Flipping Cards</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/redux">
 						<a>Redux Tutorial</a>
 					</Link>
