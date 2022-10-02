@@ -1,4 +1,5 @@
 import { Layout } from "../components";
+import Loading from "../hoc/Loading";
 
 const MobileCards = () => {
 	return (
@@ -21,4 +22,4 @@ const MobileCards = () => {
 	);
 };
 
-export default MobileCards;
+export default Loading(MobileCards);

@@ -1,0 +1,536 @@
+@import "mixins";
+section.forms.datagrid-common-style {
+	$color-white: #fff; // * SCREEN SIZES
+	$screen-small: 550px;
+	$screen-medium: 950px;
+	$screen-large: 1400px;
+	$screen-xl: 1600px;
+	$color-black: #000;
+	$color-grey-1: #42444a;
+	$color-grey-2: #696969;
+	$color-grey-3: #8f8f8f;
+	$color-grey-4: #c0c0c0;
+	$color-grey-5: #dfdfdf;
+	$color-grey-6: #ededed;
+	$color-grey-7: #f8f8f8;
+	$color-input-background: #f4f4f5;
+	$color-error-1: #f54747;
+	$border-top-height: 8px;
+	$section-top-header-height: 40px;
+	$border-light: rgb(103, 58, 183);
+	$border-dark: rgb(66, 133, 244);
+	$color-primary-2: #819dff;
+	$background: $color-white;
+	width: 100vw;
+	min-height: 100vh;
+	$color-success-1: #40a636;
+	a {
+		text-decoration: none;
+	}
+	input,
+	select,
+	radio,
+	checkbox,
+	button,
+	textarea {
+		&:disabled {
+			cursor: not-allowed;
+		}
+	}
+	button:disabled {
+		background-color: $color-grey-5 !important;
+	}
+	ul.errors {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin-top: 10px;
+		li {
+			color: $color-error-1;
+			@extend .font-b-14;
+			text-align: center;
+		}
+	}
+	input:focus {
+		outline: none;
+	}
+	button,
+	[type="button"],
+	[type="reset"],
+	[type="submit"] {
+		cursor: pointer;
+		border: none;
+		text-transform: none;
+		background: transparent;
+	}
+	// * -----------------------MUI changes globally for all components-----------------------
+	input,
+	label,
+	select,
+	textarea,
+	span,
+	a,
+	button,
+	button.MuiButton-root,
+	.MuiInputLabel-root,
+	.MuiOutlinedInput-input {
+		@extend .font-r-16;
+	}
+	.MuiTableCell-root {
+		.MuiTypography-root,
+		.MuiTablePagination-selectLabel,
+		.MuiTablePagination-select,
+		.MuiSwitch-root span.MuiFormControlLabel-label,
+		.MuiTablePagination-displayedRows {
+			font-weight: 400;
+		}
+	}
+	.MuiTypography-h6.MuiTypography-root {
+		font-weight: 500;
+	}
+	.MuiOutlinedInput-root {
+		@extend .font-r-16;
+		color: $color-black;
+		background-color: $color-input-background;
+		border-radius: 8px;
+		&.Mui-focused fieldset {
+			border: 1px solid $color-primary-2;
+		}
+	}
+	.MuiOutlinedInput-root fieldset {
+		border-radius: 8px;
+		border: none;
+	}
+	.Mui-focused input,
+	.Mui-focused textarea {
+		background: $color-white;
+		@extend .font-r-16;
+	}
+	.MuiFormControlLabel-label {
+		@extend .font-m-16;
+	}
+	.MuiAlert-root.MuiAlert-standardError.MuiAlert-standard {
+		background-color: $color-error-1;
+		@extend .font-b-14;
+		color: $color-white;
+		svg {
+			fill: $color-white;
+			margin-top: -2px;
+		}
+	}
+	.MuiPaper-elevation.MuiAlert-root.MuiAlert-standardSuccess {
+		background-color: $color-success-1;
+		@extend .font-b-14;
+		color: $color-white;
+		svg {
+			fill: $color-white;
+			margin-top: -2px;
+		}
+	}
+	.MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters {
+		display: flex;
+		gap: 15px;
+		@extend .font-m-14;
+		padding-inline: 15px;
+		svg {
+			width: 21px;
+			height: 21px;
+		}
+		&.logout {
+			color: $color-error-1;
+			svg {
+				fill: $color-error-1;
+			}
+		}
+	}
+	.title {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		justify-content: space-between;
+		align-items: center;
+		h4 {
+			@extend .font-sm-16;
+			margin-right: auto;
+		}
+		.filters {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 12px;
+			& > *:not(:last-of-type) {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+		button,
+		button,
+		input,
+		a {
+			height: 36px;
+		}
+	}
+	span.error {
+		color: $color-error-1;
+	}
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	ul.errors li {
+		@extend .font-m-16;
+	}
+	.back {
+		@extend .font-sm-16;
+		color: $color-black;
+	}
+	.button-group {
+		display: flex;
+	}
+	button.group {
+		border: 1px solid $color-success-1;
+		border-radius: 5px;
+		width: 165px;
+		background-color: $color-white;
+		color: $color-grey-1;
+		&:hover {
+			background-color: $color-grey-7;
+		}
+		&:nth-of-type(1) {
+			border-right: 1px solid #dcdcdc;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+			margin-right: 0 !important;
+		}
+		&:nth-of-type(2) {
+			border-left: none;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			margin-right: 20px;
+		}
+		&.selected {
+			background-color: #d3ebd1;
+			color: #0f7505;
+		}
+		svg {
+			margin-bottom: -4px;
+			margin-right: 5px;
+			width: 19px;
+			height: 19px;
+		}
+	}
+	.form_builder {
+		position: relative;
+		margin-block: 10px;
+		width: min(900px, calc(100%));
+		color: $color-black;
+		border-radius: 8px;
+		display: grid;
+		grid-template-columns: 1fr 50px;
+		margin-inline: auto;
+		.section_footer {
+			width: 100%;
+			margin-top: 10px;
+			@extend .font-m-14;
+			color: $color-grey-2;
+			padding-left: 10px;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 10px 20px;
+			select {
+				@extend .font-m-14;
+				margin-left: -4px;
+				color: $color-grey-2;
+				width: min-content;
+				border: none;
+				cursor: pointer;
+				padding-block: 8px;
+				background-color: transparent;
+				padding-right: 10px;
+			}
+		}
+		&-section {
+			margin-top: 50px;
+			&:not(:first-of-type) {
+				margin-top: 100px;
+			}
+		}
+		&-section,
+		&-question {
+			padding: 20px 10px;
+			display: flex;
+			flex-direction: column;
+			cursor: pointer;
+			gap: 15px 0;
+			position: relative;
+			border-top: $border-top-height solid $border-light;
+			border-radius: 8px;
+			border-top-left-radius: 0;
+			background-color: $background;
+			box-shadow: 1px 2px 1px -1px rgb(0 0 0 / 20%), -1px -1px 1px 0px rgb(0 0 0 / 14%),
+				0px 1px 3px 0px rgb(0 0 0 / 12%);
+			&.active {
+				border-left: $border-top-height solid $border-dark;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				cursor: initial;
+				.form_builder-section--header {
+					left: -$border-top-height;
+				}
+			}
+			.title {
+				display: grid;
+				justify-content: space-between;
+				grid-template-columns: 1fr 42px;
+				h4,
+				input {
+					@extend .font-sm-32;
+					background-color: transparent;
+					&:focus {
+						color: $color-black;
+					}
+				}
+				button {
+					background-color: transparent;
+					border-radius: 50%;
+					aspect-ratio: 1/1;
+					border: none;
+					&:hover {
+						background-color: $color-grey-5;
+					}
+				}
+			}
+			p,
+			input {
+				@extend .font-r-16;
+				color: $color-grey-3;
+				background-color: transparent;
+				&:focus {
+					color: $color-black;
+				}
+			}
+			&--header {
+				position: absolute;
+				@extend .center;
+				border-top-right-radius: 8px;
+				border-top-left-radius: 8px;
+				height: $section-top-header-height;
+				background-color: $border-light;
+				color: $color-white;
+				top: -($section-top-header-height + $border-top-height/4);
+				left: 0px;
+				padding-inline: 16px;
+				@extend .font-r-14;
+			}
+		}
+		&-question {
+			position: relative;
+			margin-top: 20px;
+			border-radius: 8px;
+			padding-inline: 20px;
+			padding-top: 30px;
+			border: none;
+			cursor: grab;
+			.form_builder-question-indicator {
+				position: absolute;
+				top: 5px;
+				width: 10px;
+				height: 10px;
+				color: rgba(0, 0, 0, 0.34);
+				cursor: move;
+				user-select: none;
+				left: calc(50% - 10px);
+				transform: rotate(90deg);
+			}
+			.question__type {
+				display: flex;
+				align-items: center;
+				margin-top: 10px;
+			}
+			.title {
+				h5,
+				.question_input input {
+					@extend .font-r-18;
+					color: $color-grey-1;
+				}
+			}
+			.type_select {
+				display: grid;
+				grid-template-columns: 3fr 200px;
+				gap: 0 20px;
+				align-items: center;
+				justify-content: space-between;
+				.clients_in_range {
+					margin-top: 10px;
+					span {
+						@extend .font-m-12;
+						color: $color-grey-3;
+					}
+					> .MuiSwitch-root {
+						margin-left: 20px;
+					}
+				}
+				@media screen and (max-width: $screen-medium) {
+					width: 100%;
+					grid-template-columns: 1fr;
+					gap: 30px;
+					.MuiFormControl-root {
+						width: 100%;
+					}
+				}
+			}
+			.MuiSelect-select {
+				display: flex;
+			}
+			.question_footer {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 10px;
+				width: 100%;
+				button[aria-label="Delete"] > svg {
+					font-size: 27px;
+				}
+				button .copy_icon {
+					width: 21px;
+					height: 21px;
+				}
+				.points,
+				.buttons {
+					display: flex;
+					margin-right: auto;
+					align-items: center;
+					gap: 0 10px;
+				}
+				.buttons {
+					margin-left: auto;
+					margin-right: 0;
+				}
+				button {
+					display: flex;
+					gap: 0 10px;
+					align-items: center;
+				}
+			}
+		}
+	}
+	.movingMenu {
+		position: absolute;
+		right: -15px;
+		gap: 0;
+		top: 80px;
+		transition: all 0.2s linear;
+		flex-direction: column;
+		display: flex;
+		background-color: $background;
+		box-shadow: 1px 1px 1px -1px rgb(0 0 0 / 20%), -1px -1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 1px 0px rgb(0 0 0 / 12%);
+		padding: 16px;
+		border-radius: 8px;
+		gap: 15px 0;
+	}
+	.form_settings {
+		margin-top: 30px;
+		width: min(900px, 100%);
+		color: $color-black;
+		border-radius: 8px;
+		margin-inline: auto;
+		box-shadow: 1px 2px 1px -1px rgb(0 0 0 / 20%), -1px -1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+		padding: 20px;
+		color: $color-grey-2;
+		h3 {
+			margin-bottom: 15px;
+			@extend .font-m-18;
+		}
+		hr {
+			color: $color-grey-5;
+			border-width: 0 1px;
+			border-top-width: 0;
+			height: 0 1px;
+			line-height: 0 1px;
+			font-size: 1px;
+			border-style: solid;
+		}
+		&-quiz,
+		&-visibility,
+		&-score {
+			display: grid;
+			grid-template-columns: 1fr 300px;
+			justify-content: space-between;
+			margin-block: 40px;
+			padding-inline: 40px;
+			gap: 30px 0;
+			label {
+				h4 {
+					@extend .font-m-16;
+					color: $color-black;
+				}
+				p {
+					@extend .font-m-14;
+				}
+			}
+			p.or {
+				margin-block: 20px;
+			}
+			> span {
+				margin-left: auto;
+			}
+		}
+		&-score {
+			padding-inline: 80px;
+		}
+	}
+	@media screen and (max-width: $screen-medium) {
+		padding-inline: 10px;
+		a[type="reset"] {
+			display: none;
+		}
+		.form_builder .form_builder-question {
+			padding-inline: 10px;
+			.title {
+				display: flex;
+				gap: 15px;
+			}
+			.question_footer > div {
+				margin-inline: auto;
+			}
+		}
+		.movingMenu {
+			right: -6px;
+			padding-inline: 12px;
+		}
+		.form_settings {
+			box-shadow: none;
+			&-quiz,
+			&-visibility,
+			&-score {
+				padding-inline: 20px;
+				gap: 10px;
+				grid-template-columns: 1fr 120px;
+			}
+		}
+		.button-group {
+			width: 100%;
+			.group {
+				width: 130px;
+			}
+			.MuiButton-root.MuiButton-contained {
+				margin-left: auto;
+			}
+		}
+	}
+
+	@media screen and (max-width: $screen-medium) {
+		.form_settings {
+			padding-inline: 0;
+			&-quiz,
+			&-visibility,
+			&-score {
+				padding-inline: 0;
+			}
+		}
+	}
+}

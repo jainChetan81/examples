@@ -55,8 +55,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/loader">
-						<a>Page Loader</a>
+					<Link href="/dynamic_form">
+						<a>Dynamic Forms</a>
 					</Link>
 				</li>
 				<li>
@@ -92,11 +92,6 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/toggle_buttons">
 						<a>CSS Toggle Buttons</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/query">
-						<a>React Query pagination(Laith Harb)</a>
 					</Link>
 				</li>
 				<li>

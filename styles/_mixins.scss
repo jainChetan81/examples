@@ -1,0 +1,26 @@
+// classes for font-weight, line-height and font-size
+$fonts: 32 38, 24 29, 20 24, 18 21, 16 19, 14 17, 12 14, 10 12;
+
+$weights: "b" 700, "sm" 600, "m" 500, "r" 400, "l" 300, "b" 800;
+
+@each $size, $height in $fonts {
+	@each $type, $weight in $weights {
+		.font-#{$type}-#{$size} {
+			font-size: #{$size/16}rem;
+			line-height: #{$height/16}rem;
+			font-weight: #{$weight};
+		}
+	}
+}
+@mixin line-clamp($line) {
+	display: -webkit-box;
+	-webkit-line-clamp: $line;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.center {
+	display: flex;
+	justify-items: center;
+	justify-content: center;
+	align-items: center;
+}

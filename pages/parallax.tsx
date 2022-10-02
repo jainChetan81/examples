@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { FaBook, FaUsers, FaVideo } from "react-icons/fa";
 import Rellax from "rellax";
+import Loading from "../hoc/Loading";
 
 const Parallax = () => {
 	useEffect(() => {
@@ -104,4 +105,4 @@ const Parallax = () => {
 	);
 };
 
-export default Parallax;
+export default Loading(Parallax);

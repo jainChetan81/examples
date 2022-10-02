@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import { Layout, MatrixRain } from "../components";
+import Loading from "../hoc/Loading";
 
 const Matrix: NextPage = () => {
 	return (
@@ -9,4 +10,4 @@ const Matrix: NextPage = () => {
 	);
 };
 
-export default Matrix;
+export default Loading(Matrix);
