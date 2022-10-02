@@ -1,12 +1,28 @@
 import type { NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Layout } from "../components";
 import Loading from "../hoc/Loading";
 
 const Home: NextPage = () => {
+	const notify = () => {
+		Notification.requestPermission().then((permission) => {
+			if (permission === "granted") {
+				const notification = new Notification("Vanilla Notification", {
+					body: "This is a vanilla notification",
+					data: {
+						url: "https://www.google.com",
+					},
+					icon: "https://doodleipsum.com/100x100/flat?i=0eb04614d2ff66e0c288922e95511051",
+				});
+				notification.addEventListener("close", (event) => {});
+			}
+		});
+	};
 	return (
 		<Layout title="Home">
+			<button onClick={() => notify()} style={{ marginInline: "auto" }}>
+				push a notification
+			</button>
 			<ul className="main-list">
 				<li>
 					<Link href="/portfolio">
@@ -39,18 +55,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/youtube_sidebar">
-						<a>Youtube Sidebar(Kyle Web Dev Simplified)</a>
-					</Link>
-				</li>
-				<li>
 					<Link href="/loader">
 						<a>Page Loader</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/react-charts">
-						<a>Example for React Charts</a>
 					</Link>
 				</li>
 				<li>
@@ -61,11 +67,6 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/flipping_cards">
 						<a>Flipping Cards</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/redux">
-						<a>Redux Tutorial</a>
 					</Link>
 				</li>
 				<li>
@@ -126,6 +127,11 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/auto_animate">
 						<a>Auto Animate example</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/push_notifications">
+						<a>Push Notifications</a>
 					</Link>
 				</li>
 			</ul>

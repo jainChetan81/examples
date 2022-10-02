@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-globals */
 import Head from "next/head";
-import PropTypes from "prop-types";
 import { FC } from "react";
 import { LayoutType } from "../../types";
 import Sidebar from "./Sidebar";
@@ -35,10 +34,5 @@ const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
 Home.defaultProps = {
 	description: "A Portfolio Example",
 	keywords: "",
-};
-Home.propTypes = {
-	title: PropTypes.string.isRequired,
-	description: PropTypes.string,
-	keywords: PropTypes.string,
 };
 export default Home;

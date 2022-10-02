@@ -9,10 +9,10 @@ module.exports = {
 	},
 	webpack(config) {
 		config.module.rules.push({
-			test: [/(components|api|constants|redux|schema|utils)\/index.ts/i],
+			test: [/(components|api|constants|schema|utils)\/index.ts/i],
 			sideEffects: false,
 		});
 		return config;
 	},
-	maximumFileSizeToCacheInBytes: 5242880,
+	swcMinify: true,
 };
