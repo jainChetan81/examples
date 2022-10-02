@@ -30,18 +30,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/cards">
-						<a>Cards</a>
-					</Link>
-				</li>
-				<li>
 					<Link href="/dribble">
 						<a>Dribble Cards</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/traversy_grid">
-						<a>Traversy Grid</a>
 					</Link>
 				</li>
 				<li>
@@ -52,6 +42,11 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/mobile_cards">
 						<a>Animated Cards With Mobile Fallback(Kevin)</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/react_select">
+						<a>React Select</a>
 					</Link>
 				</li>
 				<li>
@@ -80,8 +75,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/audio_book_reader">
-						<a>Audio Book Reader</a>
+					<Link href="/matrix">
+						<a>Matrix Rain</a>
 					</Link>
 				</li>
 				<li>
@@ -110,8 +105,13 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/matrix">
-						<a>Matrix Rain</a>
+					<Link href="/cards">
+						<a>Cards</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/traversy_grid">
+						<a>Traversy Grid</a>
 					</Link>
 				</li>
 				<li>
@@ -125,13 +125,13 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/auto_animate">
-						<a>Auto Animate example</a>
+					<Link href="/audio_book_reader">
+						<a>Audio Book Reader</a>
 					</Link>
 				</li>
 				<li>
-					<Link href="/push_notifications">
-						<a>Push Notifications</a>
+					<Link href="/auto_animate">
+						<a>Auto Animate example</a>
 					</Link>
 				</li>
 			</ul>

@@ -143,3 +143,8 @@ export type BLOCKS_DATA = {
 	data: { label: JSX.Element };
 	position: { x: number; y: number };
 };
+
+export type SELECT_OPTIONS = {
+	label: string;
+	value: number;
+};
