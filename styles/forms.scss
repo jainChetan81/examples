@@ -40,17 +40,6 @@ section.forms.datagrid-common-style {
 	button:disabled {
 		background-color: $color-grey-5 !important;
 	}
-	ul.errors {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		margin-top: 10px;
-		li {
-			color: $color-error-1;
-			@extend .font-b-14;
-			text-align: center;
-		}
-	}
 	input:focus {
 		outline: none;
 	}
@@ -127,61 +116,39 @@ section.forms.datagrid-common-style {
 			margin-top: -2px;
 		}
 	}
-	.MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters {
-		display: flex;
-		gap: 15px;
-		@extend .font-m-14;
-		padding-inline: 15px;
-		svg {
-			width: 21px;
-			height: 21px;
-		}
-		&.logout {
-			color: $color-error-1;
-			svg {
-				fill: $color-error-1;
-			}
-		}
-	}
-	.title {
-		width: 100%;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		justify-content: space-between;
-		align-items: center;
-		h4 {
-			@extend .font-sm-16;
-			margin-right: auto;
-		}
-		.filters {
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			gap: 12px;
-			& > *:not(:last-of-type) {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-		button,
-		button,
-		input,
-		a {
-			height: 36px;
-		}
-	}
 	span.error {
 		color: $color-error-1;
 	}
 	header {
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
+		margin-top: 15px;
 		align-items: center;
+		button {
+			height: 36px;
+		}
 	}
-	ul.errors li {
-		@extend .font-m-16;
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		margin: 0;
+	}
+	ul.errors {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin-top: 10px;
+		&:empty {
+			display: none;
+		}
+		li {
+			color: $color-error-1;
+			@extend .font-m-16;
+
+			text-align: center;
+		}
 	}
 	.back {
 		@extend .font-sm-16;
@@ -231,6 +198,10 @@ section.forms.datagrid-common-style {
 		display: grid;
 		grid-template-columns: 1fr 50px;
 		margin-inline: auto;
+		> * {
+			margin: 0;
+			padding: 0;
+		}
 		.section_footer {
 			width: 100%;
 			margin-top: 10px;
