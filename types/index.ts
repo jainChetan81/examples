@@ -117,3 +117,29 @@ export type FORM_OPTIONS_TYPE = {
 	lastModifiedTs: number;
 	nextSection: string | null;
 };
+export type ACCESS_CONTROL_USER = {
+	email: string;
+	employees?: ACCESS_CONTROL_USER[];
+	firstname: string;
+	id: number | null;
+	lastname: string;
+	phoneNumber: string;
+	title: string;
+};
+
+export interface SAMPLE_DATA extends ACCESS_CONTROL_USER {
+	role_box_id: string;
+	children: SAMPLE_DATA[];
+	reportingManager: string;
+}
+export type PATH_DATA = {
+	id: string;
+	source: string;
+	target: string;
+	type: "smoothstep";
+};
+export type BLOCKS_DATA = {
+	id: string;
+	data: { label: JSX.Element };
+	position: { x: number; y: number };
+};

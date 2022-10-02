@@ -60,6 +60,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/react_flow">
+						<a>React Flow</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/tilting_cards">
 						<a>Tilting Cards</a>
 					</Link>

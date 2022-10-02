@@ -1,0 +1,252 @@
+// * SCREEN SIZES
+$screen-small: 550px;
+$screen-medium: 950px;
+$screen-large: 1400px;
+$screen-xl: 1600px;
+
+$input-field-height: 40px;
+
+$color-white: #ffffff;
+$color-black: #000000;
+// $background-color: #e5e5e5;
+$background-color: #e8eaed;
+$color-input-background: #f4f4f5;
+
+$color-primary-1: #1976d2;
+$color-primary-2: #819dff;
+$color-primary-3: #bfcdff;
+$color-primary-4: #e8edff;
+$color-primary-5: #f7f8ff;
+$color-primary-6: #0f45ff;
+
+$color-secondary-1: #25a8f4;
+$color-secondary-2: #7acaf8;
+$color-secondary-3: #b9e3fc;
+$color-secondary-4: #d9f0fd;
+$color-secondary-5: #f5fbff;
+
+$color-warning-1: #ef9943;
+$color-warning-2: #f7cca1;
+$color-warning-3: #fbe5cf;
+$color-warning-4: #fef6ef;
+$color-warning-5: #fffcfa;
+
+$color-error-1: #f54747;
+$color-error-2: #faa2a2;
+$color-error-3: #fdd2d2;
+$color-error-4: #feeded;
+$color-error-5: #fff9f9;
+
+$color-success-1: #40a636;
+$color-success-2: #9ed299;
+$color-success-3: #cde8ca;
+$color-success-4: #ecf6eb;
+$color-success-5: #f7fbf7;
+$color-success-6: #ebf5ea;
+
+$color-grey-1: #42444a;
+$color-grey-2: #696969;
+$color-grey-3: #8f8f8f;
+$color-grey-4: #c0c0c0;
+$color-grey-5: #dfdfdf;
+$color-grey-6: #ededed;
+$color-grey-7: #f8f8f8;
+
+$background: $color-white;
+$border-top-height: 8px;
+$section-top-header-height: 40px;
+$border-light: rgb(103, 58, 183);
+$border-dark: rgb(66, 133, 244);
+a {
+	text-decoration: none;
+}
+input,
+select,
+radio,
+checkbox,
+button,
+textarea {
+	&:disabled {
+		cursor: not-allowed;
+	}
+}
+button:disabled {
+	background-color: $color-grey-5 !important;
+}
+input:focus {
+	outline: none;
+}
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+	cursor: pointer;
+	border: none;
+	text-transform: none;
+	background: transparent;
+}
+// * -----------------------MUI changes globally for all components-----------------------
+input,
+label,
+select,
+textarea,
+span,
+a,
+button,
+button.MuiButton-root,
+.MuiInputLabel-root,
+.MuiOutlinedInput-input {
+	@extend .font-r-16;
+}
+.MuiTableCell-root {
+	.MuiTypography-root,
+	.MuiTablePagination-selectLabel,
+	.MuiTablePagination-select,
+	.MuiSwitch-root span.MuiFormControlLabel-label,
+	.MuiTablePagination-displayedRows {
+		font-weight: 400;
+	}
+}
+.MuiTypography-h6.MuiTypography-root {
+	font-weight: 500;
+}
+.MuiOutlinedInput-root {
+	@extend .font-r-16;
+	color: $color-black;
+	background-color: $color-input-background;
+	border-radius: 8px;
+	&.Mui-focused fieldset {
+		border: 1px solid $color-primary-2;
+	}
+}
+.MuiOutlinedInput-root fieldset {
+	border-radius: 8px;
+	border: none;
+}
+.Mui-focused input,
+.Mui-focused textarea {
+	background: $color-white;
+	@extend .font-r-16;
+}
+.MuiFormControlLabel-label {
+	@extend .font-m-16;
+}
+.MuiAlert-root.MuiAlert-standardError.MuiAlert-standard {
+	background-color: $color-error-1;
+	@extend .font-b-14;
+	color: $color-white;
+	svg {
+		fill: $color-white;
+		margin-top: -2px;
+	}
+}
+.MuiPaper-elevation.MuiAlert-root.MuiAlert-standardSuccess {
+	background-color: $color-success-1;
+	@extend .font-b-14;
+	color: $color-white;
+	svg {
+		fill: $color-white;
+		margin-top: -2px;
+	}
+}
+span.error {
+	color: $color-error-1;
+}
+header {
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+	align-items: center;
+	button {
+		height: 36px;
+	}
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+	margin: 0;
+}
+ul.errors {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 10px;
+	&:empty {
+		display: none;
+	}
+	li {
+		color: $color-error-1;
+		@extend .font-m-16;
+
+		text-align: center;
+	}
+}
+.back {
+	@extend .font-sm-16;
+	color: $color-black;
+}
+.button-group {
+	display: flex;
+} // * to slash content visibility, watch this video for more information
+.content-visibility {
+	content-visibility: auto;
+	contain-intrinsic-size: 1px calc(100vh - 210px); /* Explained in the next section. */
+}
+.datagrid-table {
+	height: calc(100vh);
+	width: 100%;
+	position: relative;
+	@extend .content-visibility;
+}
+/* width */
+::-webkit-scrollbar {
+	width: rem-calc(5);
+	height: rem-calc(6);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: rem-calc(10);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+span.role_badge {
+	@extend .font-m-14;
+	// padding: 3px 10px;
+	padding: 5px 11px;
+	border-radius: 10px;
+	color: $color-secondary-1;
+	background-color: $color-secondary-4;
+	white-space: nowrap;
+	&.Manager,
+	&.test {
+		color: $color-success-1;
+		background-color: $color-success-4;
+	}
+	&.first {
+		color: $color-success-1;
+		background-color: $color-success-4;
+	}
+	&.Head {
+		color: $color-black;
+		background-color: $color-grey-5;
+	}
+	&.PM,
+	&.Managing,
+	&.No,
+	&.Inactive {
+		color: $color-error-1;
+		background-color: $color-error-4;
+	}
+}

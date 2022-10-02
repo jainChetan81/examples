@@ -1,0 +1,123 @@
+@import "mixins";
+@import "common";
+.access-control {
+	.react-flow__handle.connectable {
+		cursor: crosshair;
+		// display: none;
+		visibility: hidden;
+	}
+	.react-flow__node-default {
+		border: none !important;
+		background: transparent !important;
+		width: auto !important;
+		&.selected {
+			box-shadow: none;
+			border: none;
+		}
+	}
+	.react-flow__node.react-flow__node-default {
+		padding: 5px;
+		border-radius: 12px;
+	}
+	.react-flow__attribution {
+		display: none !important;
+	}
+	.react-flow__edge-path {
+		stroke: #b1b1b7;
+		stroke-width: 1;
+	}
+	.react-flow__controls .react-flow__controls-button {
+		&.react-flow__controls-interactive {
+			display: none;
+		}
+	}
+	.role_box {
+		width: max-content;
+		min-width: 210px;
+		padding: 16px;
+		background-color: $color-white;
+		border-radius: 10px;
+		cursor: pointer;
+		.role_title {
+			display: flex;
+			gap: 0 20px;
+			justify-content: left;
+			aside {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				background-color: $color-grey-3;
+				@extend .center;
+			}
+			.role_badge {
+				padding: 3px 10px;
+				margin-bottom: 6px;
+			}
+			h4 {
+				@extend .font-m-14;
+				margin-top: 5px;
+			}
+			padding-bottom: 15px;
+			border-bottom: 2px solid $color-grey-6;
+		}
+		.role_details {
+			margin-top: 10px;
+			color: $color-grey-3;
+			@extend .font-r-12;
+			margin-bottom: 10px;
+			text-align: left;
+			span {
+				@extend .font-m-14;
+				color: $color-black;
+				margin-left: 3px;
+			}
+			p {
+				display: flex;
+				align-items: center;
+			}
+			button {
+				margin-left: auto;
+				color: $color-grey-2;
+				border-radius: 10%;
+				@extend .center;
+				&:hover {
+					background-color: $color-grey-5;
+				}
+			}
+		}
+		.role_buttons {
+			display: flex;
+			gap: 0 20px;
+			justify-content: center;
+			margin-bottom: -35px;
+			margin-top: 15px;
+			button {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				@extend .center;
+				svg {
+					color: $color-white;
+				}
+				&.delete {
+					background-color: $color-error-1;
+					margin-right: 0;
+				}
+				&.edit {
+					background-color: $color-warning-1;
+				}
+				&.add {
+					background-color: $color-primary-1;
+					svg {
+						width: 21px;
+						height: 21px;
+						margin-right: -4px;
+					}
+				}
+				&:hover {
+					filter: brightness(1.2);
+				}
+			}
+		}
+	}
+}

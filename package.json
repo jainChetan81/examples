@@ -21,6 +21,8 @@
 		"animate.css": "^4.1.1",
 		"gsap-trial": "^3.9.0",
 		"loaders.css": "^0.1.2",
+		"react-flow-renderer": "^10.2.2",
+		"dagre": "^0.8.5",
 		"lodash": "^4.17.21",
 		"moment": "^2.29.4",
 		"next": "12.3.1",
@@ -36,6 +38,7 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.16.8",
+		"@types/dagre": "^0.7.47",
 		"@babel/preset-typescript": "^7.16.7",
 		"@testing-library/jest-dom": "^5.16.1",
 		"@testing-library/react": "^12.1.2",

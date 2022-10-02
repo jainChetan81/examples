@@ -14,6 +14,7 @@ import "../styles/toggle_buttons.scss";
 import "../styles/titlting_cards.scss";
 import "../styles/flipping_cards.scss";
 import "../styles/forms.scss";
+import "../styles/org-heirarchy.scss";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import { Loader } from "../components";
