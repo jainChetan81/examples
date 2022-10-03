@@ -30,6 +30,11 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
+					<Link href="/youtube">
+						<a>youtube</a>
+					</Link>
+				</li>
+				<li>
 					<Link href="/dribble">
 						<a>Dribble Cards</a>
 					</Link>
