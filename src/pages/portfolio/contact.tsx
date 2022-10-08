@@ -21,8 +21,8 @@ const Contact = () => {
 						<AnimatedLetters letterClass={letterClass} strArray={"Contact Me".split("")} idx={15} />
 					</h1>
 					<p>
-						I am interested in freelance opportunities - especially ambitious or large projects. However, if
-						you have other request or question, don&apos;t hesitate to contact me using below form either.
+						I am interested in freelance opportunities - especially ambitious or large projects. However, if you have
+						other request or question, don&apos;t hesitate to contact me using below form either.
 					</p>
 					<div className="contact-form">
 						<form ref={form} onSubmit={sendEmail}>

@@ -22,11 +22,7 @@ const Cards: NextPage = () => {
 								/>
 								<h2 className="name">Project Name</h2>
 								<p className="links">
-									<a
-										href="https://github.com/joaotuliojt/github-search"
-										target="_blank"
-										rel="noreferrer"
-									>
+									<a href="https://github.com/joaotuliojt/github-search" target="_blank" rel="noreferrer">
 										<Image
 											src="https://ik.imagekit.io/clhowstalgz/icons/github-icon.svg"
 											height={40}
@@ -34,12 +30,7 @@ const Cards: NextPage = () => {
 											alt="GitHub"
 										/>
 									</a>
-									<a
-										href="https://github-search-blond.vercel.app/"
-										className="-mt-1"
-										target="_blank"
-										rel="noreferrer"
-									>
+									<a href="https://github-search-blond.vercel.app/" className="-mt-1" target="_blank" rel="noreferrer">
 										<Image
 											src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-1.jpg"
 											alt="Visitor site"
@@ -51,21 +42,15 @@ const Cards: NextPage = () => {
 								<div className="stats">
 									<p className="viewers">539.9k</p>
 									<div className="streamers">
-										<Image
-											src="https://ik.imagekit.io/clhowstalgz/chetan"
-											width={30}
-											height={30}
-											alt="a"
-										/>
+										<Image src="https://ik.imagekit.io/clhowstalgz/chetan" width={30} height={30} alt="a" />
 									</div>
 								</div>
 							</div>
 							<div className="back">
 								<div className="streaming-info">
 									<p className="game-stat">
-										Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit vitae optio
-										dolores, Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit vitae
-										optio dolores, quaerat
+										Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit vitae optio dolores, Lorem ipsum dolor
+										sit amet consectetur adipisicing elit. Odit vitae optio dolores, quaerat
 									</p>
 								</div>
 								<Link href="/drag">

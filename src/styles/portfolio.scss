@@ -5,23 +5,23 @@ $primary-background-color: #022c43;
 @import "~loaders.css/src/animations/pacman.scss";
 @font-face {
 	font-family: "Helvetica Neue";
-	src: url("../public/portfolio/fonts/helvetica-neu.ttf") format("ttf");
+	src: url("../../public/portfolio/fonts/helvetica-neu.ttf") format("ttf");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: "La Belle Aurore";
-	src: url("../public/portfolio/fonts/LaBelleAurore.woff2") format("woff2"),
-		url("../public/portfolio/fonts/LaBelleAurore.woff") format("woff");
+	src: url("../../public/portfolio/fonts/LaBelleAurore.woff2") format("woff2"),
+		url("../../public/portfolio/fonts/LaBelleAurore.woff") format("woff");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: "Coolvetica";
-	src: url("../public/portfolio/fonts/CoolveticaRg-Regular.woff2") format("woff2"),
-		url("../public/portfolio/fonts/CoolveticaRg-Regular.woff") format("woff");
+	src: url("../../public/portfolio/fonts/CoolveticaRg-Regular.woff2") format("woff2"),
+		url("../../public/portfolio/fonts/CoolveticaRg-Regular.woff") format("woff");
 	font-weight: normal;
 	font-style: normal;
 }

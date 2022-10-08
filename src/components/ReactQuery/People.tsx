@@ -8,11 +8,9 @@ const People: FC = () => {
 		const response: Response = await fetch("https://swapi.dev/api/people?page=" + page);
 		return response.json();
 	};
-	const { data, isPreviousData, status }: UseQueryResult<PeopleType, string> = useQuery(
-		["people", page],
-		fetchPeople,
-		{ keepPreviousData: true }
-	);
+	const { data, isPreviousData, status }: UseQueryResult<PeopleType, string> = useQuery(["people", page], fetchPeople, {
+		keepPreviousData: true,
+	});
 	return (
 		<div>
 			<h2>People</h2>

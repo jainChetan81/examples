@@ -177,11 +177,7 @@ const FormQuestions: FC<Props> = ({
 						<div style={{ display: "flex", alignItems: "center", width: "100%" }}>
 							<EventAvailableIcon />
 							<p style={{ alignSelf: "center", marginLeft: "1rem" }}>Choose correct answers:</p>
-							<FormControl
-								variant="filled"
-								size="small"
-								sx={{ width: 80, marginLeft: "auto", fontSize: "1rem" }}
-							>
+							<FormControl variant="filled" size="small" sx={{ width: 80, marginLeft: "auto", fontSize: "1rem" }}>
 								<Input
 									id="filled-adornment-score"
 									type="number"

@@ -39,10 +39,7 @@ const Audio = () => {
 	return (
 		<Layout title="Audio Book Reader">
 			<video width={720} height={560} autoPlay muted></video>
-			<pre
-				data-text
-				style={{ fontSize: "2rem", width: "100%", whiteSpace: "pre-wrap", fontFamily: "inherit" }}
-			></pre>
+			<pre data-text style={{ fontSize: "2rem", width: "100%", whiteSpace: "pre-wrap", fontFamily: "inherit" }}></pre>
 		</Layout>
 	);
 };

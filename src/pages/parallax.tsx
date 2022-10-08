@@ -36,15 +36,15 @@ const Parallax = () => {
 					<div>
 						<h2 className="secondary-text">Stream Everything</h2>
 						<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur
-							incidunt omnis nam quis quidem nisi ipsa deserunt.
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt omnis nam
+							quis quidem nisi ipsa deserunt.
 						</p>
 					</div>
 					<div>
 						<h2 className="secondary-text">Short is the New Long</h2>
 						<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur
-							incidunt omnis nam quis quidem nisi ipsa deserunt.
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt omnis nam
+							quis quidem nisi ipsa deserunt.
 						</p>
 					</div>
 				</div>
@@ -56,8 +56,8 @@ const Parallax = () => {
 						Watch<span className="secondary-text dot">.</span>
 					</h2>
 					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt
-						omnis nam quis quidem nisi ipsa deserunt.
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt omnis nam quis
+						quidem nisi ipsa deserunt.
 					</p>
 				</div>
 				<div className="rellax" data-rellax-speed="4" data-rellax-xs-speed="3">
@@ -66,8 +66,8 @@ const Parallax = () => {
 						Share<span className="secondary-text dot">.</span>
 					</h2>
 					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt
-						omnis nam quis quidem nisi ipsa deserunt.
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt omnis nam quis
+						quidem nisi ipsa deserunt.
 					</p>
 				</div>
 				<div className="rellax" data-rellax-speed="7" data-rellax-xs-speed="3">
@@ -76,8 +76,8 @@ const Parallax = () => {
 						Learn<span className="secondary-text dot">.</span>
 					</h2>
 					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt
-						omnis nam quis quidem nisi ipsa deserunt.
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore et dicta consectetur incidunt omnis nam quis
+						quidem nisi ipsa deserunt.
 					</p>
 				</div>
 			</section>

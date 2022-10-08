@@ -88,11 +88,7 @@ const MultipleOptions: FC<Props> = ({
 					) : null}
 					{jump ? (
 						<FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
-							<Select
-								value={option.nextSection || ""}
-								onChange={(e) => changeJumpToSection(e, idx)}
-								required
-							>
+							<Select value={option.nextSection || ""} onChange={(e) => changeJumpToSection(e, idx)} required>
 								{formTemplate.formSections.map((section) => (
 									<MenuItem key={section.formSectionID} value={section.formSectionID}>
 										{section.sectionTitle}

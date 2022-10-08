@@ -181,9 +181,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 								role="button"
 								key={formSection.formSectionID + "-" + sectionIndex}
 								tabIndex={sectionIndex}
-								className={`form_builder-section ${
-									currentElementId === formSection.formSectionID ? "active" : ""
-								}`}
+								className={`form_builder-section ${currentElementId === formSection.formSectionID ? "active" : ""}`}
 								onMouseDown={() => {
 									currentSectionId.current = sectionIndex;
 									setCurrentElementId(formSection.formSectionID);
@@ -202,37 +200,33 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 							</div>
 							{Array.isArray(formSection.formQuestions) &&
 								formSection.formQuestions.length > 0 &&
-								_orderBy(formSection.formQuestions, ["sequence"], ["asc"]).map(
-									(formQuestion, questionIndex) => (
-										<div
-											role="button"
-											tabIndex={questionIndex}
-											className={`form_builder-question ${
-												currentElementId === formQuestion.questionID ? "active" : ""
-											}`}
-											key={formQuestion.questionID + "-" + questionIndex}
-											onMouseDown={() => {
-												currentSectionId.current = sectionIndex;
-												setCurrentElementId(formQuestion.questionID);
-											}}
-											draggable
-											onDragStart={() => dragStart(questionIndex, sectionIndex)}
-											onDragEnter={() => dragEnter(questionIndex, sectionIndex)}
-											onDragEnd={() => drop(sectionIndex)}
-										>
-											<FormQuestions
-												length={formSection.formQuestions.length}
-												index={questionIndex}
-												id={formQuestion.questionID}
-												formSectionIndex={sectionIndex}
-												question={formQuestion}
-												currentElementId={currentElementId}
-												setFormTemplate={setFormTemplate}
-												formTemplate={formTemplate}
-											/>
-										</div>
-									)
-								)}
+								_orderBy(formSection.formQuestions, ["sequence"], ["asc"]).map((formQuestion, questionIndex) => (
+									<div
+										role="button"
+										tabIndex={questionIndex}
+										className={`form_builder-question ${currentElementId === formQuestion.questionID ? "active" : ""}`}
+										key={formQuestion.questionID + "-" + questionIndex}
+										onMouseDown={() => {
+											currentSectionId.current = sectionIndex;
+											setCurrentElementId(formQuestion.questionID);
+										}}
+										draggable
+										onDragStart={() => dragStart(questionIndex, sectionIndex)}
+										onDragEnter={() => dragEnter(questionIndex, sectionIndex)}
+										onDragEnd={() => drop(sectionIndex)}
+									>
+										<FormQuestions
+											length={formSection.formQuestions.length}
+											index={questionIndex}
+											id={formQuestion.questionID}
+											formSectionIndex={sectionIndex}
+											question={formQuestion}
+											currentElementId={currentElementId}
+											setFormTemplate={setFormTemplate}
+											formTemplate={formTemplate}
+										/>
+									</div>
+								))}
 							{sectionIndex < formTemplate.formSections.length - 1 && (
 								<div className="section_footer">
 									After Section {sectionIndex + 1}
@@ -244,10 +238,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 										{formTemplate.formSections.map((section, index) => {
 											if (sectionIndex >= index) return null;
 											return (
-												<option
-													key={section.formSectionID + "-" + index}
-													value={section.formSectionID}
-												>
+												<option key={section.formSectionID + "-" + index} value={section.formSectionID}>
 													Jump to Section {index + 1} ({section.sectionTitle})
 												</option>
 											);

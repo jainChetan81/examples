@@ -9,8 +9,8 @@ const MobileCards = () => {
 					<div className="card__content">
 						<h2>Something awesome</h2>
 						<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere voluptate corrupti delectus
-							rerum eligendi iste fuga fugit unde amet et.
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere voluptate corrupti delectus rerum eligendi
+							iste fuga fugit unde amet et.
 						</p>
 						<a href="#" target="_blank" rel="noopener noreferrer">
 							Learn More

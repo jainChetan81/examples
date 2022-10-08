@@ -13,7 +13,7 @@ const FlippingCards = () => {
 						<div className="card__back">
 							<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, omnis?</p>
 						</div>
-					</ div>
+					</div>
 				</div>
 			</section>
 		</Layout>
