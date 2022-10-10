@@ -1,8 +1,6 @@
 import "../styles/normalize.css";
 import "../styles/global.scss";
 import "../styles/spinner.scss";
-import "../styles/testing.scss";
-import "../styles/parallax.scss";
 import "../styles/dribble.scss";
 import "../styles/react-query.scss";
 import "../styles/mobile_cards.scss";

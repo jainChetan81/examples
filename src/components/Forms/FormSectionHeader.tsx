@@ -3,7 +3,6 @@ import { Menu, MenuItem, TextField } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { isUuid } from "uuidv4";
 import { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
 import { updateFormSection, updateFormTemplate } from "./FormUtils";
 type Props = {
@@ -100,7 +99,7 @@ const FormSectionHeader: FC<Props> = ({
 		tempFormSections = tempFormSections.map((section, idx) => {
 			const tempFormQuestion: FORM_QUESTION_TYPE[] = section.formQuestions.map((question) => {
 				const tempFormOptions = question["options"].map((option) => {
-					if (option.nextSection !== null && isUuid(option.nextSection) && option.nextSection === id) {
+					if (option.nextSection !== null && option.nextSection === id) {
 						return { ...option, nextSection: tempFormSections[0].formSectionID };
 					} else {
 						return option;
