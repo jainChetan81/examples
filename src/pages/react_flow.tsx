@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { Layout } from "../components";
-import { ACCESS_CONTROL_USER, SAMPLE_DATA, BLOCKS_DATA, PATH_DATA } from "../types";
 import dagre from "dagre";
-import { useEffect, useMemo } from "react";
-import { CONSTANTS, convertDataSourceToOrgChartDataSource, getNodesPath } from "../components/OrgHeirarchy/utils";
+import { useMemo, useState } from "react";
 import ReactFlow, { Background, Controls, useEdgesState, useNodesState } from "react-flow-renderer";
+import { Layout } from "../components";
 import RoleBox from "../components/OrgHeirarchy/RoleBox";
+import { CONSTANTS, convertDataSourceToOrgChartDataSource, getNodesPath } from "../components/OrgHeirarchy/utils";
+import type { ACCESS_CONTROL_USER, BLOCKS_DATA, PATH_DATA, SAMPLE_DATA } from "../types";
 const NODE_WIDTH = 300;
 const NODE_HEIGHT = 300;
 
@@ -72,14 +71,9 @@ const ReactFlowExample = () => {
 		return { newNodes, newEdges };
 	};
 	const { newNodes: layoutedNodes, newEdges: layoutedEdges } = getLayoutedElements(initialNodes, initialEdges);
-	useEffect(() => {
-		setNodes(layoutedNodes);
-		setEdges(layoutedEdges);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [users]);
 
-	const [nodes, setNodes] = useNodesState(layoutedNodes);
-	const [edges, setEdges] = useEdgesState(layoutedEdges);
+	const [nodes] = useNodesState(layoutedNodes);
+	const [edges] = useEdgesState(layoutedEdges);
 	return (
 		<Layout title="React Flow">
 			<div className="datagrid-common-style access-control">

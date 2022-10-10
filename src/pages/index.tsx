@@ -31,12 +31,7 @@ const Home: NextPage = () => {
 				</li>
 				<li>
 					<Link href="/youtube">
-						<a>youtube</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/react_select">
-						<a>React Select</a>
+						<a>Youtube</a>
 					</Link>
 				</li>
 				<li>
@@ -50,23 +45,13 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/dribble">
-						<a>Dribble Cards</a>
+					<Link href="/css_cards">
+						<a>CSS Only Cards</a>
 					</Link>
 				</li>
 				<li>
-					<Link href="/mobile_cards">
-						<a>Animated Cards With Mobile Fallback(Kevin)</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/tilting_cards">
-						<a>Tilting Cards</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/flipping_cards">
-						<a>Flipping Cards</a>
+					<Link href="/react_select">
+						<a>React Select</a>
 					</Link>
 				</li>
 				<li>
@@ -75,8 +60,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/traversy_grid/testimonial">
-						<a>Traversy Grid | Testimonials</a>
+					<Link href="/dribble">
+						<a>Dribble Cards</a>
 					</Link>
 				</li>
 				<li>
@@ -90,23 +75,8 @@ const Home: NextPage = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href="/toggle_buttons">
-						<a>CSS Toggle Buttons</a>
-					</Link>
-				</li>
-				<li>
 					<Link href="/react-query">
 						<a>React Query Detailed(Net Ninja)</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/cards">
-						<a>Cards</a>
-					</Link>
-				</li>
-				<li>
-					<Link href="/traversy_grid">
-						<a>Traversy Grid</a>
 					</Link>
 				</li>
 				<li>

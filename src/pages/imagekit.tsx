@@ -1,6 +1,6 @@
 import { Layout } from "../components";
 
-const Imagekit = () => {
+const ImageKit = () => {
 	return (
 		<Layout title="Imagekit optimization">
 			<div className="container_image">
@@ -39,4 +39,4 @@ const Imagekit = () => {
 	);
 };
 
-export default Imagekit;
+export default ImageKit;

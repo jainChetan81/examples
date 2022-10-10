@@ -1,9 +1,7 @@
-import { FaPaperPlane } from "react-icons/fa";
-import Link from "next/link";
 import Loading from "../hoc/Loading";
 import { Layout } from "../components";
 import { NextPage } from "next";
-import Image from "next/image";
+import Image from "next/future/image";
 
 const Dribble: NextPage = () => {
 	return (
@@ -19,42 +17,42 @@ const Dribble: NextPage = () => {
 							<span className="fancy-card__arrow" aria-hidden="true">
 								&#8594;
 							</span>
-							<img
+							<Image
 								className="fancy-card__image"
 								src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-0.jpg?tr=w-100,h-100"
 								height={100}
 								width={100}
 								alt={index + "side"}
 							/>
-							<img
+							<Image
 								className="fancy-card__image"
 								src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-1.jpg?tr=w-100,h-100"
 								height={100}
 								width={100}
 								alt={index + "side"}
 							/>
-							<img
+							<Image
 								className="fancy-card__image"
 								src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-2.jpg?tr=w-100,h-100"
 								height={100}
 								width={100}
 								alt={index + "side"}
 							/>
-							<img
+							<Image
 								className="fancy-card__image"
 								src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-3.jpg?tr=w-100,h-100"
 								height={100}
 								width={100}
 								alt={index + "side"}
 							/>
-							<img
+							<Image
 								className="fancy-card__image"
 								src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-4.jpg?tr=w-100,h-100"
 								alt={index + "side"}
 								height={100}
 								width={100}
 							/>
-							<img
+							<Image
 								className="fancy-card__image"
 								src="https://ik.imagekit.io/aqaseg5nkl6/images/cover_image-5.jpg?tr=w-100,h-100"
 								alt={index + "side"}

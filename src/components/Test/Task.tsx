@@ -30,6 +30,7 @@ const Task: FC<Props> = ({ task, setTasks, index, tasks }) => {
 		return () => {
 			clearInterval(interval);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [task]);
 	const updateRunningTasks = () => {
 		const oldTasks = [...tasks];
