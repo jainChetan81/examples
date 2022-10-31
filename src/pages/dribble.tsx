@@ -1,7 +1,7 @@
 import Loading from "../hoc/Loading";
 import { Layout } from "../components";
 import { NextPage } from "next";
-import Image from "next/future/image";
+import Image from "next/image";
 
 const Dribble: NextPage = () => {
 	return (

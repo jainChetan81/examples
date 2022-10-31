@@ -6,27 +6,25 @@ const Sidebar = () => {
 	const router = useRouter();
 	return (
 		<aside className="nav-bar">
-			<Link href="/">
-				<a className="logo">
-					<img src={"/portfolio/logo-s.png"} alt="logo" />
-					<img src={"/portfolio/logo_sub.png"} className="sub-logo" alt="logo subtitle" />
-				</a>
+			<Link href="/" className="logo">
+				<img src={"/portfolio/logo-s.png"} alt="logo" />
+				<img src={"/portfolio/logo_sub.png"} className="sub-logo" alt="logo subtitle" />
 			</Link>
 			<nav>
-				<Link href="/portfolio">
-					<a className={router.pathname === "/portfolio" ? "active" : ""}>
-						<FaHome />
-					</a>
+				<Link href="/portfolio" className={router.pathname === "/portfolio" ? "active" : ""}>
+					<FaHome />
 				</Link>
-				<Link href="/portfolio/about">
-					<a className={router.pathname === "/portfolio/about" ? "active about-link" : "about-link"}>
-						<FaUser />
-					</a>
+				<Link
+					href="/portfolio/about"
+					className={router.pathname === "/portfolio/about" ? "active about-link" : "about-link"}
+				>
+					<FaUser />
 				</Link>
-				<Link href="/portfolio/contact">
-					<a className={router.pathname === "/portfolio/contact" ? "active contact-link" : "contact-link"}>
-						<FaEnvelope />
-					</a>
+				<Link
+					href="/portfolio/contact"
+					className={router.pathname === "/portfolio/contact" ? "active contact-link" : "contact-link"}
+				>
+					<FaEnvelope />
 				</Link>
 			</nav>
 			<ul>

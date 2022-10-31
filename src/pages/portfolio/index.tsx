@@ -29,8 +29,8 @@ const Portfolio = () => {
 						<AnimatedLetters letterClass={letterClass} strArray={jobArray} idx={22} />
 					</h1>
 					<h2>Frontend Developer / Backend Developer / DSA Developer</h2>
-					<Link href="/portfolio/contact">
-						<a className="flat-button">CONTACT ME</a>
+					<Link href="/portfolio/contact" className="flat-button">
+						CONTACT ME
 					</Link>
 				</div>
 				<Logo />

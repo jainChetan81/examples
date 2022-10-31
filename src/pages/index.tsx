@@ -25,69 +25,43 @@ const Home: NextPage = () => {
 			</button>
 			<ul className="main-list">
 				<li>
-					<Link href="/portfolio">
-						<a>Portfolio</a>
-					</Link>
+					<Link href="/portfolio">Portfolio</Link>
 				</li>
 				<li>
-					<Link href="/youtube">
-						<a>Youtube</a>
-					</Link>
+					<Link href="/youtube">Youtube</Link>
 				</li>
 				<li>
-					<Link href="/dynamic_form">
-						<a>Dynamic Forms</a>
-					</Link>
+					<Link href="/dynamic_form">Dynamic Forms</Link>
 				</li>
 				<li>
-					<Link href="/react_flow">
-						<a>React Flow</a>
-					</Link>
+					<Link href="/react_flow">React Flow</Link>
 				</li>
 				<li>
-					<Link href="/css_cards">
-						<a>CSS Only Cards</a>
-					</Link>
+					<Link href="/css_cards">CSS Only Cards</Link>
 				</li>
 				<li>
-					<Link href="/react_select">
-						<a>React Select</a>
-					</Link>
+					<Link href="/react_select">React Select</Link>
 				</li>
 				<li>
-					<Link href="/todo-list">
-						<a>Todo List</a>
-					</Link>
+					<Link href="/todo-list">Todo List</Link>
 				</li>
 				<li>
-					<Link href="/dribble">
-						<a>Dribble Cards</a>
-					</Link>
+					<Link href="/dribble">Dribble Cards</Link>
 				</li>
 				<li>
-					<Link href="/matrix">
-						<a>Matrix Rain</a>
-					</Link>
+					<Link href="/matrix">Matrix Rain</Link>
 				</li>
 				<li>
-					<Link href="/skribble">
-						<a>Skribble Cheat</a>
-					</Link>
+					<Link href="/skribble">Skribble Cheat</Link>
 				</li>
 				<li>
-					<Link href="/react-query">
-						<a>React Query Detailed(Net Ninja)</a>
-					</Link>
+					<Link href="/react-query">React Query Detailed(Net Ninja)</Link>
 				</li>
 				<li>
-					<Link href="/grid">
-						<a>Grid Basics</a>
-					</Link>
+					<Link href="/grid">Grid Basics</Link>
 				</li>
 				<li>
-					<Link href="/imagekit">
-						<a>ImageKit Example</a>
-					</Link>
+					<Link href="/imagekit">ImageKit Example</Link>
 				</li>
 			</ul>
 		</Layout>
