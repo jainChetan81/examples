@@ -3,9 +3,9 @@ import SplitscreenIcon from "@mui/icons-material/Splitscreen";
 import { Tooltip } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
 import _orderBy from "lodash/orderBy";
-import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
+import { type Dispatch, type FC, type SetStateAction, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FORM_QUESTION_TYPE, FORM_SECTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
+import type { FORM_QUESTION_TYPE, FORM_SECTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
 import FormQuestions from "./FormQuestions";
 import FormSectionHeader from "./FormSectionHeader";
 import { updateFormSection, updateFormTemplate } from "./FormUtils";
@@ -15,7 +15,7 @@ type Props = {
 };
 const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	const [currentElementId, setCurrentElementId] = useState<string | null>(
-		formTemplate.formSections[0].formSectionID || null
+		formTemplate.formSections[0]!.formSectionID || null
 	);
 	const dragCurrentItem = useRef<{
 		questionIndex: number | null;
@@ -34,7 +34,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	const currentSectionId = useRef<number>(0);
 
 	const dragStart = (position: number, currentSIdx: number) => {
-		if (dragCurrentItem.current?.questionIndex === null || isNaN(dragCurrentItem.current?.questionIndex!))
+		if (dragCurrentItem.current?.questionIndex === null || isNaN(dragCurrentItem.current?.questionIndex))
 			dragCurrentItem.current = {
 				questionIndex: position,
 				sectionIndex: currentSIdx,
@@ -65,23 +65,24 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 		}
 		const { tempFormTemplate } = updateFormSection(formTemplate, sIdx);
 		const toMoveQuestion = _cloneDeep(
-			tempFormTemplate.formSections[dragCurrentItem.current.sectionIndex].formQuestions[
+			tempFormTemplate.formSections?.[dragCurrentItem.current.sectionIndex]!.formQuestions[
 				dragCurrentItem.current.questionIndex
 			]
 		);
-		tempFormTemplate.formSections[dragCurrentItem.current.sectionIndex].formQuestions.splice(
+		if (!toMoveQuestion) return;
+		tempFormTemplate.formSections?.[dragCurrentItem.current.sectionIndex]!.formQuestions.splice(
 			dragCurrentItem.current.questionIndex,
 			1
 		);
-		tempFormTemplate.formSections[dragOverItem.current.sectionIndex].formQuestions.splice(
+		tempFormTemplate.formSections?.[dragOverItem.current.sectionIndex]!.formQuestions.splice(
 			dragOverItem.current.questionIndex,
 			0,
 			toMoveQuestion
 		);
-		tempFormTemplate.formSections[dragCurrentItem.current.sectionIndex].formQuestions.forEach((question, index) => {
+		tempFormTemplate.formSections?.[dragCurrentItem.current.sectionIndex]!.formQuestions.forEach((question, index) => {
 			question.sequence = index;
 		});
-		tempFormTemplate.formSections[dragOverItem.current.sectionIndex].formQuestions.forEach((question, index) => {
+		tempFormTemplate.formSections?.[dragOverItem.current.sectionIndex]!.formQuestions.forEach((question, index) => {
 			question.sequence = index;
 		});
 		dragCurrentItem.current = {
@@ -96,20 +97,16 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	};
 
 	const addNewQuestion = () => {
-		const { tempFormTemplate, time } = updateFormTemplate(formTemplate);
+		const { tempFormTemplate } = updateFormTemplate(formTemplate);
 
-		const tempQuestions = _cloneDeep(tempFormTemplate.formSections[currentSectionId.current].formQuestions);
+		const tempQuestions = _cloneDeep(tempFormTemplate.formSections[currentSectionId.current]!.formQuestions);
 		const newQuestion: FORM_QUESTION_TYPE = {
 			questionID: uuidv4(),
 			questionType: "varchar",
-			createdTs: time,
-			lastModifiedTs: time,
 			options: [
 				{
 					correct: null,
 					optionValue: "",
-					createdTs: time,
-					lastModifiedTs: time,
 					nextSection: null,
 				},
 			],
@@ -122,12 +119,12 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 		tempQuestions.forEach((question, index) => {
 			question.sequence = index;
 		});
-		tempFormTemplate.formSections[currentSectionId.current].formQuestions = tempQuestions;
+		tempFormTemplate.formSections[currentSectionId.current]!.formQuestions = tempQuestions;
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const addNewSection = () => {
-		const { tempFormTemplate, time } = updateFormTemplate(formTemplate);
+		const { tempFormTemplate } = updateFormTemplate(formTemplate);
 		const tempSections = _cloneDeep(tempFormTemplate.formSections);
 		const lastSectionIndex = tempSections.length - 1;
 		const newSection: FORM_SECTION_TYPE = {
@@ -135,8 +132,6 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 			sectionTitle: "",
 			sectionDescription: "",
 			formQuestions: [],
-			createdTs: time,
-			lastModifiedTs: time,
 			seqNumber: tempSections.length + 1,
 			nextSection: "TERMINATE",
 		};
@@ -144,7 +139,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 		// fix sequence number after new section is added
 		tempSections.forEach((section, idx) => ({ ...section, seqNumber: idx }));
 		// change nextSection value to the new section id
-		tempSections[lastSectionIndex].nextSection = newSection.formSectionID;
+		tempSections[lastSectionIndex]!.nextSection = newSection.formSectionID;
 		tempFormTemplate.formSections = tempSections;
 		setFormTemplate(tempFormTemplate);
 	};
@@ -152,7 +147,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	const handleJumpToNextSection = (sectionId: string, currentSectionIndex: number) => {
 		if (!sectionId || sectionId.length === 0) return;
 		const { tempFormTemplate } = updateFormSection(formTemplate, currentSectionIndex);
-		tempFormTemplate.formSections[currentSectionIndex].nextSection = sectionId;
+		tempFormTemplate.formSections[currentSectionIndex]!.nextSection = sectionId;
 		setFormTemplate(tempFormTemplate);
 	};
 
@@ -160,8 +155,8 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	useEffect(() => {
 		const movingMenu = document.querySelector("[data-id='moving-menu']")! as HTMLElement;
 		const activeElement = document.querySelector("[data-id='form-builder'] .active") as HTMLElement;
-		const formBuilder = document.querySelector("[data-id='form-builder']")?.getBoundingClientRect()!;
-		if (currentElementId === null || activeElement === null || movingMenu === null) return;
+		const formBuilder = document.querySelector("[data-id='form-builder']")?.getBoundingClientRect();
+		if (currentElementId === null || activeElement === null || movingMenu === null || !formBuilder) return;
 		const activeElementBounds = activeElement.getBoundingClientRect();
 		// relative distance between parent( class"formBuilder") and activeElement(class="active")
 		const heightBetweenElements = activeElementBounds.top - formBuilder.top;

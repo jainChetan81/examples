@@ -9,14 +9,12 @@ import EventIcon from "@mui/icons-material/Event";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import Filter1Icon from "@mui/icons-material/Filter1";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import SegmentIcon from "@mui/icons-material/Segment";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import _cloneDeep from "lodash/cloneDeep";
-import moment from "moment";
-import { Dispatch, SetStateAction } from "react";
-import { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
+import type { Dispatch, SetStateAction } from "react";
+import type { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
 import MultipleOptions from "./options/MultipleOptions";
 import MultipleOptionsQuizMode from "./options/MultipleOptionsQuizMode";
 
@@ -25,19 +23,15 @@ const ITEM_PADDING_TOP = 8;
 
 export const updateFormTemplate = (formTemplate: FORM_TEMPLATE_TYPE) => {
 	const tempFormTemplate = _cloneDeep(formTemplate);
-	const time = moment().valueOf();
-	tempFormTemplate.lastModifiedTs = time;
-	return { tempFormTemplate, time };
+	return { tempFormTemplate };
 };
 export const updateFormSection = (formTemplate: FORM_TEMPLATE_TYPE, sIdx: number) => {
-	const { tempFormTemplate, time } = updateFormTemplate(formTemplate);
-	tempFormTemplate.formSections[sIdx].lastModifiedTs = time;
-	return { tempFormTemplate, time };
+	const { tempFormTemplate } = updateFormTemplate(formTemplate);
+	return { tempFormTemplate };
 };
 export const updateFormQuestion = (formTemplate: FORM_TEMPLATE_TYPE, sIdx: number, qIdx: number) => {
-	const { tempFormTemplate, time } = updateFormSection(formTemplate, sIdx);
-	tempFormTemplate.formSections[sIdx].formQuestions[qIdx].lastModifiedTs = time;
-	return { tempFormTemplate, time };
+	const { tempFormTemplate } = updateFormSection(formTemplate, sIdx);
+	return { tempFormTemplate };
 };
 
 export const MenuProps = {
@@ -96,11 +90,6 @@ export const names = [
 		name: "Address",
 
 		icon: <ShareLocationIcon />,
-	},
-	{
-		key: "client",
-		name: "Client",
-		icon: <PersonOutlineIcon />,
 	},
 ];
 
@@ -260,12 +249,6 @@ const Date = (
 	<div className="question__type">
 		<p>Day, month, year</p>
 		<EventOutlinedIcon sx={{ color: "rgba(0,0,0,0.54)", marginLeft: "2rem" }} />
-	</div>
-);
-const Client = (
-	<div className="question__type">
-		<p>Client</p>
-		<PersonOutlineIcon sx={{ color: "rgba(0,0,0,0.54)", marginLeft: "2rem" }} />
 	</div>
 );
 const Varchar = (

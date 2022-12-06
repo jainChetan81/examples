@@ -13,14 +13,14 @@ import {
 	Menu,
 	MenuItem,
 	Select,
-	SelectChangeEvent,
+	type SelectChangeEvent,
 	Switch,
 	TextField,
 } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
-import { ChangeEvent, Dispatch, FC, MouseEvent, SetStateAction, useState } from "react";
+import { type ChangeEvent, type Dispatch, type FC, type MouseEvent, type SetStateAction, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
+import type { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
 import {
 	getQuestionTypeEdit,
 	getQuestionTypeView,
@@ -58,7 +58,7 @@ const FormQuestions: FC<Props> = ({
 
 	const changeSectionJump = (value: boolean) => {
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
-		const numberOfQuestionsWithJump = tempFormTemplate.formSections[formSectionIndex].formQuestions.reduce(
+		const numberOfQuestionsWithJump = tempFormTemplate.formSections[formSectionIndex]!.formQuestions.reduce(
 			(acc, q) => acc + (q.jumpToSectionBasedOnAnswer ? 1 : 0),
 			0
 		);
@@ -69,10 +69,10 @@ const FormQuestions: FC<Props> = ({
 			});
 			return;
 		}
-		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].jumpToSectionBasedOnAnswer = value;
+		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.jumpToSectionBasedOnAnswer = value;
 		// if value is false then make nextSection null instead of old value
 		if (value === false) {
-			tempFormTemplate.formSections[formSectionIndex].formQuestions[index].options.forEach((option) => {
+			tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.options.forEach((option) => {
 				option.nextSection = null;
 			});
 		}
@@ -85,8 +85,8 @@ const FormQuestions: FC<Props> = ({
 		const value =
 			typeof event.target.checked === "boolean"
 				? event.target.checked
-				: !tempFormTemplate.formSections[formSectionIndex].formQuestions[index].required;
-		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].required = value;
+				: !tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.required;
+		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.required = value;
 		setFormTemplate(tempFormTemplate);
 	};
 
@@ -98,40 +98,37 @@ const FormQuestions: FC<Props> = ({
 
 		const { tempFormTemplate } = updateFormSection(formTemplate, formSectionIndex);
 		const tempFormSections = _cloneDeep(tempFormTemplate.formSections);
-		let tempFormQuestions = _cloneDeep(tempFormSections[formSectionIndex].formQuestions);
+		let tempFormQuestions = _cloneDeep(tempFormSections[formSectionIndex]!.formQuestions);
 		tempFormQuestions.splice(index, 1);
 		tempFormQuestions = _cloneDeep(tempFormQuestions).map((q, idx) => ({ ...q, sequence: idx }));
 		tempFormQuestions.forEach((q, i) => {
 			q.sequence = i;
 		});
-		tempFormTemplate.formSections[formSectionIndex].formQuestions = [...tempFormQuestions];
+		tempFormTemplate.formSections[formSectionIndex]!.formQuestions = [...tempFormQuestions];
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const handleChangeQuestionType = (event: SelectChangeEvent<QUESTION_TYPES>) => {
 		const { value } = event.target;
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
-		// @ts-ignore
+		// @ts-expect-error dsd
 		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].questionType = value;
 		// turn clients in range false if question type is not "clients"
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const handleDuplicateQuestion = () => {
-		const { tempFormTemplate, time } = updateFormSection(formTemplate, formSectionIndex);
+		const { tempFormTemplate } = updateFormSection(formTemplate, formSectionIndex);
 		const tempFormSections = _cloneDeep(tempFormTemplate.formSections);
-		let tempFormQuestions = _cloneDeep(tempFormSections[formSectionIndex].formQuestions);
-		const newQuestion = _cloneDeep(tempFormSections[formSectionIndex].formQuestions[index]);
+		let tempFormQuestions = _cloneDeep(tempFormSections[formSectionIndex]!.formQuestions);
+		const newQuestion = _cloneDeep(tempFormSections[formSectionIndex]!.formQuestions[index]);
+		if (!newQuestion) return;
 
 		newQuestion.questionID = uuidv4();
-		newQuestion.lastModifiedTs = time;
-		newQuestion.createdTs = time;
 
 		let tempQuestionsFormOption = _cloneDeep(newQuestion.options || []);
 		tempQuestionsFormOption = tempQuestionsFormOption.map((option) => ({
 			...option,
-			createdTs: time,
-			lastModifiedTs: time,
 		}));
 
 		newQuestion["options"] = tempQuestionsFormOption;
@@ -141,13 +138,13 @@ const FormQuestions: FC<Props> = ({
 		tempFormQuestions.forEach((q, i) => {
 			q.sequence = i;
 		});
-		tempFormTemplate.formSections[formSectionIndex].formQuestions = [...tempFormQuestions];
+		tempFormTemplate.formSections[formSectionIndex]!.formQuestions = [...tempFormQuestions];
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const handleQuestionChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
-		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].question = e.target.value;
+		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.question = e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
 
@@ -155,14 +152,7 @@ const FormQuestions: FC<Props> = ({
 		const value = parseInt(e.target.value);
 		if (isNaN(value) || value < 0) return;
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
-		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].score = parseInt(e.target.value, 10);
-		setFormTemplate(tempFormTemplate);
-	};
-
-	const changeClientInRange = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
-		// @ts-ignore
-		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].clientsInRange = event.target.checked;
+		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.score = parseInt(e.target.value, 10);
 		setFormTemplate(tempFormTemplate);
 	};
 

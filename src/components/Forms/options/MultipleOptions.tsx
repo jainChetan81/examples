@@ -3,9 +3,9 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
 import DoneIcon from "@mui/icons-material/Done";
-import { Button, FormControl, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
-import { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../../types";
+import { Button, FormControl, MenuItem, Select, type SelectChangeEvent, TextField } from "@mui/material";
+import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import type { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../../types";
 import { updateFormQuestion } from "../FormUtils";
 type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
@@ -27,16 +27,14 @@ const MultipleOptions: FC<Props> = ({
 }) => {
 	const quizMode = Boolean(formTemplate.isQuizMode);
 	const addNewOption = () => {
-		const { tempFormTemplate, time } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
 
 		const optionData: FORM_OPTIONS_TYPE = {
 			optionValue: "",
-			createdTs: time,
-			lastModifiedTs: time,
-			nextSection: jump ? formTemplate["formSections"][0]["formSectionID"] : null,
+			nextSection: jump ? formTemplate["formSections"]![0]!["formSectionID"] : null,
 			correct: quizMode ? false : null,
 		};
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options.push(optionData);
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options.push(optionData);
 		setFormTemplate(tempFormTemplate);
 	};
 
@@ -46,20 +44,20 @@ const MultipleOptions: FC<Props> = ({
 			return;
 		}
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options.splice(optionIdx, 1);
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options.splice(optionIdx, 1);
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const changeOptionValue = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, optionIdx: number) => {
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options[optionIdx].optionValue =
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.optionValue =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const changeJumpToSection = (e: SelectChangeEvent<string | null>, optionIdx: number) => {
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options[optionIdx].nextSection =
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.nextSection =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};

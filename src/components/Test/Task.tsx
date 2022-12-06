@@ -34,14 +34,14 @@ const Task: FC<Props> = ({ task, setTasks, index, tasks }) => {
 	}, [task]);
 	const updateRunningTasks = () => {
 		const oldTasks = [...tasks];
-		oldTasks[index].time--;
-		oldTasks[index].running = !oldTasks[index].running;
+		oldTasks[index]!.time--;
+		oldTasks[index]!.running = !oldTasks[index]!.running;
 		setTasks([...oldTasks]);
 	};
 	const updateCompletedTasks = () => {
 		const oldTasks = [...tasks];
-		oldTasks[index].time = 0;
-		oldTasks[index].completed = !oldTasks[index].completed;
+		oldTasks[index]!.time = 0;
+		oldTasks[index]!.completed = !oldTasks[index]!.completed;
 		setTasks([...oldTasks]);
 	};
 	const removeTask = () => {

@@ -21,8 +21,6 @@ const DynamicForm = () => {
 				sectionDescription: "",
 				formQuestions: [
 					{
-						createdTs: moment().valueOf(),
-						lastModifiedTs: moment().valueOf(),
 						question: "",
 						questionID: uuidv4(),
 						questionType: "varchar",
@@ -34,15 +32,11 @@ const DynamicForm = () => {
 							{
 								correct: null,
 								optionValue: "",
-								createdTs: moment().valueOf(),
-								lastModifiedTs: moment().valueOf(),
 								nextSection: null,
 							},
 						],
 					},
 				],
-				createdTs: moment().valueOf(),
-				lastModifiedTs: moment().valueOf(),
 				seqNumber: 0,
 				nextSection: "TERMINATE",
 			},

@@ -1,9 +1,9 @@
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { Menu, MenuItem, TextField } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
+import { type ChangeEvent, type Dispatch, type FC, type SetStateAction, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
+import type { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
 import { updateFormSection, updateFormTemplate } from "./FormUtils";
 type Props = {
 	id: string; //uuid of current section
@@ -31,7 +31,7 @@ const FormSectionHeader: FC<Props> = ({
 	const handleChangeTitle = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		const { value, name } = e.target;
 		const { tempFormTemplate } = updateFormSection(formTemplate, 0);
-		// @ts-ignore
+		// @ts-expect-error sddsf
 		tempFormTemplate.formSections[index][name] = value;
 		if (name === "sectionTitle" && index === 0) tempFormTemplate.formTitle = value;
 		if (name === "sectionDescription") tempFormTemplate.formDescription = value;
@@ -39,34 +39,28 @@ const FormSectionHeader: FC<Props> = ({
 	};
 
 	const duplicateSection = () => {
-		const { tempFormTemplate, time } = updateFormTemplate(formTemplate);
+		const { tempFormTemplate } = updateFormTemplate(formTemplate);
 		let tempFormSections = _cloneDeep(tempFormTemplate["formSections"]);
 		const newSection = _cloneDeep(tempFormSections[index]);
-
+		if (!newSection) return;
 		newSection.formSectionID = uuidv4();
-		newSection.createdTs = time;
-		newSection.lastModifiedTs = time;
 		newSection.nextSection = "TERMINATE";
 		let tempQuestionsFormSection = _cloneDeep(newSection?.formQuestions) ?? [];
 		tempQuestionsFormSection = tempQuestionsFormSection.map((question) => {
 			let tempQuestionsFormOption = _cloneDeep(question["options"]);
 			tempQuestionsFormOption = tempQuestionsFormOption.map((option) => ({
 				...option,
-				createdTs: time,
-				lastModifiedTs: time,
 			}));
 
 			return {
 				...question,
 				questionID: uuidv4(),
 				options: tempQuestionsFormOption,
-				createdTs: time,
-				lastModifiedTs: time,
 			};
 		});
 		newSection.formQuestions = tempQuestionsFormSection;
 		// since, duplicated new section is being created right under the old one, the old one should automatically point towards the new one as nextSection
-		tempFormSections[index].nextSection = newSection.formSectionID;
+		tempFormSections[index]!.nextSection = newSection.formSectionID;
 		tempFormSections.splice(index + 1, 0, newSection);
 
 		tempFormSections = tempFormSections.map((section, idx) => ({ ...section, seqNumber: idx }));
@@ -100,7 +94,7 @@ const FormSectionHeader: FC<Props> = ({
 			const tempFormQuestion: FORM_QUESTION_TYPE[] = section.formQuestions.map((question) => {
 				const tempFormOptions = question["options"].map((option) => {
 					if (option.nextSection !== null && option.nextSection === id) {
-						return { ...option, nextSection: tempFormSections[0].formSectionID };
+						return { ...option, nextSection: tempFormSections[0]!.formSectionID };
 					} else {
 						return option;
 					}
@@ -166,7 +160,7 @@ const FormSectionHeader: FC<Props> = ({
 			) : (
 				<p>{sectionDescription || "Untitled Description"}</p>
 			)}
-			<p style={{ textAlign: "right" }}>Section Sequence: {formTemplate.formSections[index].seqNumber}</p>
+			<p style={{ textAlign: "right" }}>Section Sequence: {formTemplate.formSections[index]!.seqNumber}</p>
 		</>
 	);
 };

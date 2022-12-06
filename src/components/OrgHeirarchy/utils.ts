@@ -1,5 +1,5 @@
 import _cloneDeep from "lodash/cloneDeep";
-import { ACCESS_CONTROL_USER, SAMPLE_DATA, PATH_DATA } from "../../types";
+import type { ACCESS_CONTROL_USER, SAMPLE_DATA, PATH_DATA } from "../../types";
 export const convertDataSourceToOrgChartDataSource = function (dataSource: ACCESS_CONTROL_USER[]) {
 	if (Object.keys(dataSource).length === 0) return {};
 	const clonedDataSource = _cloneDeep(dataSource);
@@ -15,7 +15,7 @@ export const convertDataSourceToOrgChartDataSource = function (dataSource: ACCES
 	queue.push(orgChartDataSource);
 	while (queue.length !== 0) {
 		const currentNode = queue.pop();
-		// @ts-ignore
+		// @ts-expect-error dfdf
 		const children = findChildren(currentNode.adminID, clonedDataSource).map((child) => {
 			child.adminID = child.id;
 			child.role_box_id = "admin_" + child.id;
@@ -84,9 +84,9 @@ export const getNodesPath = (data: SAMPLE_DATA[], result: PATH_DATA[]): PATH_DAT
 		if (element.children?.length > 0) {
 			for (let j = 0; j < element.children?.length; j++) {
 				result.push({
-					id: `e${element.role_box_id}-${element.children[j].role_box_id}`,
+					id: `e${element.role_box_id}-${element.children[j]!.role_box_id}`,
 					source: element.role_box_id,
-					target: element.children[j].role_box_id,
+					target: element.children[j]!.role_box_id,
 					type: "smoothstep",
 				});
 			}
@@ -97,8 +97,8 @@ export const getNodesPath = (data: SAMPLE_DATA[], result: PATH_DATA[]): PATH_DAT
 };
 export const findAvatarInitials = (name: string): string => {
 	const avatar = name.toLocaleUpperCase().split(" ");
-	const name1 = avatar.length > 0 ? avatar[0].charAt(0) : "";
-	const name2 = avatar.length > 1 ? avatar[1].charAt(0) : "";
+	const name1 = avatar.length > 0 ? avatar[0]!.charAt(0) : "";
+	const name2 = avatar.length > 1 ? avatar[1]!.charAt(0) : "";
 	return name1 + name2;
 };
 
