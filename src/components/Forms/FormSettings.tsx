@@ -59,12 +59,12 @@ const FormSettings: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	const updateFormScore = (index: number, key: "low" | "high" | "result", value: number | string) => {
 		if (!["low", "high", "result"].includes(key)) return;
 		const { tempFormTemplate } = updateFormTemplate(formTemplate);
-		// @ts-ignore
+		// @ts-expect-error object may be undefined
 		tempFormTemplate.formScore[index][key] = value;
 		setFormTemplate(tempFormTemplate);
 	};
 
-	const shouldShowWarning = (rowScoreID: string | null, value: number | string | null, isResult: boolean = false) => {
+	const shouldShowWarning = (rowScoreID: string | null, value: number | string | null, isResult = false) => {
 		let numberOfOccurrence = 0;
 		if (!rowScoreID || !value) return false;
 		const formScore = _cloneDeep(formTemplate["formScore"]);

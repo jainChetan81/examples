@@ -2,8 +2,8 @@ import { Layout } from "../components";
 import Loading from "../hoc/Loading";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import { FormEvent, useState } from "react";
-import { FORM_TEMPLATE_TYPE } from "../types";
+import { type FormEvent, useState } from "react";
+import { type FORM_TEMPLATE_TYPE } from "../types";
 import FormBuilder from "../components/Forms/FormBuilder";
 import FormSettings from "../components/Forms/FormSettings";
 const id = uuidv4();
@@ -11,7 +11,7 @@ const DynamicForm = () => {
 	const [errors, setErrors] = useState<string[]>([]);
 	const [tabSelected, setTabSelected] = useState<0 | 1>(0);
 	const [formTemplate, setFormTemplate] = useState<FORM_TEMPLATE_TYPE>({
-		formTemplateID: id,
+		id: id,
 		formTitle: "Untitled Form",
 		formDescription: "",
 		formSections: [
