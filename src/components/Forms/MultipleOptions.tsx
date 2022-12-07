@@ -2,6 +2,7 @@ import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
+import { v4 as uuidv4 } from "uuid";
 import DoneIcon from "@mui/icons-material/Done";
 import { Button, FormControl, MenuItem, Select, type SelectChangeEvent, TextField } from "@mui/material";
 import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
@@ -30,8 +31,10 @@ const MultipleOptions: FC<Props> = ({
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
 		const optionData: FORM_OPTIONS_TYPE = {
 			optionValue: "",
-			nextSection: jump ? formTemplate["formSections"]![0]!["formSectionID"] : null,
+			nextSectionID: jump ? formTemplate["formSections"]![0]!["formSectionID"] : null,
 			correct: quizMode ? false : null,
+			optionID: uuidv4(),
+			questionID: tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.questionID,
 		};
 		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options.push(optionData);
 		setFormTemplate(tempFormTemplate);
@@ -56,7 +59,7 @@ const MultipleOptions: FC<Props> = ({
 
 	const changeJumpToSection = (e: SelectChangeEvent<string | null>, optionIdx: number) => {
 		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.nextSection =
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.nextSectionID =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
@@ -85,7 +88,7 @@ const MultipleOptions: FC<Props> = ({
 					) : null}
 					{jump ? (
 						<FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
-							<Select value={option.nextSection || ""} onChange={(e) => changeJumpToSection(e, idx)} required>
+							<Select value={option.nextSectionID || ""} onChange={(e) => changeJumpToSection(e, idx)} required>
 								{formTemplate.formSections.map((section) => (
 									<MenuItem key={section.formSectionID} value={section.formSectionID}>
 										{section.sectionTitle}

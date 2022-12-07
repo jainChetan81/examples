@@ -44,7 +44,7 @@ const FormSectionHeader: FC<Props> = ({
 		const newSection = _cloneDeep(tempFormSections[index]);
 		if (!newSection) return;
 		newSection.formSectionID = uuidv4();
-		newSection.nextSection = "TERMINATE";
+		newSection.nextSectionID = "TERMINATE";
 		let tempQuestionsFormSection = _cloneDeep(newSection?.formQuestions) ?? [];
 		tempQuestionsFormSection = tempQuestionsFormSection.map((question) => {
 			let tempQuestionsFormOption = _cloneDeep(question["options"]);
@@ -59,8 +59,8 @@ const FormSectionHeader: FC<Props> = ({
 			};
 		});
 		newSection.formQuestions = tempQuestionsFormSection;
-		// since, duplicated new section is being created right under the old one, the old one should automatically point towards the new one as nextSection
-		tempFormSections[index]!.nextSection = newSection.formSectionID;
+		// since, duplicated new section is being created right under the old one, the old one should automatically point towards the new one as nextSectionID
+		tempFormSections[index]!.nextSectionID = newSection.formSectionID;
 		tempFormSections.splice(index + 1, 0, newSection);
 
 		tempFormSections = tempFormSections.map((section, idx) => ({ ...section, seqNumber: idx }));
@@ -78,7 +78,7 @@ const FormSectionHeader: FC<Props> = ({
 			return;
 		}
 		const numberOfSectionLinkedToCurrentSection = formTemplate.formSections.filter(
-			(section) => section.nextSection === id
+			(section) => section.nextSectionID === id
 		).length;
 		if (numberOfSectionLinkedToCurrentSection > 0) {
 			console.log({
@@ -93,8 +93,8 @@ const FormSectionHeader: FC<Props> = ({
 		tempFormSections = tempFormSections.map((section, idx) => {
 			const tempFormQuestion: FORM_QUESTION_TYPE[] = section.formQuestions.map((question) => {
 				const tempFormOptions = question["options"].map((option) => {
-					if (option.nextSection !== null && option.nextSection === id) {
-						return { ...option, nextSection: tempFormSections[0]!.formSectionID };
+					if (option.nextSectionID !== null && option.nextSectionID === id) {
+						return { ...option, nextSectionID: tempFormSections[0]!.formSectionID };
 					} else {
 						return option;
 					}

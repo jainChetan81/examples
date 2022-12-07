@@ -13,7 +13,7 @@ type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
 	setFormTemplate: Dispatch<SetStateAction<FORM_TEMPLATE_TYPE>>;
 };
-const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
+const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 	const [currentElementId, setCurrentElementId] = useState<string | null>(
 		formTemplate.formSections[0]!.formSectionID || null
 	);
@@ -101,19 +101,23 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 
 		const tempQuestions = _cloneDeep(tempFormTemplate.formSections[currentSectionId.current]!.formQuestions);
 		const newQuestion: FORM_QUESTION_TYPE = {
+			formSectionID: tempFormTemplate.formSections[currentSectionId.current]!.formSectionID,
 			questionID: uuidv4(),
 			questionType: "varchar",
 			options: [
 				{
 					correct: null,
 					optionValue: "",
-					nextSection: null,
+					nextSectionID: null,
+					optionID: uuidv4(),
+					questionID: uuidv4(),
 				},
 			],
 			question: "",
 			required: false,
 			score: 12,
 			sequence: tempQuestions.length + 1,
+			jumpToSectionBasedOnAnswer: false,
 		};
 		tempQuestions.push(newQuestion);
 		tempQuestions.forEach((question, index) => {
@@ -130,16 +134,17 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 		const newSection: FORM_SECTION_TYPE = {
 			formSectionID: uuidv4(),
 			sectionTitle: "",
-			sectionDescription: "",
+			sectionDesc: "",
 			formQuestions: [],
 			seqNumber: tempSections.length + 1,
-			nextSection: "TERMINATE",
+			nextSectionID: "TERMINATE",
+			formId: formTemplate.id,
 		};
 		tempSections.push(newSection);
 		// fix sequence number after new section is added
 		tempSections.forEach((section, idx) => ({ ...section, seqNumber: idx }));
-		// change nextSection value to the new section id
-		tempSections[lastSectionIndex]!.nextSection = newSection.formSectionID;
+		// change nextSectionID value to the new section id
+		tempSections[lastSectionIndex]!.nextSectionID = newSection.formSectionID;
 		tempFormTemplate.formSections = tempSections;
 		setFormTemplate(tempFormTemplate);
 	};
@@ -147,7 +152,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	const handleJumpToNextSection = (sectionId: string, currentSectionIndex: number) => {
 		if (!sectionId || sectionId.length === 0) return;
 		const { tempFormTemplate } = updateFormSection(formTemplate, currentSectionIndex);
-		tempFormTemplate.formSections[currentSectionIndex]!.nextSection = sectionId;
+		tempFormTemplate.formSections[currentSectionIndex]!.nextSectionID = sectionId;
 		setFormTemplate(tempFormTemplate);
 	};
 
@@ -185,7 +190,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 								<FormSectionHeader
 									id={formSection.formSectionID}
 									sectionTitle={formSection.sectionTitle}
-									sectionDescription={formSection.sectionDescription || ""}
+									sectionDescription={formSection.sectionDesc || ""}
 									length={formTemplate.formSections.length}
 									index={sectionIndex}
 									currentElementId={currentElementId}
@@ -226,7 +231,7 @@ const FormBuilder: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 								<div className="section_footer">
 									After Section {sectionIndex + 1}
 									<select
-										value={formSection.nextSection || ""}
+										value={formSection.nextSectionID || ""}
 										onChange={(e) => handleJumpToNextSection(e.target.value, sectionIndex)}
 									>
 										<option value="">Select a Value</option>

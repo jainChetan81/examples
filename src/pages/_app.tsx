@@ -1,23 +1,24 @@
-import "../styles/normalize.css";
-import "../styles/global.scss";
-import "../styles/spinner.scss";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import "reactflow/dist/base.css";
+import { Loader } from "../components";
 import "../styles/dribble.scss";
-import "../styles/react-query.scss";
-import "../styles/mobile_cards.scss";
-import "../styles/skribble.scss";
-import "../styles/portfolio.scss";
-import "../styles/todo-list.scss";
-import "../styles/toggle_buttons.scss";
-import "../styles/titlting_cards.scss";
 import "../styles/flipping_cards.scss";
 import "../styles/forms.scss";
+import "../styles/global.scss";
+import "../styles/mobile_cards.scss";
+import "../styles/normalize.css";
 import "../styles/org-heirarchy.scss";
+import "../styles/portfolio.scss";
+import "../styles/react-query.scss";
 import "../styles/react-select.scss";
+import "../styles/skribble.scss";
+import "../styles/spinner.scss";
+import "../styles/titlting_cards.scss";
+import "../styles/todo-list.scss";
+import "../styles/toggle_buttons.scss";
 import "../styles/youtube.scss";
-import "reactflow/dist/base.css";
-import { useRouter } from "next/router";
-import { Fragment, useEffect, useState } from "react";
-import { Loader } from "../components";
+import { trpc } from "../utils/trpc";
 
 function MyApp({ Component, pageProps }: any) {
 	const router = useRouter();
@@ -52,17 +53,7 @@ function MyApp({ Component, pageProps }: any) {
 		};
 	}, [router]);
 
-	return (
-		<>
-			{loading ? (
-				<Loader />
-			) : (
-				<Fragment>
-					<Component {...pageProps} />
-				</Fragment>
-			)}
-		</>
-	);
+	return <>{loading ? <Loader /> : <Component {...pageProps} />}</>;
 }
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);

@@ -70,10 +70,10 @@ const FormQuestions: FC<Props> = ({
 			return;
 		}
 		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.jumpToSectionBasedOnAnswer = value;
-		// if value is false then make nextSection null instead of old value
+		// if value is false then make nextSectionID null instead of old value
 		if (value === false) {
 			tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.options.forEach((option) => {
-				option.nextSection = null;
+				option.nextSectionID = null;
 			});
 		}
 		setAnchorEl(null);
@@ -234,7 +234,7 @@ const FormQuestions: FC<Props> = ({
 					</Button>
 				) : (
 					<div className="question_footer">
-						{["mChoice", "cb", "dd"].includes(question.questionType) && formTemplate.isQuizMode === 1 && (
+						{["mChoice", "cb", "dd"].includes(question.questionType) && formTemplate.isQuizMode && (
 							<div className="points">
 								<button title="Answer key and points" onClick={() => setScoreMode(true)} type="button">
 									<EventAvailableIcon sx={{ color: "#1a73e8" }} />
@@ -274,7 +274,7 @@ const FormQuestions: FC<Props> = ({
 											},
 										}}
 									>
-										<MenuItem selected={question.jumpToSectionBasedOnAnswer}>
+										<MenuItem selected={question.jumpToSectionBasedOnAnswer ?? false}>
 											<button
 												type="button"
 												className="center"
