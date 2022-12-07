@@ -1,7 +1,6 @@
 import { Layout } from "../components";
 import Loading from "../hoc/Loading";
 import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
 import { type FormEvent, useState } from "react";
 import { type FORM_TEMPLATE_TYPE } from "../types";
 import FormBuilder from "../components/Forms/FormBuilder";
@@ -30,9 +29,10 @@ const DynamicForm = () => {
 						jumpToSectionBasedOnAnswer: false,
 						options: [
 							{
-								correct: null,
 								optionValue: "",
-								nextSection: null,
+								optionID: uuidv4(),
+								nextSectionID: null,
+								correct: null,
 							},
 						],
 					},
@@ -43,9 +43,9 @@ const DynamicForm = () => {
 		],
 		defaultPointValue: 12,
 		formScore: [],
-		isQuizMode: 0,
-		createdTs: moment().valueOf(),
-		lastModifiedTs: moment().valueOf(),
+		isQuizMode: false,
+		createdAt: new Date(),
+		updatedAt: new Date(),
 	});
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -121,7 +121,7 @@ export const validateForm = (form: FORM_TEMPLATE_TYPE): string[] => {
 			errors.push(`Section title for Section ${section.seqNumber + 1} is required`);
 		}
 		if (
-			(!section.nextSection || section.nextSection.length === 0) &&
+			(!section.nextSectionID || section.nextSectionID.length === 0) &&
 			section.seqNumber !== form.formSections.length - 1
 		) {
 			errors.push(`Section ${section.seqNumber + 1} must have jump to section`);
@@ -148,7 +148,7 @@ export const validateForm = (form: FORM_TEMPLATE_TYPE): string[] => {
 							} is required`
 						);
 					}
-					if (question.jumpToSectionBasedOnAnswer && !option.nextSection) {
+					if (question.jumpToSectionBasedOnAnswer && !option.nextSectionID) {
 						errors.push(`Option ${oIdx + 1} '${option.optionValue}' must have a jump to section`);
 					}
 				});

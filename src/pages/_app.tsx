@@ -14,6 +14,7 @@ import "../styles/forms.scss";
 import "../styles/org-heirarchy.scss";
 import "../styles/react-select.scss";
 import "../styles/youtube.scss";
+import "reactflow/dist/base.css";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import { Loader } from "../components";

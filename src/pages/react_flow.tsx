@@ -1,6 +1,6 @@
 import dagre from "dagre";
 import { useMemo, useState } from "react";
-import ReactFlow, { Background, Controls, useEdgesState, useNodesState } from "react-flow-renderer";
+import ReactFlow, { Background, Controls, useEdgesState, useNodesState } from "reactflow";
 import { Layout } from "../components";
 import RoleBox from "../components/OrgHeirarchy/RoleBox";
 import { CONSTANTS, convertDataSourceToOrgChartDataSource, getNodesPath } from "../components/OrgHeirarchy/utils";
