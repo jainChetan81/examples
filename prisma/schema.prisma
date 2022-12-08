@@ -159,8 +159,8 @@ model FormOption {
   optionValue   String
   correct       Boolean?
   nextSectionID String?
-  formQuestion  FormQuestion @relation(fields: [questionID], references: [questionID], onDelete: Cascade)
-  questionID    String
+  formQuestion  FormQuestion? @relation(fields: [questionID], references: [questionID], onDelete: Cascade)
+  questionID    String?
 
   @@index([questionID])
 }

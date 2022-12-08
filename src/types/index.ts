@@ -1,3 +1,5 @@
+import { Form, FormOption, FormQuestion, FormScore, FormSection, QuestionType } from "@prisma/client";
+
 export type Characters = {
 	id: number;
 	name: string;
@@ -64,53 +66,20 @@ export type People = {
 
 // * FORMS TYPES IN FORMS PAGE
 
-export type FORM_TEMPLATE_TYPE = {
-	id: string; //uuid
-	formTitle: string;
-	formDescription: string;
-	defaultPointValue: number | null; //if the form is a quiz the default point for each question is this value
-	isQuizMode: 0 | 1; //0-false
+export type FORM_TEMPLATE_TYPE = Form & {
 	formSections: FORM_SECTION_TYPE[];
-	createdTs: number;
 	formScore: FORM_SCORE_TYPE[];
-	lastModifiedTs: number;
 };
-export type FORMS_FILTER_COLUMNS = "formTitle" | "createdTs" | "lastModifiedTs";
-export type PARTIAL_FORM_TEMPLATE = Pick<
-	FORM_TEMPLATE_TYPE,
-	"id" | "formTitle" | "formDescription" | "lastModifiedTs" | "createdTs"
->;
-export type FORM_SECTION_TYPE = {
-	formSectionID: string; //uuid
-	sectionTitle: string;
-	sectionDescription: string | null;
+export type FORM_SECTION_TYPE = FormSection & {
 	formQuestions: FORM_QUESTION_TYPE[];
-	seqNumber: number;
-	nextSection: string;
 };
 
-export type FORM_SCORE_TYPE = {
-	low: number | null;
-	high: number | null;
-	result: string | null;
-	scoreID: string | null; //uuid
-};
-export type QUESTION_TYPES = "varchar" | "mChoice" | "cb" | "dd" | "int" | "file" | "date" | "address" | "photo";
-export type FORM_QUESTION_TYPE = {
-	questionID: string; //uuid
+export type FORM_SCORE_TYPE = FormScore;
+export type QUESTION_TYPES = QuestionType;
+export type FORM_QUESTION_TYPE = FormQuestion & {
 	options: FORM_OPTIONS_TYPE[];
-	question: string;
-	questionType: QUESTION_TYPES;
-	required: boolean;
-	score: number | null;
-	sequence: number;
-	jumpToSectionBasedOnAnswer?: boolean;
 };
-export type FORM_OPTIONS_TYPE = {
-	correct: null | boolean;
-	optionValue: string;
-	nextSection: string | null;
-};
+export type FORM_OPTIONS_TYPE = FormOption;
 export type ACCESS_CONTROL_USER = {
 	email: string;
 	employees?: ACCESS_CONTROL_USER[];
