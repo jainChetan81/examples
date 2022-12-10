@@ -9,9 +9,8 @@ const NODE_WIDTH = 300;
 const NODE_HEIGHT = 300;
 
 const ReactFlowExample = () => {
-	// @ts-ignore
-	const [users, setUsers] = useState<ACCESS_CONTROL_USER[]>([...CONSTANTS]);
-	// @ts-ignore
+	const [users] = useState<ACCESS_CONTROL_USER[]>([...CONSTANTS]);
+	// @ts-expect-error fff
 	const orgData: SAMPLE_DATA = useMemo(() => convertDataSourceToOrgChartDataSource(users), [users]);
 
 	const getNodesData = useMemo(
@@ -56,9 +55,9 @@ const ReactFlowExample = () => {
 
 		newNodes.forEach((node) => {
 			const nodeWithPosition = dagreGraph.node(node.id);
-			// @ts-ignore
+			// @ts-expect-error fff
 			node.targetPosition = "top";
-			// @ts-ignore
+			// @ts-expect-error fff
 			node.sourcePosition = "bottom";
 			node.position = {
 				x: nodeWithPosition.x - NODE_WIDTH / 2,

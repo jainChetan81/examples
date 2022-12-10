@@ -7,7 +7,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { Button, FormControl, MenuItem, Select, type SelectChangeEvent, TextField } from "@mui/material";
 import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 import type { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
-import { updateFormQuestion } from "./FormUtils";
+import { updateFormTemplate } from "./FormUtils";
 type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
 	options: FORM_OPTIONS_TYPE[];
@@ -28,7 +28,7 @@ const MultipleOptions: FC<Props> = ({
 }) => {
 	const quizMode = Boolean(formTemplate.isQuizMode);
 	const addNewOption = () => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const optionData: FORM_OPTIONS_TYPE = {
 			optionValue: "",
 			nextSectionID: jump ? formTemplate["formSections"]![0]!["formSectionID"] : null,
@@ -45,20 +45,20 @@ const MultipleOptions: FC<Props> = ({
 			console.log({ message: "Only Option of a Question cannot be deleted", severity: "error" });
 			return;
 		}
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options.splice(optionIdx, 1);
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const changeOptionValue = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, optionIdx: number) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.optionValue =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const changeJumpToSection = (e: SelectChangeEvent<string | null>, optionIdx: number) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.nextSectionID =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);

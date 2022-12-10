@@ -2,10 +2,15 @@
 	"name": "cards",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
 		"build": "next build",
-		"start": "next start",
-		"lint": "next lint"
+		"dev": "next dev",
+		"postinstall": "prisma generate",
+		"lint": "next lint",
+		"start": "next start"
+	},
+	"type": "module",
+	"prisma": {
+	  "seed": "node prisma/seed.js"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.9.0",

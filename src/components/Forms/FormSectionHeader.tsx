@@ -4,47 +4,47 @@ import _cloneDeep from "lodash/cloneDeep";
 import { type ChangeEvent, type Dispatch, type FC, type SetStateAction, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
-import { updateFormSection, updateFormTemplate } from "./FormUtils";
+import { updateFormTemplate } from "./FormUtils";
 type Props = {
 	id: string; //uuid of current section
 	sectionTitle: string;
-	sectionDescription: string;
+	sectionDesc: string;
 	length: number; //length of all the sections
 	index: number; //index of current section in the form
 	currentElementId: string | null;
 	setFormTemplate: Dispatch<SetStateAction<FORM_TEMPLATE_TYPE>>;
 	formTemplate: FORM_TEMPLATE_TYPE;
 };
-const FormSectionHeader: FC<Props> = ({
+const FormSectionHeader = ({
 	id,
 	sectionTitle,
-	sectionDescription,
+	sectionDesc,
 	length,
 	index,
 	currentElementId,
 	setFormTemplate,
 	formTemplate,
-}) => {
+}: Props) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 
 	const handleChangeTitle = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		const { value, name } = e.target;
-		const { tempFormTemplate } = updateFormSection(formTemplate, 0);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		// @ts-expect-error sddsf
 		tempFormTemplate.formSections[index][name] = value;
 		if (name === "sectionTitle" && index === 0) tempFormTemplate.formTitle = value;
-		if (name === "sectionDescription") tempFormTemplate.formDescription = value;
+		if (name === "sectionDesc") tempFormTemplate.formDescription = value;
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const duplicateSection = () => {
-		const { tempFormTemplate } = updateFormTemplate(formTemplate);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		let tempFormSections = _cloneDeep(tempFormTemplate["formSections"]);
 		const newSection = _cloneDeep(tempFormSections[index]);
 		if (!newSection) return;
 		newSection.formSectionID = uuidv4();
-		newSection.nextSectionID = "TERMINATE";
+		newSection.nextSectionID = null;
 		let tempQuestionsFormSection = _cloneDeep(newSection?.formQuestions) ?? [];
 		tempQuestionsFormSection = tempQuestionsFormSection.map((question) => {
 			let tempQuestionsFormOption = _cloneDeep(question["options"]);
@@ -87,7 +87,7 @@ const FormSectionHeader: FC<Props> = ({
 			});
 			return;
 		}
-		const { tempFormTemplate } = updateFormTemplate(formTemplate);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		let tempFormSections = [...tempFormTemplate.formSections];
 		tempFormSections.splice(index, 1);
 		tempFormSections = tempFormSections.map((section, idx) => {
@@ -153,12 +153,12 @@ const FormSectionHeader: FC<Props> = ({
 					fullWidth
 					variant="standard"
 					placeholder="Form Description"
-					value={sectionDescription}
-					name="sectionDescription"
+					value={sectionDesc}
+					name="sectionDesc"
 					onChange={handleChangeTitle}
 				/>
 			) : (
-				<p>{sectionDescription || "Untitled Description"}</p>
+				<p>{sectionDesc || "Untitled Description"}</p>
 			)}
 			<p style={{ textAlign: "right" }}>Section Sequence: {formTemplate.formSections[index]!.seqNumber}</p>
 		</>

@@ -3,12 +3,12 @@ import SplitscreenIcon from "@mui/icons-material/Splitscreen";
 import { Tooltip } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
 import _orderBy from "lodash/orderBy";
-import { type Dispatch, type FC, type SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { FORM_QUESTION_TYPE, FORM_SECTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
 import FormQuestions from "./FormQuestions";
 import FormSectionHeader from "./FormSectionHeader";
-import { updateFormSection, updateFormTemplate } from "./FormUtils";
+import { updateFormTemplate } from "./FormUtils";
 type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
 	setFormTemplate: Dispatch<SetStateAction<FORM_TEMPLATE_TYPE>>;
@@ -63,7 +63,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 			dragOverItem.current.questionIndex = null;
 			return;
 		}
-		const { tempFormTemplate } = updateFormSection(formTemplate, sIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const toMoveQuestion = _cloneDeep(
 			tempFormTemplate.formSections?.[dragCurrentItem.current.sectionIndex]!.formQuestions[
 				dragCurrentItem.current.questionIndex
@@ -97,7 +97,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 	};
 
 	const addNewQuestion = () => {
-		const { tempFormTemplate } = updateFormTemplate(formTemplate);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 
 		const tempQuestions = _cloneDeep(tempFormTemplate.formSections[currentSectionId.current]!.formQuestions);
 		const newQuestion: FORM_QUESTION_TYPE = {
@@ -128,7 +128,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 	};
 
 	const addNewSection = () => {
-		const { tempFormTemplate } = updateFormTemplate(formTemplate);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const tempSections = _cloneDeep(tempFormTemplate.formSections);
 		const lastSectionIndex = tempSections.length - 1;
 		const newSection: FORM_SECTION_TYPE = {
@@ -137,7 +137,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 			sectionDesc: "",
 			formQuestions: [],
 			seqNumber: tempSections.length + 1,
-			nextSectionID: "TERMINATE",
+			nextSectionID: null,
 			formId: formTemplate.id,
 		};
 		tempSections.push(newSection);
@@ -149,9 +149,8 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 		setFormTemplate(tempFormTemplate);
 	};
 
-	const handleJumpToNextSection = (sectionId: string, currentSectionIndex: number) => {
-		if (!sectionId || sectionId.length === 0) return;
-		const { tempFormTemplate } = updateFormSection(formTemplate, currentSectionIndex);
+	const handleJumpToNextSection = (sectionId: string | null, currentSectionIndex: number) => {
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.formSections[currentSectionIndex]!.nextSectionID = sectionId;
 		setFormTemplate(tempFormTemplate);
 	};
@@ -190,7 +189,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 								<FormSectionHeader
 									id={formSection.formSectionID}
 									sectionTitle={formSection.sectionTitle}
-									sectionDescription={formSection.sectionDesc || ""}
+									sectionDesc={formSection.sectionDesc || ""}
 									length={formTemplate.formSections.length}
 									index={sectionIndex}
 									currentElementId={currentElementId}
@@ -231,8 +230,10 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 								<div className="section_footer">
 									After Section {sectionIndex + 1}
 									<select
-										value={formSection.nextSectionID || ""}
-										onChange={(e) => handleJumpToNextSection(e.target.value, sectionIndex)}
+										value={formSection.nextSectionID || -1}
+										onChange={(e) =>
+											handleJumpToNextSection(+e.target.value === -1 ? null : e.target.value, sectionIndex)
+										}
 									>
 										<option value="">Select a Value</option>
 										{formTemplate.formSections.map((section, index) => {
@@ -243,7 +244,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 												</option>
 											);
 										})}
-										<option value="TERMINATE">Submit Form</option>
+										<option value={-1}>Submit Form</option>
 									</select>
 								</div>
 							)}

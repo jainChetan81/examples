@@ -2,7 +2,7 @@ import React from "react";
 import { trpc } from "../../utils/trpc";
 
 const Forms = () => {
-	const { data, isLoading } = trpc.forms.getAllForms.useQuery();
+	const { data, isLoading } = trpc.forms.getAllPartialForms.useQuery();
 	if (isLoading) return <div>Loading...</div>;
 	return (
 		<div>

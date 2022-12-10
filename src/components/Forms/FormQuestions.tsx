@@ -13,12 +13,12 @@ import {
 	Menu,
 	MenuItem,
 	Select,
-	type SelectChangeEvent,
 	Switch,
 	TextField,
+	type SelectChangeEvent,
 } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
-import { type ChangeEvent, type Dispatch, type FC, type MouseEvent, type SetStateAction, useState } from "react";
+import { useState, type ChangeEvent, type Dispatch, type FC, type SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
 import {
@@ -28,8 +28,7 @@ import {
 	MenuProps,
 	names,
 	switchLabel,
-	updateFormQuestion,
-	updateFormSection,
+	updateFormTemplate,
 } from "./FormUtils";
 
 type Props = {
@@ -57,7 +56,7 @@ const FormQuestions: FC<Props> = ({
 	const [scoreMode, setScoreMode] = useState(false);
 
 	const changeSectionJump = (value: boolean) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const numberOfQuestionsWithJump = tempFormTemplate.formSections[formSectionIndex]!.formQuestions.reduce(
 			(acc, q) => acc + (q.jumpToSectionBasedOnAnswer ? 1 : 0),
 			0
@@ -81,7 +80,7 @@ const FormQuestions: FC<Props> = ({
 	};
 
 	const handleRequiredQuestion = (event: any) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const value =
 			typeof event.target.checked === "boolean"
 				? event.target.checked
@@ -96,7 +95,7 @@ const FormQuestions: FC<Props> = ({
 			return;
 		}
 
-		const { tempFormTemplate } = updateFormSection(formTemplate, formSectionIndex);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const tempFormSections = _cloneDeep(tempFormTemplate.formSections);
 		let tempFormQuestions = _cloneDeep(tempFormSections[formSectionIndex]!.formQuestions);
 		tempFormQuestions.splice(index, 1);
@@ -110,7 +109,7 @@ const FormQuestions: FC<Props> = ({
 
 	const handleChangeQuestionType = (event: SelectChangeEvent<QUESTION_TYPES>) => {
 		const { value } = event.target;
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		// @ts-expect-error dsd
 		tempFormTemplate.formSections[formSectionIndex].formQuestions[index].questionType = value;
 		// turn clients in range false if question type is not "clients"
@@ -118,7 +117,7 @@ const FormQuestions: FC<Props> = ({
 	};
 
 	const handleDuplicateQuestion = () => {
-		const { tempFormTemplate } = updateFormSection(formTemplate, formSectionIndex);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const tempFormSections = _cloneDeep(tempFormTemplate.formSections);
 		let tempFormQuestions = _cloneDeep(tempFormSections[formSectionIndex]!.formQuestions);
 		const newQuestion = _cloneDeep(tempFormSections[formSectionIndex]!.formQuestions[index]);
@@ -143,7 +142,7 @@ const FormQuestions: FC<Props> = ({
 	};
 
 	const handleQuestionChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.question = e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
@@ -151,7 +150,7 @@ const FormQuestions: FC<Props> = ({
 	const changeQuestionScore = (e: ChangeEvent<HTMLInputElement>) => {
 		const value = parseInt(e.target.value);
 		if (isNaN(value) || value < 0) return;
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, formSectionIndex, index);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.formSections[formSectionIndex]!.formQuestions[index]!.score = parseInt(e.target.value, 10);
 		setFormTemplate(tempFormTemplate);
 	};

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react";
 import { Layout } from "../components";
 import Select from "../components/ReactSelect/Select";
@@ -22,6 +21,7 @@ const multiple = false;
 const ReactSelect = () => {
 	const [selected, setSelected] = useState<
 		(typeof multiple extends true ? SELECT_OPTIONS[] : SELECT_OPTIONS) | undefined
+		// @ts-expect-error fdff
 	>(multiple ? [options[0]] : options[0]);
 	return (
 		<Layout title="React Select">

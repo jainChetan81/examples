@@ -5,11 +5,13 @@ import { type FormEvent, useState } from "react";
 import { type FORM_TEMPLATE_TYPE } from "../types";
 import FormBuilder from "../components/Forms/FormBuilder";
 import FormSettings from "../components/Forms/FormSettings";
+import { trpc } from "../utils/trpc";
 const formId = uuidv4();
 const sectionId = uuidv4();
 const questionId = uuidv4();
 const optionId = uuidv4();
 const DynamicForm = () => {
+	const { mutateAsync: addForm, error } = trpc.forms.addNewForm.useMutation();
 	const [errors, setErrors] = useState<string[]>([]);
 	const [tabSelected, setTabSelected] = useState<0 | 1>(0);
 	const [formTemplate, setFormTemplate] = useState<FORM_TEMPLATE_TYPE>({
@@ -49,7 +51,7 @@ const DynamicForm = () => {
 					},
 				],
 				seqNumber: 0,
-				nextSectionID: "TERMINATE",
+				nextSectionID: null,
 			},
 		],
 	});
@@ -58,6 +60,7 @@ const DynamicForm = () => {
 		const newErrors = validateForm(formTemplate);
 		setErrors(newErrors);
 		if (newErrors.length > 0) return;
+		await addForm({ form: formTemplate });
 	};
 	return (
 		<Layout title="Dynamic Forms">
@@ -79,6 +82,7 @@ const DynamicForm = () => {
 							>
 								Settings
 							</button>
+							<button type="submit">Save Form</button>
 						</div>
 					</header>
 					<ul className="errors">
@@ -104,7 +108,7 @@ export default Loading(DynamicForm);
  * must have a name
  * must have at least one section
  * every section must have at least one question
- * every section must have an id or "TERMINATE" option on every jumpToSection
+ * every section must have an id or null option on every jumpToSection
  * every question of every section if multiple choice must have at least one option
  * every option must have a value
  * if quest is multiple choice and has jump to section based on answer than there must be nextSectionID to every option on every question
@@ -127,7 +131,8 @@ export const validateForm = (form: FORM_TEMPLATE_TYPE): string[] => {
 			errors.push(`Section title for Section ${section.seqNumber + 1} is required`);
 		}
 		if (
-			(!section.nextSectionID || section.nextSectionID.length === 0) &&
+			typeof section.nextSectionID === "string" &&
+			section.nextSectionID.length === 0 &&
 			section.seqNumber !== form.formSections.length - 1
 		) {
 			errors.push(`Section ${section.seqNumber + 1} must have jump to section`);

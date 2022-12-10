@@ -62,10 +62,10 @@ const MatrixRain: FC<any> = () => {
 		canvas.height = +window.innerHeight;
 
 		const effect: Effect = new Effect(canvas.width, canvas.height);
-		let lastTime: number = 0;
-		const fps: number = 60;
-		const nextFrame: number = 1000 / fps;
-		let timer: number = 0;
+		let lastTime = 0;
+		const fps = 60;
+		const nextFrame = 1000 / fps;
+		let timer = 0;
 		const animate = (timeStamp: number) => {
 			const deltaTime: number = timeStamp - lastTime;
 			lastTime = timeStamp;

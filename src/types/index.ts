@@ -81,37 +81,6 @@ export type FORM_QUESTION_TYPE = FormQuestion & {
 	options: FORM_OPTIONS_TYPE[];
 };
 export type FORM_OPTIONS_TYPE = FormOption;
-export type ACCESS_CONTROL_USER = {
-	email: string;
-	employees?: ACCESS_CONTROL_USER[];
-	firstname: string;
-	id: number | null;
-	lastname: string;
-	phoneNumber: string;
-	title: string;
-};
-
-export interface SAMPLE_DATA extends ACCESS_CONTROL_USER {
-	role_box_id: string;
-	children: SAMPLE_DATA[];
-	reportingManager: string;
-}
-export type PATH_DATA = {
-	id: string;
-	source: string;
-	target: string;
-	type: "smoothstep";
-};
-export type BLOCKS_DATA = {
-	id: string;
-	data: { label: JSX.Element };
-	position: { x: number; y: number };
-};
-
-export type SELECT_OPTIONS = {
-	label: string;
-	value: number;
-};
 
 export const Z_QUESTION_TYPE = z.enum(["date", "varchar", "mChoice", "cb", "dd", "int", "file", "address", "photo"]);
 export const FORM_OPTION = z.object({
@@ -127,7 +96,7 @@ export const FORM_QUESTION = z.object({
 	questionType: Z_QUESTION_TYPE,
 	required: z.boolean(),
 	score: z.number().nullable(),
-	sequence: z.number(),
+	sequence: z.number().nonnegative(),
 	jumpToSectionBasedOnAnswer: z.boolean().nullable(),
 	formSectionID: z.string().uuid().nullable(),
 	options: z.array(FORM_OPTION),
@@ -160,3 +129,35 @@ export const Z_FORM = z.object({
 	formScore: z.array(FORM_SCORE),
 	formSections: z.array(FORM_SECTION),
 });
+
+export type ACCESS_CONTROL_USER = {
+	email: string;
+	employees?: ACCESS_CONTROL_USER[];
+	firstname: string;
+	id: number | null;
+	lastname: string;
+	phoneNumber: string;
+	title: string;
+};
+
+export interface SAMPLE_DATA extends ACCESS_CONTROL_USER {
+	role_box_id: string;
+	children: SAMPLE_DATA[];
+	reportingManager: string;
+}
+export type PATH_DATA = {
+	id: string;
+	source: string;
+	target: string;
+	type: "smoothstep";
+};
+export type BLOCKS_DATA = {
+	id: string;
+	data: { label: JSX.Element };
+	position: { x: number; y: number };
+};
+
+export type SELECT_OPTIONS = {
+	label: string;
+	value: number;
+};
