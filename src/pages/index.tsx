@@ -14,13 +14,15 @@ const Home: NextPage = () => {
 					},
 					icon: "https://doodleipsum.com/100x100/flat?i=0eb04614d2ff66e0c288922e95511051",
 				});
-				notification.addEventListener("close", (event) => {});
+				notification.addEventListener("close", () => {
+					console.log("closed");
+				});
 			}
 		});
 	};
 	return (
 		<Layout title="Home">
-			<button onClick={() => notify()} style={{ marginInline: "auto" }}>
+			<button onClick={notify} style={{ marginInline: "auto" }}>
 				push a notification
 			</button>
 			<ul className="main-list">

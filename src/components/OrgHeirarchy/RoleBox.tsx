@@ -2,14 +2,13 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { Avatar } from "@mui/material";
-import { FC, useState } from "react";
-import { SAMPLE_DATA } from "../../types";
+import { type FC } from "react";
+import type { SAMPLE_DATA } from "../../types";
 import { findAvatarInitials } from "./utils";
 type Props = {
 	user_info: SAMPLE_DATA;
 };
 const RoleBox: FC<Props> = ({ user_info }) => {
-	const [expandModal, setExpandModal] = useState(false);
 	return (
 		<div className="role_box">
 			<div className="role_title">

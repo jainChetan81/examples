@@ -3,10 +3,11 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
 import DoneIcon from "@mui/icons-material/Done";
-import { Button, FormControl, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
-import { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../../types";
-import { updateFormQuestion } from "../FormUtils";
+import { v4 as uuidv4 } from "uuid";
+import { Button, FormControl, MenuItem, Select, type SelectChangeEvent, TextField } from "@mui/material";
+import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import type { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../../types";
+import { updateFormTemplate } from "../FormUtils";
 type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
 	options: FORM_OPTIONS_TYPE[];
@@ -27,16 +28,16 @@ const MultipleOptions: FC<Props> = ({
 }) => {
 	const quizMode = Boolean(formTemplate.isQuizMode);
 	const addNewOption = () => {
-		const { tempFormTemplate, time } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 
 		const optionData: FORM_OPTIONS_TYPE = {
 			optionValue: "",
-			createdTs: time,
-			lastModifiedTs: time,
-			nextSection: jump ? formTemplate["formSections"][0]["formSectionID"] : null,
+			nextSectionID: jump ? formTemplate["formSections"]![0]!["formSectionID"] : null,
 			correct: quizMode ? false : null,
+			questionID: tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.questionID,
+			optionID: uuidv4(),
 		};
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options.push(optionData);
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options.push(optionData);
 		setFormTemplate(tempFormTemplate);
 	};
 
@@ -45,21 +46,21 @@ const MultipleOptions: FC<Props> = ({
 			console.log({ message: "Only Option of a Question cannot be deleted", severity: "error" });
 			return;
 		}
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options.splice(optionIdx, 1);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options.splice(optionIdx, 1);
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const changeOptionValue = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, optionIdx: number) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options[optionIdx].optionValue =
+		const tempFormTemplate = updateFormTemplate(formTemplate);
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.optionValue =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
 
 	const changeJumpToSection = (e: SelectChangeEvent<string | null>, optionIdx: number) => {
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
-		tempFormTemplate.formSections[sectionIdx].formQuestions[questionIdx].options[optionIdx].nextSection =
+		const tempFormTemplate = updateFormTemplate(formTemplate);
+		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options[optionIdx]!.nextSectionID =
 			e.target.value;
 		setFormTemplate(tempFormTemplate);
 	};
@@ -88,7 +89,7 @@ const MultipleOptions: FC<Props> = ({
 					) : null}
 					{jump ? (
 						<FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
-							<Select value={option.nextSection || ""} onChange={(e) => changeJumpToSection(e, idx)} required>
+							<Select value={option.nextSectionID || ""} onChange={(e) => changeJumpToSection(e, idx)} required>
 								{formTemplate.formSections.map((section) => (
 									<MenuItem key={section.formSectionID} value={section.formSectionID}>
 										{section.sectionTitle}

@@ -1,3 +1,6 @@
+import { Form, FormOption, FormQuestion, FormScore, FormSection, QuestionType } from "@prisma/client";
+import { z } from "zod";
+
 export type Characters = {
 	id: number;
 	name: string;
@@ -64,59 +67,69 @@ export type People = {
 
 // * FORMS TYPES IN FORMS PAGE
 
-export type FORM_TEMPLATE_TYPE = {
-	formTemplateID: string; //uuid
-	formTitle: string;
-	formDescription: string;
-	defaultPointValue: number | null; //if the form is a quiz the default point for each question is this value
-	isQuizMode: 0 | 1; //0-false
+export type FORM_TEMPLATE_TYPE = Form & {
 	formSections: FORM_SECTION_TYPE[];
-	createdTs: number;
 	formScore: FORM_SCORE_TYPE[];
-	lastModifiedTs: number;
 };
-export type FORMS_FILTER_COLUMNS = "formTitle" | "createdTs" | "lastModifiedTs";
-export type PARTIAL_FORM_TEMPLATE = Pick<
-	FORM_TEMPLATE_TYPE,
-	"formTemplateID" | "formTitle" | "formDescription" | "lastModifiedTs" | "createdTs"
->;
-export type FORM_SECTION_TYPE = {
-	formSectionID: string; //uuid
-	sectionTitle: string;
-	sectionDescription: string | null;
+export type FORM_SECTION_TYPE = FormSection & {
 	formQuestions: FORM_QUESTION_TYPE[];
-	createdTs: number;
-	lastModifiedTs: number;
-	seqNumber: number;
-	nextSection: string;
 };
 
-export type FORM_SCORE_TYPE = {
-	low: number | null;
-	high: number | null;
-	result: string | null;
-	scoreID: string | null; //uuid
-};
-export type QUESTION_TYPES = "varchar" | "mChoice" | "cb" | "dd" | "int" | "file" | "date" | "address" | "photo";
-export type FORM_QUESTION_TYPE = {
-	questionID: string; //uuid
-	createdTs: number;
-	lastModifiedTs: number;
+export type FORM_SCORE_TYPE = FormScore;
+export type QUESTION_TYPES = QuestionType;
+export type FORM_QUESTION_TYPE = FormQuestion & {
 	options: FORM_OPTIONS_TYPE[];
-	question: string;
-	questionType: QUESTION_TYPES;
-	required: boolean;
-	score: number | null;
-	sequence: number;
-	jumpToSectionBasedOnAnswer?: boolean;
 };
-export type FORM_OPTIONS_TYPE = {
-	correct: null | boolean;
-	optionValue: string;
-	createdTs: number;
-	lastModifiedTs: number;
-	nextSection: string | null;
-};
+export type FORM_OPTIONS_TYPE = FormOption;
+
+export const Z_QUESTION_TYPE = z.enum(["date", "varchar", "mChoice", "cb", "dd", "int", "file", "address", "photo"]);
+export const FORM_OPTION = z.object({
+	optionID: z.string().uuid(),
+	optionValue: z.string(),
+	correct: z.boolean().nullable(),
+	nextSectionID: z.string().uuid().nullable(),
+	questionID: z.string().uuid().nullable(),
+});
+export const FORM_QUESTION = z.object({
+	questionID: z.string().uuid(),
+	question: z.string(),
+	questionType: Z_QUESTION_TYPE,
+	required: z.boolean(),
+	score: z.number().nullable(),
+	sequence: z.number().nonnegative(),
+	jumpToSectionBasedOnAnswer: z.boolean().nullable(),
+	formSectionID: z.string().uuid().nullable(),
+	options: z.array(FORM_OPTION),
+});
+
+export const FORM_SCORE = z.object({
+	formId: z.string().uuid().nullable(),
+	low: z.number().nullable(),
+	high: z.number().nullable(),
+	result: z.string().nullable(),
+	id: z.string().uuid(),
+});
+export const FORM_SECTION = z.object({
+	formSectionID: z.string().uuid(),
+	sectionTitle: z.string(),
+	sectionDesc: z.string(),
+	seqNumber: z.number(),
+	nextSectionID: z.string().uuid().nullable(),
+	formId: z.string().uuid().nullable(),
+	formQuestions: z.array(FORM_QUESTION),
+});
+export const Z_FORM = z.object({
+	id: z.string().uuid(),
+	formTitle: z.string(),
+	formDescription: z.string(),
+	defaultPointValue: z.number(),
+	isQuizMode: z.boolean(),
+	createdAt: z.date(),
+	updatedAt: z.date(),
+	formScore: z.array(FORM_SCORE),
+	formSections: z.array(FORM_SECTION),
+});
+
 export type ACCESS_CONTROL_USER = {
 	email: string;
 	employees?: ACCESS_CONTROL_USER[];

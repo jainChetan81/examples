@@ -1,5 +1,5 @@
 import { useEffect, useState, useDebugValue, useRef } from "react";
-export default function useFetch<T extends any>(url: string, method: "GET" | "POST" = "GET", body: any = null) {
+export default function useFetch<T>(url: string, method: "GET" | "POST" = "GET", body: any = null) {
 	type FETCH_RESPONSE = {
 		status: boolean;
 	} & { [x: string]: T };

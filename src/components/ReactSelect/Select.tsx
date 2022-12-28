@@ -1,6 +1,5 @@
-// @ts-nocheck
 import { memo, useState } from "react";
-import { SELECT_OPTIONS } from "../../types";
+import type { SELECT_OPTIONS } from "../../types";
 type Props<T> = {
 	options: SELECT_OPTIONS[];
 	selected?: T extends true ? SELECT_OPTIONS[] : SELECT_OPTIONS;
@@ -22,6 +21,7 @@ function Select<TMulti>({ options, selected, onChange, multiple }: Props<TMulti>
 						key={v.value}
 						onClick={(e) => {
 							e.stopPropagation();
+							// @ts-expect-error sdsds
 							onChange(selected?.filter((item) => item.value !== v.value));
 						}}
 					>
@@ -35,18 +35,23 @@ function Select<TMulti>({ options, selected, onChange, multiple }: Props<TMulti>
 	function selectOption(option: SELECT_OPTIONS) {
 		if (!option) return;
 		if (!selected) {
+			// @ts-expect-error sdsds
 			multiple ? onChange([option]) : onChange(option);
 			return;
 		}
 		if (!multiple) {
+			// @ts-expect-error sdsds
 			onChange(option);
 			return;
 		}
+		// @ts-expect-error sdsds
 		const index = selected.findIndex((v) => v.value === option.value);
 		if (index === -1) {
+			// @ts-expect-error sdsds
 			onChange([...selected, option]);
 			return;
 		}
+		// @ts-expect-error sdsds
 		selected.splice(index, 1);
 		onChange(selected);
 	}
@@ -75,6 +80,7 @@ function Select<TMulti>({ options, selected, onChange, multiple }: Props<TMulti>
 				{options.map((option) => (
 					<li
 						className={`option ${
+							// @ts-expect-error sdsds
 							multiple ? isSelected(option, selected) : option.value === selected?.value ? "selected" : ""
 						}`}
 						key={option.value}
