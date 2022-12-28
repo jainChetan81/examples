@@ -1,4 +1,3 @@
-import { FormOption } from "@prisma/client";
 import { z } from "zod";
 import { Z_FORM } from "../../../types";
 import { publicProcedure, router } from "./../trpc";
@@ -40,7 +39,7 @@ export const formsRouter = router({
 				updatedAt: new Date(),
 			},
 		});
-		const formScore = await ctx.prisma.formScore.createMany({
+		await ctx.prisma.formScore.createMany({
 			data: input.form.formScore.map((score) => ({
 				low: score.low,
 				high: score.high,
@@ -48,7 +47,7 @@ export const formsRouter = router({
 				formId: form.id,
 			})),
 		});
-		const formSections = await ctx.prisma.formSection.createMany({
+		await ctx.prisma.formSection.createMany({
 			data: input.form.formSections.map((section) => ({
 				sectionTitle: section.sectionTitle,
 				sectionDesc: section.sectionDesc,
@@ -57,7 +56,7 @@ export const formsRouter = router({
 				formId: form.id,
 			})),
 		});
-		const formQuestions = await ctx.prisma.formQuestion.createMany({
+		await ctx.prisma.formQuestion.createMany({
 			data: input.form.formSections.flatMap((section) =>
 				section.formQuestions.map((question) => ({
 					question: question.question,
@@ -70,7 +69,7 @@ export const formsRouter = router({
 				}))
 			),
 		});
-		const FormOption = await ctx.prisma.formOption.createMany({
+		await ctx.prisma.formOption.createMany({
 			data: input.form.formSections.flatMap((section) =>
 				section.formQuestions.flatMap((question) =>
 					question.options.map((option) => ({

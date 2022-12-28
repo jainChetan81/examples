@@ -27,7 +27,7 @@ const configuration = {
 	 */
 	webpack(config) {
 		config.module.rules.push({
-			test: [/(components|api|constants|schema|utils)\/index.ts/i],
+			test: [/(src|components|api|constants|schema|utils|hooks|server|pages|hoc|types)\/index.ts/i],
 			sideEffects: false,
 		});
 		return config;

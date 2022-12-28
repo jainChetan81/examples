@@ -28,22 +28,16 @@ function MyApp({ Component, pageProps }: any) {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	useEffect(() => {
-		const handleRouteChange = (url: string, { shallow }: any) => {
-			if (!shallow) {
-				setLoading(true);
-			}
+		const handleRouteChange = (url: string, { shallow }: { shallow: unknown }) => {
+			if (!shallow) setLoading(true);
 		};
-		const handleRouteComplete = (url: string, { shallow }: any) => {
+		const handleRouteComplete = (url: string, { shallow }: { shallow: unknown }) => {
 			setTimeout(() => {
-				if (!shallow) {
-					setLoading(false);
-				}
+				if (!shallow) setLoading(false);
 			}, 1000);
 		};
 		const handleRouteChangeError = (err: any, url: string) => {
-			if (err.cancelled) {
-				console.log(`Route to ${url} was cancelled!`);
-			}
+			if (err?.cancelled) console.log(`Route to ${url} was cancelled!`);
 		};
 
 		router.events.on("routeChangeStart", handleRouteChange);
@@ -62,7 +56,6 @@ function MyApp({ Component, pageProps }: any) {
 				<Loader />
 			) : (
 				<QueryClientProvider client={queryClient}>
-					{" "}
 					<Component {...pageProps} />
 					<ReactQueryDevtools initialIsOpen={false} />
 				</QueryClientProvider>
