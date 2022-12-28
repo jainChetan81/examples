@@ -21,17 +21,9 @@ import MultipleOptionsQuizMode from "./options/MultipleOptionsQuizMode";
 export const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
-export const updateFormTemplate = (formTemplate: FORM_TEMPLATE_TYPE) => {
+export const updateFormTemplate = (formTemplate: FORM_TEMPLATE_TYPE): FORM_TEMPLATE_TYPE => {
 	const tempFormTemplate = _cloneDeep(formTemplate);
-	return { tempFormTemplate };
-};
-export const updateFormSection = (formTemplate: FORM_TEMPLATE_TYPE, sIdx: number) => {
-	const { tempFormTemplate } = updateFormTemplate(formTemplate);
-	return { tempFormTemplate };
-};
-export const updateFormQuestion = (formTemplate: FORM_TEMPLATE_TYPE, sIdx: number, qIdx: number) => {
-	const { tempFormTemplate } = updateFormSection(formTemplate, sIdx);
-	return { tempFormTemplate };
+	return tempFormTemplate;
 };
 
 export const MenuProps = {

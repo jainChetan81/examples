@@ -95,14 +95,6 @@ model WebDevLike {
   @@id([commentId, userId])
 }
 
-enum User_role {
-  ADMIN
-  BASIC
-  EDITOR
-}
-
-// forms database
-
 model Form {
   id                String        @id @default(uuid())
   formTitle         String
@@ -110,9 +102,9 @@ model Form {
   defaultPointValue Int           @default(12)
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
-  isQuizMode        Boolean //0-false
-  formSections      FormSection[]
+  isQuizMode        Boolean
   formScores        FormScore[]
+  formSections      FormSection[]
 }
 
 model FormScore {
@@ -120,8 +112,8 @@ model FormScore {
   low    Int?
   high   Int?
   result String?
-  form   Form?   @relation(fields: [formId], references: [id])
   formId String?
+  form   Form?   @relation(fields: [formId], references: [id])
 
   @@index([formId])
 }
@@ -132,8 +124,8 @@ model FormSection {
   sectionDesc   String
   seqNumber     Int
   nextSectionID String?
-  form          Form?          @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId        String?
+  form          Form?          @relation(fields: [formId], references: [id], onDelete: Cascade)
   questions     FormQuestion[]
 
   @@index([formId])
@@ -147,22 +139,28 @@ model FormQuestion {
   score                      Int?
   sequence                   Int
   jumpToSectionBasedOnAnswer Boolean?
-  formSection                FormSection? @relation(fields: [formSectionID], references: [formSectionID], onDelete: Cascade)
   formSectionID              String?
+  formSection                FormSection? @relation(fields: [formSectionID], references: [formSectionID], onDelete: Cascade)
   options                    FormOption[]
 
   @@index([formSectionID])
 }
 
 model FormOption {
-  optionID      String       @id @default(uuid())
+  optionID      String        @id @default(uuid())
   optionValue   String
   correct       Boolean?
   nextSectionID String?
-  formQuestion  FormQuestion? @relation(fields: [questionID], references: [questionID], onDelete: Cascade)
   questionID    String?
+  formQuestion  FormQuestion? @relation(fields: [questionID], references: [questionID], onDelete: Cascade)
 
   @@index([questionID])
+}
+
+enum User_role {
+  ADMIN
+  BASIC
+  EDITOR
 }
 
 enum QuestionType {

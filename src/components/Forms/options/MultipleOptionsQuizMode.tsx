@@ -2,7 +2,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import _cloneDeep from "lodash/cloneDeep";
 import type { Dispatch, FC, SetStateAction } from "react";
 import type { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE } from "../../../types";
-import { updateFormQuestion } from "../FormUtils";
+import { updateFormTemplate } from "../FormUtils";
 type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
 	options: FORM_OPTIONS_TYPE[];
@@ -13,7 +13,7 @@ type Props = {
 const MultipleOptionsQuizMode: FC<Props> = ({ formTemplate, options, sectionIdx, questionIdx, setFormTemplate }) => {
 	const handleOptionCorrectChange = (isSelected: boolean, index: number) => {
 		if (index < 0) return;
-		const { tempFormTemplate } = updateFormQuestion(formTemplate, sectionIdx, questionIdx);
+		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const newOptions = _cloneDeep(options);
 		newOptions[index]!.correct = !isSelected;
 		tempFormTemplate.formSections[sectionIdx]!.formQuestions[questionIdx]!.options = newOptions;
