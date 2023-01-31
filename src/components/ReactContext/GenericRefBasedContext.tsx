@@ -1,9 +1,11 @@
+import { cloneDeep } from "lodash";
 import { createContext, useCallback, useContext, useRef, useSyncExternalStore, type ReactNode } from "react";
 
 function genericFastContext<TStore>(initialState: TStore) {
+	type SET_STORE = (value: TStore | ((prevState: TStore) => TStore)) => void;
 	type TStoreHook = {
 		get: () => TStore;
-		set: (value: Partial<TStore>) => void;
+		set: SET_STORE;
 		subscribe: (callback: () => void) => () => void;
 	};
 	// we want a way to get set and subscribe to current store
@@ -11,8 +13,13 @@ function genericFastContext<TStore>(initialState: TStore) {
 		const store = useRef<TStore>(initialState);
 		const get = useCallback(() => store.current, []);
 
-		const set = useCallback((value: Partial<TStore>) => {
-			store.current = { ...store.current, ...value };
+		const set = useCallback((value: TStore | ((prevState: TStore) => TStore)) => {
+			if (typeof value === "function") {
+				const prevState = cloneDeep(store.current);
+				store.current = cloneDeep(value(prevState));
+			} else {
+				store.current = cloneDeep(value);
+			}
 			subscribers.current.forEach((callback) => callback());
 		}, []);
 		const subscribers = useRef(new Set<() => void>());
@@ -34,7 +41,7 @@ function genericFastContext<TStore>(initialState: TStore) {
 	}
 	function useStore<SelectorOutput>(
 		selector: (store: TStore) => SelectorOutput
-	): [SelectorOutput, (value: Partial<TStore>) => void] {
+	): [SelectorOutput, (value: TStore | ((prevState: TStore) => TStore)) => void] {
 		const store = useContext(StoreContext);
 		if (!store) throw new Error("StoreContext is not defined");
 		// had to add a server snapshot because of it causing bug
@@ -48,12 +55,20 @@ function genericFastContext<TStore>(initialState: TStore) {
 	return { StoreProvider, useStore };
 }
 
-const { StoreProvider, useStore } = genericFastContext({ first: "John", last: "" });
+const { StoreProvider, useStore } = genericFastContext({ first: "John", last: "Doe" });
 const TextInput = ({ value }: { value: "first" | "last" }) => {
 	const [state, setState] = useStore((store) => store[value]);
 	return (
 		<div className="field" style={{ padding: "0.5rem" }}>
-			{value}: <input value={state} onChange={(e) => setState({ [value]: e.target.value })} />
+			{value}:{" "}
+			<input
+				value={state}
+				onChange={(e) =>
+					setState((p) => {
+						return { ...p, [value]: e.target.value };
+					})
+				}
+			/>
 		</div>
 	);
 };
@@ -108,3 +123,9 @@ function GenericRefBasedContext() {
 }
 
 export default GenericRefBasedContext;
+
+function a<T>(ab: T | ((v: T) => T)) {
+	if (typeof ab === "function") {
+		return ab("hello");
+	} else return ab;
+}
