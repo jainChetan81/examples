@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react";
-import { useQuery, UseQueryResult } from "react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 type WordType = {
 	word: string;
 	score: string;

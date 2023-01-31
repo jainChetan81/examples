@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { Layout, Navbar, People, Planets } from "../components";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { ReactQueryDevtools } from  "@tanstack/react-query-devtools";
 const ReactQuery: NextPage = () => {
 	const [page, setPage] = useState<string>("planets");
 	return (

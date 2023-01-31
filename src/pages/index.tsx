@@ -30,10 +30,10 @@ const Home: NextPage = () => {
 					<Link href="/portfolio">Portfolio</Link>
 				</li>
 				<li>
-					<Link href="/youtube">Youtube</Link>
+					<Link href="/react-context">React Context</Link>
 				</li>
 				<li>
-					<Link href="/dynamic_form">Dynamic Forms</Link>
+					<Link href="/forms/create">Dynamic Forms</Link>
 				</li>
 				<li>
 					<Link href="/react_flow">React Flow</Link>

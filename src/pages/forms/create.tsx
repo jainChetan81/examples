@@ -1,11 +1,11 @@
-import { Layout } from "../components";
-import Loading from "../hoc/Loading";
+import { Layout } from "../../components";
+import Loading from "../../hoc/Loading";
 import { v4 as uuidv4 } from "uuid";
 import { type FormEvent, useState } from "react";
-import { type FORM_TEMPLATE_TYPE } from "../types";
-import FormBuilder from "../components/Forms/FormBuilder";
-import FormSettings from "../components/Forms/FormSettings";
-import { trpc } from "../utils/trpc";
+import { type FORM_TEMPLATE_TYPE } from "../../types";
+import FormBuilder from "../../components/Forms/FormBuilder";
+import FormSettings from "../../components/Forms/FormSettings";
+import { trpc } from "../../utils/trpc";
 const formId = uuidv4();
 const sectionId = uuidv4();
 const questionId = uuidv4();
@@ -57,7 +57,7 @@ const DynamicForm = () => {
 	});
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { validateForm } = await import("../utils/validation");
+		const { validateForm } = await import("../../utils/validation");
 		const newErrors = validateForm(formTemplate);
 		setErrors(newErrors);
 		if (newErrors.length > 0) return;

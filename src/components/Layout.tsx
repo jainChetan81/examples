@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import Head from "next/head";
 import { FC } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LayoutType } from "../types";
 
 const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {

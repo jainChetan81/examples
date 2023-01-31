@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { useQuery, UseQueryResult } from "react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import type { Planet, Planets as PlanetTypes } from "../../types";
 
 const Planets: FC = () => {
