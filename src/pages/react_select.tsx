@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Layout } from "../components";
 import Select from "../components/ReactSelect/Select";
 import Loading from "../hoc/Loading";
-import { SELECT_OPTIONS } from "../types";
+import type { SELECT_OPTIONS } from "../types";
 const options: SELECT_OPTIONS[] = [
 	{ label: "Option 1", value: 1 },
 	{ label: "Option 2", value: 2 },
@@ -17,20 +17,17 @@ const options: SELECT_OPTIONS[] = [
 	{ label: "Option 11", value: 11 },
 	{ label: "Option 12", value: 12 },
 ];
-const multiple = false;
 const ReactSelect = () => {
-	const [selected, setSelected] = useState<
-		(typeof multiple extends true ? SELECT_OPTIONS[] : SELECT_OPTIONS) | undefined
-		// @ts-expect-error fdff
-	>(multiple ? [options[0]] : options[0]);
+	const [singleSelectValue, setSingleSelectValue] = useState(options[0]?.value);
+
 	return (
 		<Layout title="React Select">
 			<section className="react_select">
-				<Select<typeof multiple>
-					multiple={multiple}
+				<Select<false, NonNullable<typeof singleSelectValue>>
+					multiple={false}
 					options={options}
-					selected={selected}
-					onChange={(e) => setSelected(e)}
+					selected={singleSelectValue}
+					onChange={(e) => setSingleSelectValue(e)}
 				/>
 			</section>
 		</Layout>
