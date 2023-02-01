@@ -15,20 +15,30 @@ const options: SELECT_OPTIONS[] = [
 	{ label: "Option 9", value: 9 },
 	{ label: "Option 10", value: 10 },
 	{ label: "Option 11", value: 11 },
-	{ label: "Option 12", value: 12 },
+	{ label: "Option 12", value: 12 }
 ];
 const ReactSelect = () => {
 	const [singleSelectValue, setSingleSelectValue] = useState(options[0]?.value);
+	const [multiSelect, setMultiSelect] = useState([options[0]!.value]);
 
 	return (
 		<Layout title="React Select">
 			<section className="react_select">
-				<Select<false, NonNullable<typeof singleSelectValue>>
+				<Select<false>
+					// <Select
 					multiple={false}
-					options={options}
 					selected={singleSelectValue}
-					onChange={(e) => setSingleSelectValue(e)}
+					options={options}
+					onChange={setSingleSelectValue}
 				/>
+			</section>
+			<section className="react_select">
+				{/* <Select<false>
+					multiple={true}
+					selected={multiSelect}
+					options={options}
+					onChange={(e) => setSingleSelectValue(e)}
+				/> */}
 			</section>
 		</Layout>
 	);

@@ -63,7 +63,7 @@ section.react_select {
 		border-top-color: #777;
 	}
 
-	.options {
+	ul.options {
 		position: absolute;
 		margin: 0;
 		padding: 0;
@@ -78,24 +78,24 @@ section.react_select {
 		top: calc(100% + 0.25em);
 		background-color: white;
 		z-index: 100;
-	}
-
-	.options.show {
-		display: block;
-	}
-
-	.option {
-		padding: 0.25em 0.5em;
-		cursor: pointer;
-	}
-
-	.option.selected {
-		background-color: hsl(200, 100%, 70%);
-	}
-
-	.option:hover {
-		background-color: hsl(200, 100%, 50%);
-		color: white;
+		&.show {
+			display: block;
+		}
+		li {
+			button.option {
+				padding: 0.25em 0.5em;
+				width: 100%;
+				text-align: left;
+				@include line-clamp(1);
+				&.selected {
+					background-color: hsl(200, 100%, 70%);
+				}
+			}
+			&:hover {
+				background-color: hsl(200, 100%, 50%);
+				color: white;
+			}
+		}
 	}
 
 	.option-badge {
@@ -108,21 +108,17 @@ section.react_select {
 		cursor: pointer;
 		background: none;
 		outline: none;
-	}
-
-	.option-badge:hover,
-	.option-badge:focus {
-		background-color: hsl(0, 100%, 90%);
-		border-color: hsl(0, 100%, 50%);
-	}
-
-	.option-badge:hover > .remove-btn,
-	.option-badge:focus > .remove-btn {
-		color: hsl(0, 100%, 50%);
-	}
-
-	.option-badge > .remove-btn {
-		font-size: 1.25em;
-		color: #777;
+		> .remove-btn {
+			font-size: 1.25em;
+			color: #777;
+		}
+		&:hover,
+		&:focus {
+			background-color: hsl(0, 100%, 90%);
+			border-color: hsl(0, 100%, 50%);
+			> .remove-btn {
+				color: hsl(0, 100%, 50%);
+			}
+		}
 	}
 }

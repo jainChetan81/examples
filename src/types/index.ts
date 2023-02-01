@@ -1,4 +1,4 @@
-import { Form, FormOption, FormQuestion, FormScore, FormSection, QuestionType } from "@prisma/client";
+import type { Form, FormOption, FormQuestion, FormScore, FormSection, QuestionType } from "@prisma/client";
 import { z } from "zod";
 
 export type Characters = {
@@ -159,5 +159,5 @@ export type BLOCKS_DATA = {
 
 export type SELECT_OPTIONS = {
 	label: string;
-	value: number;
+	value: number | string;
 };
