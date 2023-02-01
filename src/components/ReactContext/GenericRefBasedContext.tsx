@@ -1,11 +1,10 @@
-import { cloneDeep } from "lodash";
 import { createContext, useCallback, useContext, useRef, useSyncExternalStore, type ReactNode } from "react";
 
 function genericFastContext<TStore>(initialState: TStore) {
-	type SET_STORE = (value: TStore | ((prevState: TStore) => TStore)) => void;
+	type STORE_TYPE = TStore extends (prevState: TStore) => TStore ? never : TStore | ((prevState: TStore) => TStore);
 	type TStoreHook = {
 		get: () => TStore;
-		set: SET_STORE;
+		set: (value: STORE_TYPE) => void;
 		subscribe: (callback: () => void) => () => void;
 	};
 	// we want a way to get set and subscribe to current store
@@ -13,15 +12,18 @@ function genericFastContext<TStore>(initialState: TStore) {
 		const store = useRef<TStore>(initialState);
 		const get = useCallback(() => store.current, []);
 
-		const set = useCallback((value: TStore | ((prevState: TStore) => TStore)) => {
-			if (typeof value === "function") {
-				const prevState = cloneDeep(store.current);
-				store.current = cloneDeep(value(prevState));
-			} else {
-				store.current = cloneDeep(value);
-			}
-			subscribers.current.forEach((callback) => callback());
-		}, []);
+		const set = useCallback(
+			(value: TStore extends (prevState: TStore) => TStore ? never : TStore | ((prevState: TStore) => TStore)) => {
+				if (typeof value === "function") {
+					const prevState = store.current;
+					store.current = value(prevState);
+				} else {
+					store.current = value as TStore;
+				}
+				subscribers.current.forEach((callback) => callback());
+			},
+			[]
+		);
 		const subscribers = useRef(new Set<() => void>());
 		const subscribe = useCallback((callback: () => void) => {
 			subscribers.current.add(callback);
@@ -41,7 +43,7 @@ function genericFastContext<TStore>(initialState: TStore) {
 	}
 	function useStore<SelectorOutput>(
 		selector: (store: TStore) => SelectorOutput
-	): [SelectorOutput, (value: TStore | ((prevState: TStore) => TStore)) => void] {
+	): [SelectorOutput, (value: STORE_TYPE) => void] {
 		const store = useContext(StoreContext);
 		if (!store) throw new Error("StoreContext is not defined");
 		// had to add a server snapshot because of it causing bug
@@ -54,30 +56,50 @@ function genericFastContext<TStore>(initialState: TStore) {
 	}
 	return { StoreProvider, useStore };
 }
+const obj = {
+	name: "John",
+	email: [0],
+};
+type KeyType = keyof typeof obj;
+const { StoreProvider, useStore } = genericFastContext(obj);
 
-const { StoreProvider, useStore } = genericFastContext({ first: "John", last: "Doe" });
-const TextInput = ({ value }: { value: "first" | "last" }) => {
+const TextInput = ({ value }: { value: "name" }) => {
 	const [state, setState] = useStore((store) => store[value]);
+	console.log("TextInput", value, state);
 	return (
 		<div className="field" style={{ padding: "0.5rem" }}>
-			{value}:{" "}
-			<input
-				value={state}
-				onChange={(e) =>
-					setState((p) => {
-						return { ...p, [value]: e.target.value };
-					})
-				}
-			/>
+			{value}: <input value={state} onChange={(e) => setState((p) => ({ ...p, [value]: e.target.value }))} />
 		</div>
 	);
 };
 
-const Display = ({ value }: { value: "first" | "last" }) => {
+const TextInputArray = ({ value }: { value: "email" }) => {
+	const [state, setState] = useStore((store) => store[value]);
+	console.log("TextInputArray", value, state);
+	return (
+		<div className="field" style={{ padding: "0.5rem" }}>
+			{value}:{" "}
+			<button onClick={() => setState((p) => ({ ...p, [value]: [...p[value], p[value].length] }))}>
+				Add ({state.length})
+			</button>
+		</div>
+	);
+};
+
+const Display = ({ value }: { value: KeyType }) => {
 	const [state] = useStore((store) => store[value]);
+	console.log("display", value, state);
 	return (
 		<div className="value" style={{ padding: "0.5rem" }}>
 			{value}: {state}
+		</div>
+	);
+};
+const DisplayArray = ({ value }: { value: KeyType }) => {
+	const [state] = useStore((store) => store[value]);
+	return (
+		<div className="value" style={{ padding: "0.5rem" }}>
+			{value}: {Array.isArray(state) && state.map((i) => i)}
 		</div>
 	);
 };
@@ -86,8 +108,8 @@ const FormContainer = () => {
 	return (
 		<div className="container" style={{ marginTop: "0.5rem", padding: "0.5rem 1.5rem", border: "1px solid #ccc" }}>
 			<h5>FormContainer</h5>
-			<TextInput value="first" />
-			<TextInput value="last" />
+			<TextInput value="name" />
+			<TextInputArray value="email" />
 		</div>
 	);
 };
@@ -96,8 +118,8 @@ const DisplayContainer = () => {
 	return (
 		<div className="container" style={{ marginTop: "0.5rem", padding: "0.5rem 1.5rem", border: "1px solid #ccc" }}>
 			<h5>DisplayContainer</h5>
-			<Display value="first" />
-			<Display value="last" />
+			<Display value="name" />
+			<DisplayArray value="email" />
 		</div>
 	);
 };
@@ -123,9 +145,3 @@ function GenericRefBasedContext() {
 }
 
 export default GenericRefBasedContext;
-
-function a<T>(ab: T | ((v: T) => T)) {
-	if (typeof ab === "function") {
-		return ab("hello");
-	} else return ab;
-}
