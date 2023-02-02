@@ -6,7 +6,7 @@ type Props<TMulti extends boolean> = {
 	selected: TMulti extends true ? IDType[] : IDType | undefined;
 	onChange: (value: TMulti extends true ? IDType[] : IDType | undefined) => void;
 	multiple: boolean;
-	sortOptions: boolean;
+	sortOptions?: boolean;
 };
 const NONE_SELECTED = "Please Select A Value";
 function isSelected(multi: boolean, optionValue: IDType, selectedOption: IDType | IDType[] | undefined): boolean {
@@ -18,8 +18,18 @@ function removeSelections(selected: IDType | IDType[] | undefined, multi: boolea
 	if (!multi) return;
 	if (Array.isArray(selected)) return [];
 }
-
-function Select<TMulti extends boolean>({ options, selected, onChange, multiple }: Props<TMulti>) {
+const sortByString = (a: string, b: string) => {
+	const nameA = a.toUpperCase();
+	const nameB = b.toUpperCase();
+	if (nameA < nameB) {
+		return -1;
+	}
+	if (nameA > nameB) {
+		return 1;
+	}
+	return 0;
+};
+function Select<TMulti extends boolean>({ options, selected, onChange, multiple, sortOptions = false }: Props<TMulti>) {
 	const [show, setShow] = useState(true);
 	const selectOption = useCallback(
 		(option: IDType) => {
@@ -73,6 +83,10 @@ function Select<TMulti extends boolean>({ options, selected, onChange, multiple 
 		onChange(newSelection);
 	}
 
+	const sortedOptions = useMemo(() => {
+		return sortOptions ? options.sort((a, b) => sortByString(a.label, b.label)) : options;
+	}, [options, sortOptions]);
+
 	return (
 		<div className="container" role="button" tabIndex={0} onClick={() => setShow((e) => !e)} onKeyDown={() => setShow((e) => !e)}>
 			{valuesToShow}
@@ -82,7 +96,7 @@ function Select<TMulti extends boolean>({ options, selected, onChange, multiple 
 			<div className="divider" />
 			<div className={`caret ${show ? "reverse" : ""}`} />
 			<ul className={`options ${show ? "show" : ""}`}>
-				{options.map((option) => (
+				{sortedOptions.map((option) => (
 					<li key={option.value}>
 						<button
 							title={option.label}

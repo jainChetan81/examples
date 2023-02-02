@@ -31,6 +31,7 @@ section.react_select {
 	p.value {
 		flex-grow: 1;
 		max-width: 100%;
+		@include line-clamp(1);
 	}
 	ul.value_list {
 		display: flex;

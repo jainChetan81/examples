@@ -1,20 +1,18 @@
-import { useEffect, useState, useDebugValue, useRef } from "react";
-export default function useFetch<T>(url: string, method: "GET" | "POST" = "GET", body: any = null) {
-	type FETCH_RESPONSE = {
-		status: boolean;
-	} & { [x: string]: T };
-
+import { useEffect, useState, useDebugValue, useRef, useCallback } from "react";
+export default function useFetch<TFetch_Type>(url: string, method: "GET" | "POST" = "GET", body: BodyInit | undefined = undefined) {
 	const [numberOfRefetch, setNumberOfRefetch] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<unknown | null>(null);
-	const [data, setData] = useState<FETCH_RESPONSE>({} as FETCH_RESPONSE);
-	const controllerRef = useRef<AbortController | null>();
+	const [data, setData] = useState<TFetch_Type | null>(null);
+	const controllerRef = useRef<AbortController | null>(null);
 	useDebugValue([data, loading, error]);
-	const refetch = () => setNumberOfRefetch((prev) => prev + 1);
+	const refetch = () => {
+		setNumberOfRefetch((prev) => prev + 1);
+		fetchData(false);
+	};
 
-	useEffect(() => {
-		let isCancelled = false;
-		const fetchData = async () => {
+	const fetchData = useCallback(
+		async (isCancelled: boolean) => {
 			if (controllerRef.current) controllerRef.current.abort();
 			const controller = new AbortController();
 			controllerRef.current = controller;
@@ -25,25 +23,30 @@ export default function useFetch<T>(url: string, method: "GET" | "POST" = "GET",
 					signal: controllerRef.current?.signal,
 					credentials: "include",
 					method,
-					body,
+					body
 				});
-				const newData = (await response.json()) as FETCH_RESPONSE;
+				const newData = (await response.json()) as TFetch_Type;
 				if (!isCancelled) {
-					setData({ ...newData });
+					setData(newData);
 					setError(null);
 					controllerRef.current = null;
 				}
-			} catch (e: any) {
+			} catch (e: unknown) {
 				setError(e);
 			}
 			setLoading(false);
-		};
-		if (!url.includes("undefined")) fetchData();
+		},
+		[body, method, url]
+	);
+
+	useEffect(() => {
+		let isCancelled = false;
+		if (url) fetchData(isCancelled);
 		return () => {
 			isCancelled = true;
 			controllerRef.current?.abort();
 		};
-	}, [body, method, url, numberOfRefetch]);
+	}, [body, method, url, fetchData]);
 
-	return { data, loading, error, refetch };
+	return { data, loading, error, refetch, refetchCount: numberOfRefetch };
 }

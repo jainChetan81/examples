@@ -25,13 +25,7 @@ const ReactSelect = () => {
 	return (
 		<Layout title="React Select">
 			<section className="react_select">
-				<Select<false>
-					multiple={false}
-					sortOptions
-					selected={singleSelectValue}
-					options={options}
-					onChange={(e) => setSingleSelectValue(e)}
-				/>
+				<Select<false> multiple={false} selected={singleSelectValue} options={options} onChange={(e) => setSingleSelectValue(e)} />
 			</section>
 			<section className="react_select">
 				<Select<true>
