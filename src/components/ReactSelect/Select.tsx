@@ -57,7 +57,6 @@ function Select<TMulti extends boolean>({ options, selected, onChange, multiple 
 	}
 
 	function updateSelection(e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, val: IDType) {
-		console.log("here");
 		e.stopPropagation();
 		selectOption(val);
 	}
@@ -68,7 +67,7 @@ function Select<TMulti extends boolean>({ options, selected, onChange, multiple 
 				&times;
 			</button>
 			<div className="divider" />
-			<div className="caret" />
+			<div className={`caret ${show ? "reverse" : ""}`} />
 			<ul className={`options ${show ? "show" : ""}`}>
 				{options.map((option) => (
 					<li key={option.value}>

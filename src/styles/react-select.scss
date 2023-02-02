@@ -61,6 +61,11 @@ section.react_select {
 		translate: 0 25%;
 		border: 0.25em solid transparent;
 		border-top-color: #777;
+		transition: all 0.1s ease-in-out;
+		&.reverse {
+			rotate: 180deg;
+			translate: 0 -25%;
+		}
 	}
 
 	ul.options {
