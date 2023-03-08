@@ -22,8 +22,8 @@ const CssCards = () => {
 						<div className="card__content">
 							<h2>Something awesome</h2>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere voluptate corrupti delectus rerum
-								eligendi iste fuga fugit unde amet et.
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere voluptate corrupti delectus rerum eligendi iste fuga fugit
+								unde amet et.
 							</p>
 							<a href="#" target="_blank" rel="noopener noreferrer">
 								Learn More
@@ -53,6 +53,25 @@ const CssCards = () => {
 					<label htmlFor="check">Checked?</label>
 					<input type="checkbox" disabled id="check-disabled" className="toggle" />
 					<label htmlFor="check-disabled">Disabled</label>
+				</section>
+				<section className="twitch__cards">
+					<div className="actual__card">
+						<div className="actual__card-content">
+							<h3 className="actual__card-title">I know exactly what I`&apos;`m doing</h3>
+							<h4 className="actual__card-subtitle"></h4>
+						</div>
+						<i className="fa-solid fa-hat-witch actual__card-icon"></i>
+					</div>
+
+					<a id="source-link" className="meta-link" href="https://brand.twitch.tv" target="_blank" rel="noreferrer">
+						<i className="fa-solid fa-link"></i>
+						<span className="roboto-mono">Source</span>
+					</a>
+
+					<a id="yt-link" className="meta-link" href="https://youtu.be/joDhIH6Xumw" target="_blank" rel="noreferrer">
+						<i className="fa-brands fa-youtube"></i>
+						<span>3 min tutorial</span>
+					</a>
 				</section>
 			</div>
 		</Layout>
