@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, useSyncExternalStore, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useRef, type ReactNode, useState, useEffect } from "react";
 
 function genericFastContext<TStore>(initialState: TStore) {
 	type STORE_TYPE = TStore extends (prevState: TStore) => TStore ? never : TStore | ((prevState: TStore) => TStore);
@@ -46,52 +46,50 @@ function genericFastContext<TStore>(initialState: TStore) {
 	): [SelectorOutput, (value: STORE_TYPE) => void] {
 		const store = useContext(StoreContext);
 		if (!store) throw new Error("StoreContext is not defined");
-		// had to add a server snapshot because of it causing bug
-		const state = useSyncExternalStore(
-			store.subscribe,
-			() => selector(store.get()),
-			() => selector(store.get())
-		);
+		const [state, setState] = useState(selector(store.get()))
+		useEffect(() => {
+			return store.subscribe(() => setState(selector(store.get())))
+		}, [])
 		return [state, store.set];
 	}
 	return { StoreProvider, useStore };
 }
 const obj = {
 	name: "John",
-	email: [0],
+	email: [1],
 };
 type KeyType = keyof typeof obj;
 const { StoreProvider, useStore } = genericFastContext(obj);
 
 const TextInput = ({ value }: { value: "name" }) => {
-	const [state, setState] = useStore((store) => store[value]);
-	console.log("TextInput", value, state);
+	const [name, setName] = useStore((store) => store[value]);
+	console.log("TextInput", value, name);
 	return (
 		<div className="field" style={{ padding: "0.5rem" }}>
-			{value}: <input value={state} onChange={(e) => setState((p) => ({ ...p, [value]: e.target.value }))} />
+			{value}: <input value={name} onChange={(e) => setName((p) => ({ ...p, [value]: e.target.value }))} />
 		</div>
 	);
 };
 
 const TextInputArray = ({ value }: { value: "email" }) => {
-	const [state, setState] = useStore((store) => store[value]);
-	console.log("TextInputArray", value, state);
+	const [numbers, setNumbers] = useStore((store) => store[value]);
+	console.log("TextInputArray", value, numbers);
 	return (
 		<div className="field" style={{ padding: "0.5rem" }}>
 			{value}:{" "}
-			<button onClick={() => setState((p) => ({ ...p, [value]: [...p[value], p[value].length] }))}>
-				Add ({state.length})
+			<button onClick={() => setNumbers((prevNumber) => ({ ...prevNumber, [value]: [...prevNumber[value], prevNumber[value].length] }))}>
+				Add ({numbers.length})
 			</button>
 		</div>
 	);
 };
 
 const Display = ({ value }: { value: KeyType }) => {
-	const [state] = useStore((store) => store[value]);
-	console.log("display", value, state);
+	const [name] = useStore((store) => store[value]);
+	console.log("display", value, name);
 	return (
 		<div className="value" style={{ padding: "0.5rem" }}>
-			{value}: {state}
+			{value}: {name}
 		</div>
 	);
 };
