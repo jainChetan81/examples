@@ -1,6 +1,6 @@
-import React from "react";
+import { useState } from "react";
 
-const rawData = {
+const rawData: DATA = {
 	name: "root",
 	id: "root",
 	type: "folder",
@@ -36,7 +36,13 @@ const rawData = {
 		}
 	]
 };
-function getNode(data, id) {
+type DATA = {
+	name: string;
+	id: string;
+	type: "folder" | "file";
+	children?: DATA[];
+}
+function getNode(data: DATA, id: string): null | DATA {
 	if (data.id === id) return data;
 	if (Array.isArray(data.children) && data.children.length > 0) {
 		for (const element of data.children) {
@@ -46,15 +52,15 @@ function getNode(data, id) {
 	}
 	return null;
 }
-function addNodeToData(data, id) {
+function addNodeToData(data: DATA, id: string): null | DATA {
 	if (data.id === id) {
 		const name = `${data.name}-${data.children?.length ?? 0 + 1}`;
 		const tempNode = {
 			name: name,
 			id: name,
 			type: "file"
-		};
-		data.children.push(tempNode);
+		} as const;
+		data?.children?.push(tempNode);
 		return data;
 	}
 	if (Array.isArray(data.children) && data.children.length > 0) {
@@ -66,12 +72,13 @@ function addNodeToData(data, id) {
 	return null;
 }
 // create a function to remove the node based on its id
-function removeNodeFromData(data, parentId, childId) {
+function removeNodeFromData(data: DATA, parentId: string, childId: string): DATA | false {
 	if (data.id === parentId) {
-		const index = data.children.findIndex((item) => item.id === childId);
+		if (!data.children) return data;
+		const index = data.children?.findIndex((item) => item.id === childId);
 		console.log(index, data.children, childId, parentId);
 		if (index !== -1) {
-			data.children.splice(index, 1);
+			data.children?.splice(index, 1);
 		}
 		return data;
 	}
@@ -84,10 +91,10 @@ function removeNodeFromData(data, parentId, childId) {
 	return false;
 }
 export default function App() {
-	const [pwd, setPwd] = React.useState("root");
-	const [data, setData] = React.useState(rawData);
+	const [pwd, setPwd] = useState<string | null>("root");
+	const [data, setData] = useState<DATA>(rawData);
 	const node = pwd === null ? null : getNode(data, pwd);
-	function updateRoot(id, isFolder) {
+	function updateRoot(id: string, isFolder: boolean) {
 		console.log(pwd, id);
 		if (id === pwd) {
 			setPwd(null);
@@ -99,13 +106,13 @@ export default function App() {
 		}
 		setPwd(id);
 	}
-	function createChild(id) {
+	function createChild(id: string) {
 		if (!id) return;
 		addNodeToData(data, id);
 		console.log(data);
 		setData({ ...data });
 	}
-	function removeChild(parentId, childId) {
+	function removeChild(parentId: string, childId: string) {
 		console.log(parentId, childId);
 		if (!parentId || !childId) return;
 		removeNodeFromData(data, parentId, childId);
@@ -120,7 +127,7 @@ export default function App() {
 			<h2></h2>
 			<ul>
 				{Array.isArray(data.children) &&
-					data.children.map((child, i) => (
+					data.children.map((child) => (
 						<RenderChild
 							key={child.id}
 							child={child}
@@ -135,8 +142,15 @@ export default function App() {
 		</div>
 	);
 }
-
-function RenderChild({ child, pwd, updateRoot, createChild, removeChild, parentId }) {
+type Props = {
+	child: DATA;
+	pwd: string | null;
+	updateRoot: (id: string, isFolder: boolean) => void;
+	createChild: (id: string, isFolder: boolean) => void;
+	removeChild: (parentId: string, childId: string) => void;
+	parentId: string;
+}
+function RenderChild({ child, pwd, updateRoot, createChild, removeChild, parentId }: Props) {
 	const node = pwd === null ? null : getNode(child, pwd);
 	console.log(node);
 	return (
