@@ -4,8 +4,9 @@ import { Layout } from "../components";
 import Loading from "../hoc/Loading";
 
 const Home: NextPage = () => {
-	const notify = () => {
-		Notification.requestPermission().then((permission) => {
+	const notify = async () => {
+		try {
+			const permission = await Notification.requestPermission();
 			if (permission === "granted") {
 				const notification = new Notification("Vanilla Notification", {
 					body: "This is a vanilla notification",
@@ -18,7 +19,9 @@ const Home: NextPage = () => {
 					console.log("closed");
 				});
 			}
-		});
+		} catch (error) {
+			console.error(error);
+		}
 	};
 	return (
 		<Layout title="Home">
@@ -46,9 +49,6 @@ const Home: NextPage = () => {
 				</li>
 				<li>
 					<Link href="/matrix">Matrix Rain</Link>
-				</li>
-				<li>
-					<Link href="/react-query">React Query Detailed(Net Ninja)</Link>
 				</li>
 				<li>
 					<Link href="/grid">Grid Basics</Link>
