@@ -9,7 +9,6 @@ import "../styles/mobile_cards.scss";
 import "../styles/normalize.css";
 import "../styles/org-heirarchy.scss";
 import "../styles/portfolio.scss";
-import "../styles/react-query.scss";
 import "../styles/react-select.scss";
 import "../styles/spinner.scss";
 import { trpc } from "../utils/trpc";
