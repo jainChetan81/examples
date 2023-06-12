@@ -90,3 +90,164 @@ $card-padding: 1.5em; // property ordr
 		}
 	}
 }
+section.toggle_buttons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: min(400px, 90%);
+	margin-inline: auto;
+	input[type="checkbox"].toggle {
+		opacity: 0;
+		position: absolute;
+		left: -9990px;
+		top: -9990px;
+	}
+	input[type="checkbox"].toggle + label {
+		color: red;
+		display: flex;
+		align-items: center;
+		position: relative;
+		font-size: 40px;
+		cursor: pointer;
+		&::before {
+			content: "";
+			width: 2em;
+			height: 1em;
+			background-color: hsl(0, 80%, 90%);
+			border-radius: 1em;
+			margin-right: 0.25em;
+		}
+
+		&::after {
+			content: "";
+			left: 0.1em;
+			width: 0.9em;
+			height: 0.9em;
+			background-color: hsl(0, 80%, 60%);
+			border-radius: 1em;
+			position: absolute;
+			transition: background-color 200ms ease-in-out, transform 200ms ease-in-out;
+		}
+	}
+	input[type="checkbox"].toggle:focus + label::before {
+		outline: 1px solid black;
+	}
+	input[type="checkbox"].toggle:checked + label::after {
+		transform: translateX(100%);
+		background-color: hsl(100, 80%, 60%);
+	}
+	input[type="checkbox"].toggle:checked + label {
+		color: red;
+	}
+
+	input[type="checkbox"].toggle:checked + label::before {
+		background-color: hsl(100, 70%, 85%);
+	}
+	input[type="checkbox"].toggle:disabled + label {
+		color: #777;
+		&::before {
+			background-color: #ccc;
+		}
+		&::after {
+			background-color: #777;
+		}
+	}
+}
+.tilting_cards-container {
+	display: grid;
+	place-content: center;
+	min-height: 100vh;
+	$shadow: 0px 1px 2.2px rgba(0, 0, 0, 0.02), 0px 2.5px 5.3px rgba(0, 0, 0, 0.028), 0px 4.6px 10px rgba(0, 0, 0, 0.035),
+		0px 8.3px 17.9px rgba(0, 0, 0, 0.042), 0px 15.5px 33.4px rgba(0, 0, 0, 0.05), 0px 37px 80px rgba(0, 0, 0, 0.07);
+	.tilting_card-content {
+		display: grid;
+		place-content: center;
+		text-align: center;
+		box-shadow: $shadow;
+		--perspective: 500px;
+		--rotationX: 0;
+		--rotationY: 0;
+		--rotationZ: 0;
+		--angle: 15deg;
+		transform: perspective(var(--perspective)) rotateX(var(--rotationX)) rotateY(var(--rotationY)) rotateZ(var(--rotationZ));
+		transition: transform 500ms ease;
+		position: absolute;
+		inset: 0;
+		background-image: url("../../public/cool-background.png");
+		background-size: cover;
+		background-position: center;
+		& > :where(h1, p) {
+			color: white;
+			padding: 0.2rem;
+			margin: 0;
+		}
+	}
+	.tilting_cards-wrapper {
+		position: relative;
+		width: 15rem;
+		aspect-ratio: 1 / 2;
+	}
+	.mouse_position-tracker {
+		position: absolute;
+		width: calc(100% / 3);
+		height: calc(100% / 3);
+		z-index: 2; /* 1st, 4th, 7th */
+		&:nth-child(3n - 2) {
+			left: 0;
+		}
+		/* 2nd, 5th, 8th */
+		&:nth-child(3n - 1) {
+			left: calc(100% / 3);
+		}
+
+		/* 2nd, 5th, 8th */
+		&:nth-child(3n) {
+			right: 0;
+		}
+
+		/* 4 to 6 */
+		&:nth-child(n + 4):nth-child(-n + 6) {
+			top: calc(100% / 3);
+		}
+		/* 7 to 9 */
+		&:nth-child(n + 7):nth-child(-n + 9) {
+			bottom: 0;
+		}
+		&:nth-child(1):hover ~ .tilting_card-content {
+			--rotationX: var(--angle);
+			--rotationY: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(2):hover ~ .tilting_card-content {
+			--rotationX: var(--angle);
+		}
+
+		&:nth-child(3):hover ~ .tilting_card-content {
+			--rotationX: var(--angle);
+			--rotationY: var(--angle);
+		}
+
+		&:nth-child(4):hover ~ .tilting_card-content {
+			--rotationY: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(6):hover ~ .tilting_card-content {
+			--rotationY: var(--angle);
+		}
+
+		&:nth-child(7):hover ~ .tilting_card-content {
+			--rotationY: calc(var(--angle) * -1);
+			--rotationX: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(8):hover ~ .tilting_card-content {
+			--rotationX: calc(var(--angle) * -1);
+		}
+
+		&:nth-child(9):hover ~ .tilting_card-content {
+			--rotationY: var(--angle);
+			--rotationX: calc(var(--angle) * -1);
+		}
+	}
+}

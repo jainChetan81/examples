@@ -1,6 +1,6 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 type Props = {
-	setPage: Dispatch<SetStateAction<string>>;
+	setPage: Dispatch<SetStateAction<"planets" | "people">>;
 };
 const Navbar: FC<Props> = ({ setPage }) => {
 	return (

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, type ReactNode, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useRef, type ReactNode, useState, useEffect, useSyncExternalStore } from "react";
 
 function genericFastContext<TStore>(initialState: TStore) {
 	type STORE_TYPE = TStore extends (prevState: TStore) => TStore ? never : TStore | ((prevState: TStore) => TStore);
@@ -46,10 +46,16 @@ function genericFastContext<TStore>(initialState: TStore) {
 	): [SelectorOutput, (value: STORE_TYPE) => void] {
 		const store = useContext(StoreContext);
 		if (!store) throw new Error("StoreContext is not defined");
-		const [state, setState] = useState(selector(store.get()))
-		useEffect(() => {
-			return store.subscribe(() => setState(selector(store.get())))
-		}, [])
+		//* For react<18
+		// const [state, setState] = useState(selector(store.get()))
+		// useEffect(() => {
+		// 	return store.subscribe(() => setState(selector(store.get())))
+		// }, [])
+		const state = useSyncExternalStore(
+			store.subscribe,
+			() => selector(store.get()),
+			() => selector(store.get())
+		);
 		return [state, store.set];
 	}
 	return { StoreProvider, useStore };

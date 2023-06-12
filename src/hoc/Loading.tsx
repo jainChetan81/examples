@@ -1,12 +1,11 @@
-import { NextRouter, useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Loader from "../components/Loader";
+import { useRouter, type NextRouter } from "next/router";
+import { useEffect } from "react";
 
 const Loading = (WrappedComponent: any) => {
 	function HOC(props: any): JSX.Element {
 		const router: NextRouter = useRouter();
 
-		const [isLoading, setIsLoading] = useState<boolean>(false);
+		// const [isLoading, setIsLoading] = useState<boolean>(false);
 
 		useEffect(() => {
 			const handleStart = (url: string) => {

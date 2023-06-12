@@ -45,25 +45,13 @@ const Home: NextPage = () => {
 					<Link href="/react_select">React Select</Link>
 				</li>
 				<li>
-					<Link href="/todo-list">Todo List</Link>
-				</li>
-				<li>
-					<Link href="/dribble">Dribble Cards</Link>
-				</li>
-				<li>
 					<Link href="/matrix">Matrix Rain</Link>
-				</li>
-				<li>
-					<Link href="/skribble">Skribble Cheat</Link>
 				</li>
 				<li>
 					<Link href="/react-query">React Query Detailed(Net Ninja)</Link>
 				</li>
 				<li>
 					<Link href="/grid">Grid Basics</Link>
-				</li>
-				<li>
-					<Link href="/imagekit">ImageKit Example</Link>
 				</li>
 			</ul>
 		</Layout>
