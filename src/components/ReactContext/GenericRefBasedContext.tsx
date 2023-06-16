@@ -69,7 +69,6 @@ const { StoreProvider, useStore } = genericFastContext(obj);
 
 const TextInput = ({ value }: { value: "name" }) => {
 	const [name, setName] = useStore((store) => store[value]);
-	console.log("TextInput", value, name);
 	return (
 		<div className="field" style={{ padding: "0.5rem" }}>
 			{value}: <input value={name} onChange={(e) => setName((p) => ({ ...p, [value]: e.target.value }))} />
@@ -79,7 +78,6 @@ const TextInput = ({ value }: { value: "name" }) => {
 
 const TextInputArray = ({ value }: { value: "email" }) => {
 	const [numbers, setNumbers] = useStore((store) => store[value]);
-	console.log("TextInputArray", value, numbers);
 	return (
 		<div className="field" style={{ padding: "0.5rem" }}>
 			{value}:{" "}
@@ -92,7 +90,6 @@ const TextInputArray = ({ value }: { value: "email" }) => {
 
 const Display = ({ value }: { value: KeyType }) => {
 	const [name] = useStore((store) => store[value]);
-	console.log("display", value, name);
 	return (
 		<div className="value" style={{ padding: "0.5rem" }}>
 			{value}: {name}

@@ -6,7 +6,7 @@ import SimpleContext from "../components/ReactContext/SimpleContext";
 
 const ReactContext = () => {
 	return (
-		<Layout title="Making React Context Fast">
+		<Layout title="React Context">
 			ReactContext
 			<SimpleContext />
 			<RefBasedFastContext />
