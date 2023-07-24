@@ -1,15 +1,16 @@
-import React, { type ReactNode, createContext, useContext, useState, useCallback } from "react"
-
-type ThemeContextType = {
-    theme: "light" | "dark";
-    setTheme: React.Dispatch<React.SetStateAction<"light" | "dark">>
+import { createContext, useContext, useState, type ReactNode, type SetStateAction, type Dispatch } from "react";
+function useStoreData<TData>(initial: TData): [TData, Dispatch<SetStateAction<TData>>] {
+    const [store, setStore] = useState<TData>(initial)
+    return [store, setStore];
 }
-export const ThemeContext = createContext<null | ThemeContextType>(null)
-const ThemeContextProvider = ({ children, initial = "light" }: { children: ReactNode, initial: ThemeContextType["theme"] }) => {
-    const [theme, setTheme] = useState<ThemeContextType["theme"]>(initial)
 
+type ThemeContextType = ReturnType<typeof useStoreData>;
+export const ThemeContext = createContext<null | ThemeContextType>(null)
+
+const ThemeContextProvider = ({ children, initial }: { children: ReactNode, initial: ThemeContextType[0] }) => {
+    const [store, setStore] = useStoreData(initial);
     return (
-        <ThemeContext.Provider value={{ theme, setTheme }}>
+        <ThemeContext.Provider value={[store, setStore]}>
             {children}
         </ThemeContext.Provider >
     )
@@ -30,7 +31,7 @@ const BasicContext = () => {
 
 
 export const ChildBasicContext = () => {
-    const { setTheme } = useContext(ThemeContext)!;
+    const [_, setTheme] = useContext(ThemeContext)!;
     console.count("ChildBasicContext")
     return (
         <div><h1>CHild 1</h1>
@@ -40,7 +41,7 @@ export const ChildBasicContext = () => {
     )
 }
 export const GrandChildBasicContext = () => {
-    const { theme } = useContext(ThemeContext)!;
+    const [theme] = useContext(ThemeContext)!;
     console.count("GrandChildBasicContext")
     return (
         <div><h2>Child 2</h2>
