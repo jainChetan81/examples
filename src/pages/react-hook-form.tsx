@@ -2,18 +2,18 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+const schema = z.object({
+    firstName: z.string().min(2).max(10).nonempty(),
+    lastName: z.string().min(2).max(10).nonempty(),
+    email: z.string().email(),
+    password: z.string().min(5).max(100),
+    confirmPassword: z.string().min(5).max(100),
+}).refine(data => data.password === data.confirmPassword, {
+    message: "Password don't match",
+    path: ["confirmPassword"],
+})
 const ReactHookForm = () => {
 
-    const schema = z.object({
-        firstName: z.string().min(2).max(10).nonempty(),
-        lastName: z.string().min(2).max(10).nonempty(),
-        email: z.string().email(),
-        password: z.string().min(5).max(100),
-        confirmPassword: z.string().min(5).max(100),
-    }).refine(data => data.password === data.confirmPassword, {
-        message: "Password don't match",
-        path: ["confirmPassword"],
-    })
 
     const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),

@@ -4,7 +4,7 @@ function useStoreData<TData>(initial: TData): [TData, Dispatch<SetStateAction<TD
     return [store, setStore];
 }
 
-type ThemeContextType = ReturnType<typeof useStoreData>;
+type ThemeContextType = ReturnType<typeof useStoreData<"light" | "dark">>;
 export const ThemeContext = createContext<null | ThemeContextType>(null)
 
 const ThemeContextProvider = ({ children, initial }: { children: ReactNode, initial: ThemeContextType[0] }) => {
