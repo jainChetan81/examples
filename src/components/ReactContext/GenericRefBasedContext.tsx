@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, type ReactNode, useState, useEffect, useSyncExternalStore } from "react";
+import { createContext, useCallback, useContext, useRef, useSyncExternalStore, type ReactNode } from "react";
 
 function genericFastContext<TStore>(initialState: TStore) {
 	type STORE_TYPE = TStore extends (prevState: TStore) => TStore ? never : TStore | ((prevState: TStore) => TStore);

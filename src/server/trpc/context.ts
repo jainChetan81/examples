@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type inferAsyncReturnType } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
@@ -15,7 +16,7 @@ type CreateContextOptions = Record<string, never>;
  **/
 export const createContextInner = async (opts: CreateContextOptions) => {
 	return {
-		prisma,
+		prisma
 	};
 };
 

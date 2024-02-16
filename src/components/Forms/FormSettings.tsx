@@ -16,9 +16,9 @@ import {
 	Tooltip,
 } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
+import { type ChangeEvent, type Dispatch, type FC, type SetStateAction, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FORM_TEMPLATE_TYPE } from "../../types";
+import type { FORM_TEMPLATE_TYPE } from "../../types";
 import { updateFormTemplate } from "./FormUtils";
 type Props = {
 	formTemplate: FORM_TEMPLATE_TYPE;
@@ -27,7 +27,7 @@ type Props = {
 const FormSettings: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 	const quizMode = formTemplate.isQuizMode ? true : false;
 	const [currentRowId, setCurrentRowId] = useState("");
-
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const changeQuizMode = (e: any) => {
 		const tempFormTemplate = updateFormTemplate(formTemplate);
 		tempFormTemplate.isQuizMode = e.target.checked;
@@ -75,7 +75,7 @@ const FormSettings: FC<Props> = ({ formTemplate, setFormTemplate }) => {
 					numberOfOccurrence += 1;
 				}
 			} else {
-				if (d.high && d.low && value >= d.low && value <= d.high && d.id !== rowScoreID) {
+				if (d.high && d.low && +value >= d.low && +value <= d.high && d.id !== rowScoreID) {
 					numberOfOccurrence += 1;
 				}
 			}

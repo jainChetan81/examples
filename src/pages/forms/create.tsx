@@ -11,7 +11,7 @@ const sectionId = uuidv4();
 const questionId = uuidv4();
 const optionId = uuidv4();
 const DynamicForm = () => {
-	const { mutateAsync: addForm, error } = trpc.forms.addNewForm.useMutation();
+	const { mutateAsync: addForm } = trpc.forms.addNewForm.useMutation();
 	const [errors, setErrors] = useState<string[]>([]);
 	const [tabSelected, setTabSelected] = useState<0 | 1>(0);
 	const [formTemplate, setFormTemplate] = useState<FORM_TEMPLATE_TYPE>({

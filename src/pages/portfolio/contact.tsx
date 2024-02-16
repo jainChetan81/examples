@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { AnimatedLetters, Layout } from "../../components/Portfolio";
 

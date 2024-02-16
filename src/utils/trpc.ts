@@ -17,8 +17,7 @@ export const trpc = createTRPCNext<AppRouter>({
 			transformer: superjson,
 			links: [
 				loggerLink({
-					enabled: (opts) =>
-						process.env.NODE_ENV === "development" || (opts.direction === "down" && opts.result instanceof Error),
+					enabled: (opts) => process.env.NODE_ENV === "development" || (opts.direction === "down" && opts.result instanceof Error)
 				}),
 				httpBatchLink({
 					// The server needs to know your app's full url
@@ -40,16 +39,16 @@ export const trpc = createTRPCNext<AppRouter>({
 							return {
 								...headers,
 								// Optional: inform server that it's an SSR request
-								"x-ssr": "1",
+								"x-ssr": "1"
 							};
 						}
 						return {};
-					},
-				}),
-			],
+					}
+				})
+			]
 		};
 	},
-	ssr: true,
+	ssr: true
 });
 
 /**
@@ -62,5 +61,3 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  **/
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
-
-

@@ -1,7 +1,7 @@
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { Menu, MenuItem, TextField } from "@mui/material";
 import _cloneDeep from "lodash/cloneDeep";
-import { type ChangeEvent, type Dispatch, type FC, type SetStateAction, useState } from "react";
+import { useState, type ChangeEvent, type Dispatch, type SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { FORM_QUESTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
 import { updateFormTemplate } from "./FormUtils";

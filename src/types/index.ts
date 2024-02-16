@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Form, FormOption, FormQuestion, FormScore, FormSection, QuestionType } from "@prisma/client";
 import { z } from "zod";
 

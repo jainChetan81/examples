@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DoneIcon from "@mui/icons-material/Done";
@@ -209,15 +210,15 @@ const FormQuestions: FC<Props> = ({
 			</div>
 			{currentElementId === id
 				? getQuestionTypeEdit(
-						formTemplate,
-						question.options,
-						question.questionType,
-						question.jumpToSectionBasedOnAnswer || false,
-						index,
-						formSectionIndex,
-						setFormTemplate,
-						scoreMode
-				  )
+					formTemplate,
+					question.options,
+					question.questionType,
+					question.jumpToSectionBasedOnAnswer || false,
+					index,
+					formSectionIndex,
+					setFormTemplate,
+					scoreMode
+				)
 				: getQuestionTypeView(question.options, question.questionType)}
 			<p style={{ textAlign: "right" }}>Question Sequence {question.sequence}</p>
 			{currentElementId === id &&

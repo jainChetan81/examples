@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import _cloneDeep from "lodash/cloneDeep";
 import type { ACCESS_CONTROL_USER, SAMPLE_DATA, PATH_DATA } from "../../types";
 export const convertDataSourceToOrgChartDataSource = function (dataSource: ACCESS_CONTROL_USER[]) {
@@ -87,7 +88,7 @@ export const getNodesPath = (data: SAMPLE_DATA[], result: PATH_DATA[]): PATH_DAT
 					id: `e${element.role_box_id}-${element.children[j]!.role_box_id}`,
 					source: element.role_box_id,
 					target: element.children[j]!.role_box_id,
-					type: "smoothstep",
+					type: "smoothstep"
 				});
 			}
 			getNodesPath(element.children, result);
@@ -112,7 +113,7 @@ export const CONSTANTS = [
 		parentId: null,
 		title: "Managing Director",
 		roleID: "a040a77a-9321-465f-947a-cbb0c7c39c1c",
-		execVisibility: -1,
+		execVisibility: -1
 	},
 	{
 		id: 5070,
@@ -123,7 +124,7 @@ export const CONSTANTS = [
 		parentId: 4274,
 		title: "PM",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 5070,
+		execVisibility: 5070
 	},
 	{
 		id: 4748,
@@ -134,7 +135,7 @@ export const CONSTANTS = [
 		parentId: 5070,
 		title: "Asst. Manager",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 4748,
+		execVisibility: 4748
 	},
 	{
 		id: 4429,
@@ -145,7 +146,7 @@ export const CONSTANTS = [
 		parentId: 5070,
 		title: "Area Head",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 4429,
+		execVisibility: 4429
 	},
 	{
 		id: 8601,
@@ -156,7 +157,7 @@ export const CONSTANTS = [
 		parentId: 4429,
 		title: "abc",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 8601,
+		execVisibility: 8601
 	},
 	{
 		id: 4431,
@@ -167,7 +168,7 @@ export const CONSTANTS = [
 		parentId: 5070,
 		title: "level2 first",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 4431,
+		execVisibility: 4431
 	},
 	{
 		id: 4432,
@@ -178,7 +179,7 @@ export const CONSTANTS = [
 		parentId: 4431,
 		title: "Manager",
 		roleID: "1132d874-753f-407b-8feb-672e4d23c6dc",
-		execVisibility: 4432,
+		execVisibility: 4432
 	},
 	{
 		id: 8458,
@@ -189,7 +190,7 @@ export const CONSTANTS = [
 		parentId: 4274,
 		title: "test",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 8458,
+		execVisibility: 8458
 	},
 	{
 		id: 12114,
@@ -200,7 +201,7 @@ export const CONSTANTS = [
 		parentId: 8458,
 		title: "",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 12114,
+		execVisibility: 12114
 	},
 	{
 		id: 6949,
@@ -211,7 +212,7 @@ export const CONSTANTS = [
 		parentId: 4274,
 		title: "Manager",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: -1,
+		execVisibility: -1
 	},
 	{
 		id: 11898,
@@ -222,7 +223,7 @@ export const CONSTANTS = [
 		parentId: 6949,
 		title: "",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 11898,
+		execVisibility: 11898
 	},
 	{
 		id: 9612,
@@ -233,7 +234,7 @@ export const CONSTANTS = [
 		parentId: 6949,
 		title: "",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 9612,
+		execVisibility: 9612
 	},
 	{
 		id: 9619,
@@ -244,7 +245,7 @@ export const CONSTANTS = [
 		parentId: 9612,
 		title: "",
 		roleID: "47e301f2-9f8d-4432-975b-74fa6188f5bf",
-		execVisibility: 9619,
+		execVisibility: 9619
 	},
 	{
 		id: 13773,
@@ -255,6 +256,6 @@ export const CONSTANTS = [
 		parentId: 4274,
 		title: "Manager",
 		roleID: "1132d874-753f-407b-8feb-672e4d23c6dc",
-		execVisibility: 13773,
-	},
+		execVisibility: 13773
+	}
 ];

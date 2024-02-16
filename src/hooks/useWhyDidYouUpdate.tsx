@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
 
 const useWhyDidYouUpdate = <TProps extends Record<string, never>>(name: string, props: TProps) => {

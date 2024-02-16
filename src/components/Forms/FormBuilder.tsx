@@ -48,7 +48,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 		};
 	};
 
-	const drop = (sIdx: number) => {
+	const drop = () => {
 		if (
 			dragCurrentItem.current === null ||
 			dragCurrentItem.current.questionIndex === null ||
@@ -66,7 +66,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 		const tempFormTemplate = updateFormTemplate(formTemplate);
 		const toMoveQuestion = _cloneDeep(
 			tempFormTemplate.formSections?.[dragCurrentItem.current.sectionIndex]!.formQuestions[
-				dragCurrentItem.current.questionIndex
+			dragCurrentItem.current.questionIndex
 			]
 		);
 		if (!toMoveQuestion) return;
@@ -212,7 +212,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 										draggable
 										onDragStart={() => dragStart(questionIndex, sectionIndex)}
 										onDragEnter={() => dragEnter(questionIndex, sectionIndex)}
-										onDragEnd={() => drop(sectionIndex)}
+										onDragEnd={() => drop()}
 									>
 										<FormQuestions
 											length={formSection.formQuestions.length}

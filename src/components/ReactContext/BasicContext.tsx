@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode, type SetStateAction, type Dispatch } from "react";
+import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 function useStoreData<TData>(initial: TData): [TData, Dispatch<SetStateAction<TData>>] {
     const [store, setStore] = useState<TData>(initial)
     return [store, setStore];
@@ -31,7 +31,7 @@ const BasicContext = () => {
 
 
 export const ChildBasicContext = () => {
-    const [_, setTheme] = useContext(ThemeContext)!;
+    const [, setTheme] = useContext(ThemeContext)!;
     console.count("ChildBasicContext")
     return (
         <div><h1>CHild 1</h1>

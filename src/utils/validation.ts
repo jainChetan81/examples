@@ -1,4 +1,5 @@
 import { type FORM_TEMPLATE_TYPE } from "../types";
+
 /**
  * ?Form Validations:
  * must have a name
@@ -11,7 +12,6 @@ import { type FORM_TEMPLATE_TYPE } from "../types";
  * only one jump to section allowed on a question in a section
  *
  */
-
 export const validateForm = (form: FORM_TEMPLATE_TYPE): string[] => {
 	const errors: string[] = [];
 	if (!form || !form.formTitle || form.formTitle.length === 0) {
@@ -49,11 +49,7 @@ export const validateForm = (form: FORM_TEMPLATE_TYPE): string[] => {
 				}
 				question.options.forEach((option, oIdx) => {
 					if (!option.optionValue || option.optionValue.length === 0) {
-						errors.push(
-							`Option value for Option ${oIdx + 1} in Question ${qIdx + 1} in Section ${
-								section.seqNumber + 1
-							} is required`
-						);
+						errors.push(`Option value for Option ${oIdx + 1} in Question ${qIdx + 1} in Section ${section.seqNumber + 1} is required`);
 					}
 					if (question.jumpToSectionBasedOnAnswer && !option.nextSectionID) {
 						errors.push(`Option ${oIdx + 1} '${option.optionValue}' must have a jump to section`);
