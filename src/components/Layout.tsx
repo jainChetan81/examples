@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-globals */
-import Head from "next/head";
-import { FC } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { LayoutType } from "../types";
+import Head from "next/head";
+import type { FC } from "react";
+import type { LayoutType } from "../types";
 
 const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
 	const queryClient = new QueryClient();
@@ -22,9 +22,5 @@ const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
 			</QueryClientProvider>
 		</>
 	);
-};
-Home.defaultProps = {
-	description: "A gallery of various Games",
-	keywords: "",
 };
 export default Home;

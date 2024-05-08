@@ -48,6 +48,9 @@ const Home: NextPage = () => {
 					<Link href="/react_select">React Select</Link>
 				</li>
 				<li>
+					<Link href="/image_magnifier">Image Magnifier</Link>
+				</li>
+				<li>
 					<Link href="/matrix">Matrix Rain</Link>
 				</li>
 				<li>
