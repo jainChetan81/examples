@@ -1,5 +1,4 @@
 import { TiltEffect } from "../components/TiltEffect";
-import "../styles/tailwind.css";
 
 export default function Scroll() {
 	return (

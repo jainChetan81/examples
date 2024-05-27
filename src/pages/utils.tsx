@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import useObserver from "../hooks/useObserver";
-import "../styles/tailwind.css";
 import { TextTypingEffectWithTexts } from "../components/TypingEffect";
 import { NotifyButton } from "../components/Notification";
 

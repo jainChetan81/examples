@@ -12,6 +12,7 @@ import "../styles/org-heirarchy.scss";
 import "../styles/portfolio.scss";
 import "../styles/react-select.scss";
 import "../styles/spinner.scss";
+import "../styles/tailwind.css";
 import { trpc } from "../utils/trpc";
 
 function MyApp({ Component, pageProps }: any) {
@@ -41,15 +42,7 @@ function MyApp({ Component, pageProps }: any) {
 		};
 	}, [router]);
 
-	return (
-		<>
-			{loading ? (
-				<Loader />
-			) : (
-				<Component {...pageProps} />
-			)}
-		</>
-	);
+	return <>{loading ? <Loader /> : <Component {...pageProps} />}</>;
 }
 
 export default trpc.withTRPC(MyApp);
