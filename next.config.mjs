@@ -11,14 +11,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const configuration = {
-	swcMinify: true,
 	i18n: {
 		locales: ["en"],
 		defaultLocale: "en"
 	},
-	reactStrictMode: true,
+	reactStrictMode: false,
 	experimental: {
-		typedRoutes: true
+		reactCompiler: true
 	},
 	sassOptions: { includePaths: [path.join(__dirname, "styles")] },
 	images: {

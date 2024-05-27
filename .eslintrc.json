@@ -6,7 +6,9 @@
 	"plugins": ["@typescript-eslint"],
 	"extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
 	"rules": {
-		"@typescript-eslint/consistent-type-imports": "warn"
+		"@typescript-eslint/consistent-type-imports": "warn",
+		"no-any": false,
+		"@typescript-eslint/no-explicit-any": ["off"]
 	}
 	// "extends": "next/core-web-vitals"
 }

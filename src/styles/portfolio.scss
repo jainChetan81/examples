@@ -285,7 +285,7 @@ $primary-background-color: #022c43;
 		}
 		@for $i from 1 to 35 {
 			.text-animate._#{$i} {
-				animation-delay: #{$i / 10}s;
+				animation-delay: #{$i * 0.1}s;
 			}
 		}
 		.logo-container {

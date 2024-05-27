@@ -138,7 +138,7 @@ section.forms.datagrid-common-style {
 				height: $section-top-header-height;
 				background-color: $border-light;
 				color: $color-white;
-				top: -($section-top-header-height + $border-top-height/4);
+				top: -($section-top-header-height + $border-top-height*0.25);
 				left: 0px;
 				padding-inline: 16px;
 				@extend .font-r-14;
