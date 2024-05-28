@@ -3,6 +3,7 @@ import { Layout } from "../components";
 import GenericRefBasedContext from "../components/ReactContext/GenericRefBasedContext";
 import RefBasedFastContext from "../components/ReactContext/RefBasedFastContext";
 import SimpleContext from "../components/ReactContext/SimpleContext";
+import { SharedState } from "../components/GlobalHook";
 
 const ReactContext = () => {
 	return (
@@ -11,6 +12,7 @@ const ReactContext = () => {
 			<SimpleContext />
 			<RefBasedFastContext />
 			<GenericRefBasedContext />
+			<SharedState />
 		</Layout>
 	);
 };
