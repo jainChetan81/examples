@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Layout } from "../components";
 import Loading from "../hoc/Loading";
 import { MouseTracker } from "../components/MouseTracker";
-
 const Home: NextPage = () => {
 	return (
 		<Layout title="Home">

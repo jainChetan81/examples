@@ -1,7 +1,7 @@
 type StoreCallback = (data: any) => void;
 
 interface StoreSubscribeOptions {
-	emitLatestOnSubscribe?: boolean;
+	emitLatestOnSubscribe: boolean;
 }
 
 interface StoreType {

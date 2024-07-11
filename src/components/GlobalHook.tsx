@@ -1,4 +1,3 @@
-import { log } from "console";
 import { useGlobalState } from "../hooks/useGlobalState";
 const SHARED_COUNT_KEY = "someUniqueKey";
 const ComponentOne = () => {
@@ -17,7 +16,7 @@ const ComponentOne = () => {
 };
 const ComponentTwo = () => {
 	const [count, setCount] = useGlobalState<number>({
-		initialState: 10,
+		initialState: 0,
 		shareKey: SHARED_COUNT_KEY
 	});
 
