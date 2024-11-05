@@ -5,13 +5,11 @@ import { type FormEvent, useState } from "react";
 import { type FORM_TEMPLATE_TYPE } from "../../types";
 import FormBuilder from "../../components/Forms/FormBuilder";
 import FormSettings from "../../components/Forms/FormSettings";
-import { trpc } from "../../utils/trpc";
 const formId = uuidv4();
 const sectionId = uuidv4();
 const questionId = uuidv4();
 const optionId = uuidv4();
 const DynamicForm = () => {
-	const { mutateAsync: addForm } = trpc.forms.addNewForm.useMutation();
 	const [errors, setErrors] = useState<string[]>([]);
 	const [tabSelected, setTabSelected] = useState<0 | 1>(0);
 	const [formTemplate, setFormTemplate] = useState<FORM_TEMPLATE_TYPE>({
@@ -61,7 +59,6 @@ const DynamicForm = () => {
 		const newErrors = validateForm(formTemplate);
 		setErrors(newErrors);
 		if (newErrors.length > 0) return;
-		await addForm({ form: formTemplate });
 	};
 	return (
 		<Layout title="Dynamic Forms">

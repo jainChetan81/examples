@@ -13,7 +13,6 @@ import "../styles/portfolio.scss";
 import "../styles/react-select.scss";
 import "../styles/spinner.scss";
 import "../styles/tailwind.css";
-import { trpc } from "../utils/trpc";
 
 function MyApp({ Component, pageProps }: any) {
 	const router = useRouter();
@@ -45,4 +44,4 @@ function MyApp({ Component, pageProps }: any) {
 	return <>{loading ? <Loader /> : <Component {...pageProps} />}</>;
 }
 
-export default trpc.withTRPC(MyApp);
+export default MyApp;
