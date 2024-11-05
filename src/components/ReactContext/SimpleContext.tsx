@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 // creating a hook for simple use of the context
 // right now it is only used as type
-function useStoreData() {
+export function useStoreData() {
 	const [store, setStore] = useState({
 		first: "",
 		last: "",

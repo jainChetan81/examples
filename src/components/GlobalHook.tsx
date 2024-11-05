@@ -1,4 +1,3 @@
-import { log } from "console";
 import { useGlobalState } from "../hooks/useGlobalState";
 const SHARED_COUNT_KEY = "someUniqueKey";
 const ComponentOne = () => {
@@ -31,7 +30,6 @@ const ComponentTwo = () => {
 };
 
 export const SharedState = () => {
-	console.count("--------------RERENDERING-------");
 	return (
 		<div>
 			<ComponentOne />
