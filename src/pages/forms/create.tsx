@@ -1,10 +1,9 @@
-import { Layout } from "../../components";
-import Loading from "../../hoc/Loading";
-import { v4 as uuidv4 } from "uuid";
 import { type FormEvent, useState } from "react";
-import { type FORM_TEMPLATE_TYPE } from "../../types";
+import { v4 as uuidv4 } from "uuid";
+import { Layout } from "../../components";
 import FormBuilder from "../../components/Forms/FormBuilder";
 import FormSettings from "../../components/Forms/FormSettings";
+import { type FORM_TEMPLATE_TYPE, QuestionType } from "../../types";
 const formId = uuidv4();
 const sectionId = uuidv4();
 const questionId = uuidv4();
@@ -32,7 +31,7 @@ const DynamicForm = () => {
 						formSectionID: sectionId,
 						question: "",
 						questionID: questionId,
-						questionType: "varchar",
+						questionType: QuestionType.varchar,
 						required: false,
 						score: 12,
 						sequence: 0,
@@ -99,4 +98,4 @@ const DynamicForm = () => {
 	);
 };
 
-export default Loading(DynamicForm);
+export default DynamicForm;

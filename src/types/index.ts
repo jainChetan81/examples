@@ -1,6 +1,65 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Form, FormOption, FormQuestion, FormScore, FormSection, QuestionType } from "@prisma/client";
+import type { ReactElement } from "react";
 import { z } from "zod";
+
+// Custom types to replace Prisma types
+export interface Form {
+	id: string;
+	formTitle: string;
+	formDescription: string;
+	defaultPointValue: number;
+	createdAt: Date;
+	updatedAt: Date;
+	isQuizMode: boolean;
+}
+
+export interface FormScore {
+	id: string;
+	low: number | null;
+	high: number | null;
+	result: string | null;
+	formId: string | null;
+}
+
+export interface FormSection {
+	formSectionID: string;
+	sectionTitle: string;
+	sectionDesc: string;
+	seqNumber: number;
+	nextSectionID: string | null;
+	formId: string | null;
+}
+
+export interface FormQuestion {
+	questionID: string;
+	question: string;
+	questionType: QuestionType;
+	required: boolean;
+	score: number | null;
+	sequence: number;
+	jumpToSectionBasedOnAnswer: boolean | null;
+	formSectionID: string | null;
+}
+
+export interface FormOption {
+	optionID: string;
+	optionValue: string;
+	correct: boolean | null;
+	nextSectionID: string | null;
+	questionID: string | null;
+}
+
+export enum QuestionType {
+	varchar = "varchar",
+	mChoice = "mChoice",
+	cb = "cb",
+	dd = "dd",
+	int = "int",
+	file = "file",
+	date = "date",
+	address = "address",
+	photo = "photo"
+}
 
 export type Characters = {
 	id: number;
@@ -154,7 +213,7 @@ export type PATH_DATA = {
 };
 export type BLOCKS_DATA = {
 	id: string;
-	data: { label: JSX.Element };
+	data: { label: ReactElement };
 	position: { x: number; y: number };
 };
 

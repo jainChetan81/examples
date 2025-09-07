@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import { Layout } from "../components";
-import Loading from "../hoc/Loading";
 import { MouseTracker } from "../components/MouseTracker";
 
 const Home: NextPage = () => {
@@ -33,12 +32,9 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/matrix">Matrix Rain</Link>
 				</li>
-				<li>
-					<Link href="/grid">Grid Basics</Link>
-				</li>
 			</ul>
 		</Layout>
 	);
 };
 
-export default Loading(Home);
+export default (Home);

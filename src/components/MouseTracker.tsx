@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useRef } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const style: CSSProperties = {
@@ -14,8 +14,15 @@ type Props = {
 };
 const MouseTracker = ({ children, offset = { x: 0, y: 0 } }: Props) => {
 	const element = useRef<null | HTMLDivElement>(null);
+	const [isMounted, setIsMounted] = useState(false);
 
 	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
+	useEffect(() => {
+		if (!isMounted) return;
+		
 		function handler(e: MouseEvent) {
 			if (!element.current) return;
 			const x = e.clientX + offset.x,
@@ -37,8 +44,10 @@ const MouseTracker = ({ children, offset = { x: 0, y: 0 } }: Props) => {
 			document.removeEventListener("mousemove", handler);
 			document.removeEventListener("touchmove", handlerMobile);
 		};
-	}, [offset.x, offset.y]);
-	if (typeof document === "undefined") return <> </>;
+	}, [offset.x, offset.y, isMounted]);
+	
+	if (!isMounted) return null;
+	
 	return createPortal(
 		<div style={style} ref={element}>
 			{children}

@@ -5,7 +5,7 @@ import _cloneDeep from "lodash/cloneDeep";
 import _orderBy from "lodash/orderBy";
 import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
-import type { FORM_QUESTION_TYPE, FORM_SECTION_TYPE, FORM_TEMPLATE_TYPE } from "../../types";
+import { QuestionType, type FORM_QUESTION_TYPE, type FORM_SECTION_TYPE, type FORM_TEMPLATE_TYPE } from "../../types";
 import FormQuestions from "./FormQuestions";
 import FormSectionHeader from "./FormSectionHeader";
 import { updateFormTemplate } from "./FormUtils";
@@ -103,7 +103,7 @@ const FormBuilder = ({ formTemplate, setFormTemplate }: Props) => {
 		const newQuestion: FORM_QUESTION_TYPE = {
 			formSectionID: tempFormTemplate.formSections[currentSectionId.current]!.formSectionID,
 			questionID: uuidv4(),
-			questionType: "varchar",
+			questionType: QuestionType.varchar,
 			options: [
 				{
 					correct: null,

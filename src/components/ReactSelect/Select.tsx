@@ -1,4 +1,4 @@
-import { memo, type MouseEvent, useState, useMemo, useCallback } from "react";
+import { memo, type MouseEvent, useState, useMemo, useCallback, type ReactElement } from "react";
 import type { SELECT_OPTIONS } from "../../types";
 type IDType = string | number;
 type Props<TMulti extends boolean> = {
@@ -48,7 +48,7 @@ function Select<TMulti extends boolean>({ options, selected, onChange, multiple,
 		},
 		[multiple, onChange, selected]
 	);
-	const valuesToShow: JSX.Element | JSX.Element[] = useMemo(() => {
+	const valuesToShow: ReactElement | ReactElement[] = useMemo(() => {
 		if (!selected || (Array.isArray(selected) && selected.length === 0)) return <p className="value"> {NONE_SELECTED}</p>;
 		if (!multiple || typeof selected !== "object") {
 			const option = options.find((option) => option.value === selected);

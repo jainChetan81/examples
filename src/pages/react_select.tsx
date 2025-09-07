@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Layout } from "../components";
 import Select from "../components/ReactSelect/Select";
-import Loading from "../hoc/Loading";
 import type { SELECT_OPTIONS } from "../types";
 const options: SELECT_OPTIONS[] = [
 	{ label: "Option 1", value: 1 },
@@ -43,4 +42,4 @@ const ReactSelect = () => {
 	);
 };
 
-export default Loading(ReactSelect);
+export default (ReactSelect);

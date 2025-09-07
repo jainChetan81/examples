@@ -13,8 +13,9 @@ import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import SegmentIcon from "@mui/icons-material/Segment";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import _cloneDeep from "lodash/cloneDeep";
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 import type { FORM_OPTIONS_TYPE, FORM_TEMPLATE_TYPE, QUESTION_TYPES } from "../../types";
+import { QuestionType } from "../../types";
 import MultipleOptions from "./options/MultipleOptions";
 import MultipleOptionsQuizMode from "./options/MultipleOptionsQuizMode";
 
@@ -86,15 +87,15 @@ export const names = [
 ];
 
 export const getQuestionTypeView = (options: FORM_OPTIONS_TYPE[], questionType: QUESTION_TYPES) => {
-	const questionTypeView = new Map<QUESTION_TYPES, JSX.Element | JSX.Element[]>();
-	questionTypeView.set("varchar", Varchar);
-	questionTypeView.set("int", Int);
-	questionTypeView.set("file", File);
-	questionTypeView.set("photo", Photo);
-	questionTypeView.set("date", Date);
-	questionTypeView.set("address", Address);
+	const questionTypeView = new Map<QUESTION_TYPES, ReactElement | ReactElement[]>();
+	questionTypeView.set(QuestionType.varchar, Varchar);
+	questionTypeView.set(QuestionType.int, Int);
+	questionTypeView.set(QuestionType.file, File);
+	questionTypeView.set(QuestionType.photo, Photo);
+	questionTypeView.set(QuestionType.date, Date);
+	questionTypeView.set(QuestionType.address, Address);
 	questionTypeView.set(
-		"mChoice",
+		QuestionType.mChoice,
 		options.map((option, i) => (
 			<div className="question__type" key={i}>
 				<p style={{ marginRight: "0.5rem" }}>{i + 1}.</p>
@@ -104,7 +105,7 @@ export const getQuestionTypeView = (options: FORM_OPTIONS_TYPE[], questionType: 
 		))
 	);
 	questionTypeView.set(
-		"cb",
+		QuestionType.cb,
 		options.map((option, i) => (
 			<div className="question__type" key={i}>
 				<p style={{ marginRight: "0.5rem" }}>{i + 1}.</p>
@@ -114,7 +115,7 @@ export const getQuestionTypeView = (options: FORM_OPTIONS_TYPE[], questionType: 
 		))
 	);
 	questionTypeView.set(
-		"dd",
+		QuestionType.dd,
 		options.map((option, idx) => (
 			<div className="question__type" key={idx}>
 				<p style={{ marginRight: "0.5rem" }}>{idx + 1}.</p>
@@ -137,15 +138,15 @@ export const getQuestionTypeEdit = (
 	setFormTemplate: Dispatch<SetStateAction<FORM_TEMPLATE_TYPE>>,
 	scoreMode: boolean
 ) => {
-	const questionTypeEdit = new Map<QUESTION_TYPES, JSX.Element>();
-	questionTypeEdit.set("varchar", Varchar);
-	questionTypeEdit.set("date", Date);
-	questionTypeEdit.set("file", File);
-	questionTypeEdit.set("photo", Photo);
-	questionTypeEdit.set("address", Address);
-	questionTypeEdit.set("int", Int);
+	const questionTypeEdit = new Map<QUESTION_TYPES, ReactElement>();
+	questionTypeEdit.set(QuestionType.varchar, Varchar);
+	questionTypeEdit.set(QuestionType.date, Date);
+	questionTypeEdit.set(QuestionType.file, File);
+	questionTypeEdit.set(QuestionType.photo, Photo);
+	questionTypeEdit.set(QuestionType.address, Address);
+	questionTypeEdit.set(QuestionType.int, Int);
 	questionTypeEdit.set(
-		"mChoice",
+		QuestionType.mChoice,
 		scoreMode ? (
 			<MultipleOptionsQuizMode
 				formTemplate={formTemplate}
@@ -167,7 +168,7 @@ export const getQuestionTypeEdit = (
 		)
 	);
 	questionTypeEdit.set(
-		"cb",
+		QuestionType.cb,
 		scoreMode ? (
 			<MultipleOptionsQuizMode
 				formTemplate={formTemplate}
@@ -189,7 +190,7 @@ export const getQuestionTypeEdit = (
 		)
 	);
 	questionTypeEdit.set(
-		"dd",
+		QuestionType.dd,
 		scoreMode ? (
 			<MultipleOptionsQuizMode
 				formTemplate={formTemplate}

@@ -4,7 +4,7 @@ import { FC } from "react";
 import { LayoutType } from "../../types";
 import Sidebar from "./Sidebar";
 
-const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
+const Home: FC<LayoutType> = ({ title, keywords = "", description = "A Portfolio Example", children }) => {
 	return (
 		<>
 			<Head>
@@ -30,9 +30,5 @@ const Home: FC<LayoutType> = ({ title, keywords, description, children }) => {
 			</div>
 		</>
 	);
-};
-Home.defaultProps = {
-	description: "A Portfolio Example",
-	keywords: "",
 };
 export default Home;
