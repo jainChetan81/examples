@@ -423,24 +423,24 @@ function detectDevTools(setDevToolsDetected: (detected: boolean) => void, attemp
     }
   };
 
-  // Right-click context menu detection
-  const handleRightClick = (e: MouseEvent) => {
-    e.preventDefault();
-    console.warn(
-      `🚫 RIGHT-CLICK BLOCKED 🚫\n` +
-      `Time: ${new Date().toISOString()}\n` +
-      `Attempt ID: ${attemptId || 'Unknown'}\n` +
-      `⚠️ Context menu disabled for security!`
-    );
-  };
+  // Right-click context menu detection (commented out)
+  // const handleRightClick = (e: MouseEvent) => {
+  //   e.preventDefault();
+  //   console.warn(
+  //     `🚫 RIGHT-CLICK BLOCKED 🚫\n` +
+  //     `Time: ${new Date().toISOString()}\n` +
+  //     `Attempt ID: ${attemptId || 'Unknown'}\n` +
+  //     `⚠️ Context menu disabled for security!`
+  //   );
+  // };
 
   document.addEventListener('keydown', handleKeyDown);
-  document.addEventListener('contextmenu', handleRightClick);
+  // document.addEventListener('contextmenu', handleRightClick);
   const cleanup = detectOpen();
 
   return () => {
     document.removeEventListener('keydown', handleKeyDown);
-    document.removeEventListener('contextmenu', handleRightClick);
+    // document.removeEventListener('contextmenu', handleRightClick);
     cleanup();
   };
 }
