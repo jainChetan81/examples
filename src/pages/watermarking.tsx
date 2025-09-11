@@ -373,14 +373,18 @@ function logTamper(type: string, attemptId?: string) {
 function detectDevTools(setDevToolsDetected: (detected: boolean) => void, attemptId?: string) {
   let devToolsOpen = false;
   
-  // Detect dev tools opening via console size trick
+  // Detect dev tools opening via console size trick (improved to ignore zoom)
   const detectOpen = () => {
-    const threshold = 160;
+    // Use percentage-based detection instead of fixed pixel threshold
+    const getThreshold = () => Math.min(window.outerWidth, window.outerHeight) * 0.4;
+    
     const checkInterval = setInterval(() => {
-      if (
-        window.outerHeight - window.innerHeight > threshold ||
-        window.outerWidth - window.innerWidth > threshold
-      ) {
+      const threshold = getThreshold();
+      const heightDiff = window.outerHeight - window.innerHeight;
+      const widthDiff = window.outerWidth - window.innerWidth;
+      
+      // Only trigger if BOTH dimensions suggest dev tools (more reliable)
+      if (heightDiff > threshold && widthDiff > 100) {
         if (!devToolsOpen) {
           devToolsOpen = true;
           setDevToolsDetected(true);
