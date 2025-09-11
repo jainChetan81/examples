@@ -32,6 +32,9 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/matrix">Matrix Rain</Link>
 				</li>
+				<li>
+					<Link href="/slider">Slider</Link>
+				</li>
 			</ul>
 		</Layout>
 	);
