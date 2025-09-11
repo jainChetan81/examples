@@ -16,7 +16,6 @@ export default function Example() {
       drift={false}
       showCenterStamp={false}
       attemptId={attemptId}
-      logUrl="/api/watermark/tamper" // implement this on your server
       className="min-h-screen w-full fixed inset-0 pointer-events-none"
     >
       <div className="p-16 max-w-4xl mx-auto pointer-events-auto">
@@ -39,6 +38,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 
 type WatermarkedContainerProps = {
@@ -54,7 +54,6 @@ type WatermarkedContainerProps = {
   fontSize?: number; // px
   colorLight?: string; // used on light theme
   colorDark?: string; // used on dark theme
-  logUrl?: string; // tamper log endpoint
   attemptId?: string; // passed to tamper logs
 };
 
@@ -71,16 +70,17 @@ export function WatermarkedContainer({
   fontSize = 18,
   colorLight = "rgba(0,0,0,1)",
   colorDark = "rgba(255,255,255,1)",
-  logUrl = "/api/wm/tamper",
   attemptId,
 }: WatermarkedContainerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const centerRef = useRef<HTMLDivElement | null>(null);
+  const [devToolsDetected, setDevToolsDetected] = useState(false);
 
   useEffect(() => {
     ensureGlobalStyles();
-  }, []);
+    detectDevTools(setDevToolsDetected, attemptId);
+  }, [attemptId]);
 
   const isDark = usePrefersDark();
   const color = isDark ? colorDark : colorLight;
@@ -169,7 +169,7 @@ export function WatermarkedContainer({
       const overExists = !!overlayRef.current?.parentElement;
       if (!overExists) {
         addOverlay();
-        logTamper(logUrl, "overlay_removed", attemptId);
+        logTamper("overlay_removed", attemptId);
       } else {
         // if someone hid it, put it back
         const o = overlayRef.current!;
@@ -181,7 +181,7 @@ export function WatermarkedContainer({
           o.style.display = "";
           o.style.visibility = "";
           o.style.opacity = "";
-          logTamper(logUrl, "overlay_hidden", attemptId);
+          logTamper("overlay_hidden", attemptId);
         }
       }
     });
@@ -213,7 +213,6 @@ export function WatermarkedContainer({
     opacity,
     showCenterStamp,
     attemptId,
-    logUrl,
   ]);
 
   const containerStyle: CSSProperties = {
@@ -225,7 +224,28 @@ export function WatermarkedContainer({
 
   return (
     <div ref={containerRef} className={className} style={containerStyle}>
-      {children}
+      {devToolsDetected ? (
+        <div className="flex items-center justify-center bg-red-50 dark:bg-red-900 min-h-screen pointer-events-auto z-50 relative">
+          <div className="text-center p-8 max-w-md pointer-events-auto">
+            <div className="text-6xl mb-4">🚫</div>
+            <h2 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
+              Developer Tools Detected
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 mb-6">
+              For security reasons, this content is hidden when developer tools are open.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors pointer-events-auto cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      ) : (
+        children
+      )}
     </div>
   );
 }
@@ -270,7 +290,7 @@ function makeSvgDataUrl(opts: {
 function colorToRgba(color: string, alpha: number) {
   // If color is already rgba(...), just replace alpha at the end best-effort
   if (color.startsWith("rgba(")) {
-    return color.replace(/\brgba\(([^)]+)\)/, (m, inner) => {
+    return color.replace(/\brgba\(([^)]+)\)/, (_, inner) => {
       const parts = inner.split(",").map((p: string) => p.trim());
       parts[3] = String(alpha);
       return `rgba(${parts.join(", ")})`;
@@ -279,7 +299,7 @@ function colorToRgba(color: string, alpha: number) {
   if (color.startsWith("rgb(")) {
     return color.replace(
       /\brgb\(([^)]+)\)/,
-      (m, inner) => `rgba(${inner.trim()}, ${alpha})`
+      (_, inner) => `rgba(${inner.trim()}, ${alpha})`
     );
   }
   // hex or named colors -> fallback to black with alpha
@@ -336,26 +356,93 @@ function ensureGlobalStyles() {
   document.head.appendChild(style);
 }
 
-function logTamper(url: string, type: string, attemptId?: string) {
-  try {
-    const payload = {
-      ts: Date.now(),
-      type,
-      attemptId,
-      ua: navigator.userAgent,
-    };
-    const blob = new Blob([JSON.stringify(payload)], {
-      type: "application/json",
-    });
-    if (!navigator.sendBeacon || !navigator.sendBeacon(url, blob)) {
-      // Fallback
-      fetch(url, { method: "POST", body: JSON.stringify(payload) }).catch(
-        () => { }
+function logTamper(type: string, attemptId?: string) {
+  const timestamp = new Date().toISOString();
+  const userAgent = navigator.userAgent;
+  
+  console.warn(
+    `🚨 WATERMARK TAMPERING DETECTED 🚨\n` +
+    `Type: ${type}\n` +
+    `Time: ${timestamp}\n` +
+    `Attempt ID: ${attemptId || 'Unknown'}\n` +
+    `User Agent: ${userAgent}\n` +
+    `URL: ${window.location.href}`
+  );
+}
+
+function detectDevTools(setDevToolsDetected: (detected: boolean) => void, attemptId?: string) {
+  let devToolsOpen = false;
+  
+  // Detect dev tools opening via console size trick
+  const detectOpen = () => {
+    const threshold = 160;
+    const checkInterval = setInterval(() => {
+      if (
+        window.outerHeight - window.innerHeight > threshold ||
+        window.outerWidth - window.innerWidth > threshold
+      ) {
+        if (!devToolsOpen) {
+          devToolsOpen = true;
+          setDevToolsDetected(true);
+          console.warn(
+            `🔍 DEVELOPER TOOLS DETECTED 🔍\n` +
+            `Time: ${new Date().toISOString()}\n` +
+            `Attempt ID: ${attemptId || 'Unknown'}\n` +
+            `URL: ${window.location.href}\n` +
+            `⚠️ Content hidden for security!`
+          );
+        }
+      } else {
+        if (devToolsOpen) {
+          devToolsOpen = false;
+          setDevToolsDetected(false);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(checkInterval);
+  };
+
+  // Detect F12, Ctrl+Shift+I, etc.
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+      (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+      (e.ctrlKey && e.key === 'U')
+    ) {
+      e.preventDefault();
+      setDevToolsDetected(true);
+      console.warn(
+        `🚫 KEYBOARD SHORTCUT BLOCKED 🚫\n` +
+        `Time: ${new Date().toISOString()}\n` +
+        `Attempt ID: ${attemptId || 'Unknown'}\n` +
+        `Key: ${e.key}\n` +
+        `⚠️ Developer tools access blocked!`
       );
     }
-  } catch {
-    // noop
-  }
+  };
+
+  // Right-click context menu detection
+  const handleRightClick = (e: MouseEvent) => {
+    e.preventDefault();
+    console.warn(
+      `🚫 RIGHT-CLICK BLOCKED 🚫\n` +
+      `Time: ${new Date().toISOString()}\n` +
+      `Attempt ID: ${attemptId || 'Unknown'}\n` +
+      `⚠️ Context menu disabled for security!`
+    );
+  };
+
+  document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('contextmenu', handleRightClick);
+  const cleanup = detectOpen();
+
+  return () => {
+    document.removeEventListener('keydown', handleKeyDown);
+    document.removeEventListener('contextmenu', handleRightClick);
+    cleanup();
+  };
 }
 
 /* Optional: small helper to build a short token */
