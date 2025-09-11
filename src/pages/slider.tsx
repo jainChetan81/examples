@@ -1,6 +1,6 @@
 import { ImageSlider } from "../components/ImageSlider"
 
-const images = [
+export const images = [
     "https://imgd.aeplcdn.com/370x208/n/cw/ec/194921/victoris-exterior-right-front-three-quarter-28.jpeg",
     "https://imgd.aeplcdn.com/370x208/n/cw/ec/194921/victoris-exterior-right-front-three-quarter-27.jpeg",
     "https://imgd.aeplcdn.com/370x208/n/cw/ec/209777/victoris-exterior-right-front-three-quarter.jpeg",
