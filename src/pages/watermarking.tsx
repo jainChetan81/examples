@@ -1,4 +1,3 @@
-// Example.tsx
 import React from "react";
 
 
@@ -43,7 +42,9 @@ import {
 
 type WatermarkedContainerProps = {
   children: ReactNode;
-  watermark: string; // e.g., "user@acme.com · A1B2C3 · 2025-09-11 12:00"
+  watermark?: string; // e.g., "user@acme.com · A1B2C3 · 2025-09-11 12:00"
+  userEmail?: string; // User's email address
+  userCompany?: string; // User's company name
   className?: string;
   style?: CSSProperties;
   drift?: boolean; // slow drift animation to foil clean crops
@@ -60,6 +61,8 @@ type WatermarkedContainerProps = {
 export function WatermarkedContainer({
   children,
   watermark,
+  userEmail,
+  userCompany,
   className,
   style,
   drift = false,
@@ -77,6 +80,23 @@ export function WatermarkedContainer({
   const centerRef = useRef<HTMLDivElement | null>(null);
   const [devToolsDetected, setDevToolsDetected] = useState(false);
 
+  // Validate that we have either userEmail or userCompany
+  const hasValidIdentifier = userEmail || userCompany;
+
+  // Generate watermark text if not provided
+  const finalWatermark = watermark || (hasValidIdentifier
+    ? `${userEmail || userCompany} · ${attemptId || 'N/A'} · ${new Date().toISOString().slice(0, 16).replace("T", " ")}`
+    : '');
+
+  // If no valid identifier, don't show watermark
+  if (!hasValidIdentifier && !watermark) {
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    );
+  }
+
   useEffect(() => {
     ensureGlobalStyles();
     detectDevTools(setDevToolsDetected, attemptId);
@@ -88,7 +108,7 @@ export function WatermarkedContainer({
   const dataUrl = useMemo(
     () =>
       makeSvgDataUrl({
-        text: watermark,
+        text: finalWatermark,
         tileW: tile.w,
         tileH: tile.h,
         angle,
@@ -96,7 +116,7 @@ export function WatermarkedContainer({
         fontSize,
         color,
       }),
-    [watermark, tile.w, tile.h, angle, opacity, fontSize, color]
+    [finalWatermark, tile.w, tile.h, angle, opacity, fontSize, color]
   );
 
   useEffect(() => {
@@ -155,7 +175,7 @@ export function WatermarkedContainer({
             textAlign: "center",
             whiteSpace: "pre-line",
           } as CSSProperties);
-          center.textContent = watermark;
+          center.textContent = finalWatermark;
         }
         if (!center.parentElement) el.appendChild(center);
       } else if (centerRef.current?.parentElement) {
@@ -165,41 +185,342 @@ export function WatermarkedContainer({
 
     addOverlay();
 
-    const mo = new MutationObserver(() => {
-      const overExists = !!overlayRef.current?.parentElement;
-      if (!overExists) {
-        addOverlay();
-        logTamper("overlay_removed", attemptId);
-      } else {
-        // if someone hid it, put it back
-        const o = overlayRef.current!;
-        if (
-          o.style.display === "none" ||
-          o.style.visibility === "hidden" ||
-          o.style.opacity === "0"
-        ) {
-          o.style.display = "";
-          o.style.visibility = "";
-          o.style.opacity = "";
-          logTamper("overlay_hidden", attemptId);
+    // Enhanced MutationObserver with comprehensive tampering detection
+    const mo = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        // Check for watermark element removal
+        if (mutation.type === 'childList') {
+          const overExists = !!overlayRef.current?.parentElement;
+          const centerExists = showCenterStamp ? !!centerRef.current?.parentElement : true;
+
+          if (!overExists) {
+            addOverlay();
+            logTamper("overlay_removed", attemptId);
+          }
+
+          if (!centerExists && showCenterStamp) {
+            addOverlay();
+            logTamper("center_stamp_removed", attemptId);
+          }
+
+          // Check if any watermark elements were removed from removed nodes
+          mutation.removedNodes.forEach((node) => {
+            if (node instanceof Element) {
+              if (node.classList.contains('wm-layer') || node.classList.contains('wm-center-stamp')) {
+                addOverlay();
+                logTamper("watermark_node_removed", attemptId);
+              }
+            }
+          });
         }
-      }
+
+        // Check for attribute changes (style, class modifications)
+        if (mutation.type === 'attributes') {
+          const target = mutation.target as Element;
+
+          // If watermark overlay was modified
+          if (target === overlayRef.current) {
+            const o = overlayRef.current!;
+            let tampered = false;
+
+            // Check inline style tampering
+            if (
+              o.style.display === "none" ||
+              o.style.visibility === "hidden" ||
+              o.style.opacity === "0" ||
+              o.style.backgroundImage === "none" ||
+              o.style.zIndex === "-1" ||
+              parseFloat(o.style.opacity || "1") < 0.1
+            ) {
+              o.style.display = "";
+              o.style.visibility = "";
+              o.style.opacity = "";
+              o.style.backgroundImage = `url("${dataUrl}")`;
+              o.style.zIndex = "1";
+              tampered = true;
+            }
+
+            // Check class tampering
+            if (!o.classList.contains('wm-layer')) {
+              o.className = 'wm-layer';
+              tampered = true;
+            }
+
+            if (tampered) {
+              logTamper("overlay_attributes_modified", attemptId);
+            }
+          }
+
+          // If center stamp was modified
+          if (target === centerRef.current && showCenterStamp) {
+            const center = centerRef.current!;
+            let tampered = false;
+
+            if (
+              center.style.display === "none" ||
+              center.style.visibility === "hidden" ||
+              center.style.opacity === "0" ||
+              center.style.zIndex === "-1"
+            ) {
+              center.style.display = "";
+              center.style.visibility = "";
+              center.style.opacity = "";
+              center.style.zIndex = "2";
+              tampered = true;
+            }
+
+            if (!center.classList.contains('wm-center-stamp')) {
+              center.className = 'wm-center-stamp';
+              tampered = true;
+            }
+
+            if (tampered) {
+              logTamper("center_stamp_modified", attemptId);
+            }
+          }
+
+          // Check if container was modified to hide watermarks
+          if (target === el) {
+            if (
+              el.style.display === "none" ||
+              el.style.visibility === "hidden" ||
+              el.style.opacity === "0"
+            ) {
+              el.style.display = "";
+              el.style.visibility = "";
+              el.style.opacity = "";
+              logTamper("container_hidden", attemptId);
+            }
+          }
+        }
+      });
     });
 
+    // Enhanced observation with deeper subtree monitoring
     mo.observe(el, {
       childList: true,
-      subtree: false,
+      subtree: true, // Monitor deeper changes
       attributes: true,
-      attributeFilter: ["style", "class"],
+      attributeFilter: ["style", "class", "id"],
+      attributeOldValue: true
     });
 
-    // Re-ensure before printing (some browsers alter backgrounds)
-    const beforePrint = () => addOverlay();
-    window.addEventListener("beforeprint", beforePrint);
+    // Additional observer for document-level changes
+    const documentObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          // Check if any style elements were added that might hide watermarks
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLStyleElement) {
+              const styleContent = node.textContent || '';
+              if (
+                styleContent.includes('.wm-layer') ||
+                styleContent.includes('.wm-center-stamp') ||
+                styleContent.includes('display: none') ||
+                styleContent.includes('visibility: hidden')
+              ) {
+                // Remove suspicious style elements
+                node.remove();
+                logTamper("malicious_style_injection", attemptId);
+              }
+            }
+          });
+        }
+      });
+    });
+
+    documentObserver.observe(document.head, {
+      childList: true,
+      subtree: true
+    });
+
+    // Enhanced CSS monitoring for watermark overlay
+    const over = overlayRef.current;
+    if (over) {
+      const cssWatcher = new MutationObserver(() => {
+        const computedStyle = getComputedStyle(over);
+        if (
+          computedStyle.display === 'none' ||
+          computedStyle.visibility === 'hidden' ||
+          computedStyle.opacity === '0' ||
+          computedStyle.backgroundImage === 'none' ||
+          parseFloat(computedStyle.opacity) < 0.1 ||
+          computedStyle.zIndex === '-1' ||
+          computedStyle.transform.includes('scale(0)') ||
+          computedStyle.transform.includes('translateX(-9999') ||
+          computedStyle.clipPath === 'inset(100%)' ||
+          computedStyle.width === '0px' ||
+          computedStyle.height === '0px'
+        ) {
+          // Force restore critical CSS properties
+          over.style.setProperty('display', 'block', 'important');
+          over.style.setProperty('visibility', 'visible', 'important');
+          over.style.setProperty('opacity', '1', 'important');
+          over.style.setProperty('background-image', `url("${dataUrl}")`, 'important');
+          over.style.setProperty('pointer-events', 'none', 'important');
+          over.style.setProperty('z-index', '1', 'important');
+          over.style.setProperty('transform', 'none', 'important');
+          over.style.setProperty('clip-path', 'none', 'important');
+          over.style.setProperty('width', '100%', 'important');
+          over.style.setProperty('height', '100%', 'important');
+          over.style.setProperty('position', 'absolute', 'important');
+          over.style.setProperty('inset', '0', 'important');
+          logTamper("css_manipulation", attemptId);
+        }
+      });
+
+      cssWatcher.observe(over, {
+        attributes: true,
+        attributeFilter: ['style', 'class'],
+        attributeOldValue: true
+      });
+
+      // Continuous comprehensive CSS monitoring (every 1 second for better protection)
+      const cssInterval = setInterval(() => {
+        if (over.parentElement) {
+          const computedStyle = getComputedStyle(over);
+          let needsRestore = false;
+
+          // Check all possible hiding techniques
+          if (
+            computedStyle.display === 'none' ||
+            computedStyle.visibility === 'hidden' ||
+            parseFloat(computedStyle.opacity) < 0.1 ||
+            computedStyle.backgroundImage === 'none' ||
+            parseInt(computedStyle.zIndex) < 0 ||
+            computedStyle.transform.includes('scale(0)') ||
+            computedStyle.transform.includes('translateX(-9999') ||
+            computedStyle.clipPath === 'inset(100%)' ||
+            parseFloat(computedStyle.width) < 10 ||
+            parseFloat(computedStyle.height) < 10 ||
+            computedStyle.position === 'fixed' && computedStyle.left === '-9999px'
+          ) {
+            needsRestore = true;
+          }
+
+          // Check if watermark was moved outside viewport
+          const rect = over.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0 || rect.left < -9000 || rect.top < -9000) {
+            needsRestore = true;
+          }
+
+          if (needsRestore) {
+            // Restore all critical properties
+            over.style.setProperty('display', 'block', 'important');
+            over.style.setProperty('visibility', 'visible', 'important');
+            over.style.setProperty('opacity', '1', 'important');
+            over.style.setProperty('background-image', `url("${dataUrl}")`, 'important');
+            over.style.setProperty('z-index', '1', 'important');
+            over.style.setProperty('transform', 'none', 'important');
+            over.style.setProperty('clip-path', 'none', 'important');
+            over.style.setProperty('width', '100%', 'important');
+            over.style.setProperty('height', '100%', 'important');
+            over.style.setProperty('position', 'absolute', 'important');
+            over.style.setProperty('inset', '0', 'important');
+            over.style.setProperty('left', '0', 'important');
+            over.style.setProperty('top', '0', 'important');
+            over.style.setProperty('background-repeat', 'repeat', 'important');
+            over.style.setProperty('background-size', `${tile.w}px ${tile.h}px`, 'important');
+            over.style.setProperty('mix-blend-mode', isDark ? 'screen' : 'multiply', 'important');
+            logTamper("css_override_detected", attemptId);
+          }
+
+          // Verify watermark content hasn't been replaced
+          if (over.textContent && over.textContent.trim() !== '') {
+            over.textContent = '';
+            logTamper("watermark_content_modified", attemptId);
+          }
+        }
+      }, 1000);
+
+      // Watermark integrity checker - runs every 3 seconds
+      const integrityInterval = setInterval(() => {
+        // Check if watermark elements still exist and are properly configured
+        const overlay = overlayRef.current;
+        const centerStamp = centerRef.current;
+
+        if (!overlay || !overlay.parentElement) {
+          addOverlay();
+          logTamper("integrity_check_overlay_missing", attemptId);
+          return;
+        }
+
+        // Verify overlay has correct attributes
+        if (!overlay.classList.contains('wm-layer') ||
+          overlay.dataset.role !== 'watermark' ||
+          !overlay.getAttribute('aria-hidden')) {
+          overlay.className = 'wm-layer';
+          overlay.dataset.role = 'watermark';
+          overlay.setAttribute('aria-hidden', 'true');
+          logTamper("integrity_check_attributes_corrupted", attemptId);
+        }
+
+        // Verify background image is still present
+        const bgImage = getComputedStyle(overlay).backgroundImage;
+        if (!bgImage.includes('data:image/svg+xml') || bgImage === 'none') {
+          overlay.style.setProperty('background-image', `url("${dataUrl}")`, 'important');
+          logTamper("integrity_check_background_missing", attemptId);
+        }
+
+        // Check center stamp if enabled
+        if (showCenterStamp) {
+          if (!centerStamp || !centerStamp.parentElement) {
+            addOverlay();
+            logTamper("integrity_check_center_missing", attemptId);
+          } else if (centerStamp.textContent !== finalWatermark) {
+            centerStamp.textContent = finalWatermark;
+            logTamper("integrity_check_center_text_modified", attemptId);
+          }
+        }
+
+        // Check for suspicious CSS rules that might be hiding watermarks
+        const allStyleSheets = Array.from(document.styleSheets);
+        allStyleSheets.forEach((sheet, index) => {
+          try {
+            const rules = Array.from(sheet.cssRules || []);
+            rules.forEach((rule, ruleIndex) => {
+              if (rule instanceof CSSStyleRule) {
+                const selectorText = rule.selectorText;
+                const cssText = rule.style.cssText;
+
+                if ((selectorText.includes('.wm-layer') || selectorText.includes('.wm-center-stamp')) &&
+                  (cssText.includes('display: none') ||
+                    cssText.includes('visibility: hidden') ||
+                    cssText.includes('opacity: 0'))) {
+                  // Remove the malicious rule
+                  sheet.deleteRule(ruleIndex);
+                  logTamper("integrity_check_malicious_css_removed", attemptId);
+                }
+              }
+            });
+          } catch (e) {
+            // Cross-origin stylesheets can't be accessed, that's fine
+          }
+        });
+      }, 3000);
+
+      // Re-ensure before printing (some browsers alter backgrounds)
+      const beforePrint = () => addOverlay();
+      window.addEventListener("beforeprint", beforePrint);
+
+      return () => {
+        mo.disconnect();
+        documentObserver.disconnect();
+        cssWatcher.disconnect();
+        clearInterval(cssInterval);
+        clearInterval(integrityInterval);
+        window.removeEventListener("beforeprint", beforePrint);
+      };
+    }
+
+    // Re-ensure before printing (fallback)
+    const beforePrintFallback = () => addOverlay();
+    window.addEventListener("beforeprint", beforePrintFallback);
 
     return () => {
       mo.disconnect();
-      window.removeEventListener("beforeprint", beforePrint);
+      documentObserver.disconnect();
+      window.removeEventListener("beforeprint", beforePrintFallback);
     };
   }, [
     dataUrl,
@@ -359,30 +680,80 @@ function ensureGlobalStyles() {
 function logTamper(type: string, attemptId?: string) {
   const timestamp = new Date().toISOString();
   const userAgent = navigator.userAgent;
-  
+
+  const tamperData = {
+    ts: Date.now(),
+    type: type,
+    attemptId: attemptId || 'Unknown',
+    ua: userAgent,
+    url: window.location.href,
+    timestamp: timestamp,
+    severity: getTamperSeverity(type)
+  };
+
+  // Console warning for debugging
   console.warn(
     `🚨 WATERMARK TAMPERING DETECTED 🚨\n` +
     `Type: ${type}\n` +
     `Time: ${timestamp}\n` +
     `Attempt ID: ${attemptId || 'Unknown'}\n` +
     `User Agent: ${userAgent}\n` +
-    `URL: ${window.location.href}`
+    `URL: ${window.location.href}\n` +
+    `Severity: ${tamperData.severity}`
   );
+
+
+  // Store locally as backup
+  try {
+    const localTamperLog = JSON.parse(localStorage.getItem('watermark_tamper_log') || '[]');
+    localTamperLog.push(tamperData);
+    // Keep only last 50 entries
+    if (localTamperLog.length > 50) {
+      localTamperLog.splice(0, localTamperLog.length - 50);
+    }
+    localStorage.setItem('watermark_tamper_log', JSON.stringify(localTamperLog));
+  } catch (e) {
+    // localStorage might be disabled
+  }
+}
+
+function getTamperSeverity(type: string): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
+  const severityMap: Record<string, 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'> = {
+    'overlay_removed': 'CRITICAL',
+    'center_stamp_removed': 'HIGH',
+    'watermark_node_removed': 'CRITICAL',
+    'overlay_attributes_modified': 'HIGH',
+    'center_stamp_modified': 'MEDIUM',
+    'container_hidden': 'HIGH',
+    'malicious_style_injection': 'CRITICAL',
+    'css_manipulation': 'HIGH',
+    'css_override_detected': 'MEDIUM',
+    'watermark_content_modified': 'HIGH',
+    'integrity_check_overlay_missing': 'CRITICAL',
+    'integrity_check_attributes_corrupted': 'HIGH',
+    'integrity_check_background_missing': 'HIGH',
+    'integrity_check_center_missing': 'MEDIUM',
+    'integrity_check_center_text_modified': 'MEDIUM',
+    'integrity_check_malicious_css_removed': 'CRITICAL',
+    'overlay_hidden': 'HIGH'
+  };
+
+  return severityMap[type] || 'MEDIUM';
 }
 
 function detectDevTools(setDevToolsDetected: (detected: boolean) => void, attemptId?: string) {
   let devToolsOpen = false;
-  
+
   // Detect dev tools opening via console size trick (improved to ignore zoom)
   const detectOpen = () => {
     // Use percentage-based detection instead of fixed pixel threshold
     const getThreshold = () => Math.min(window.outerWidth, window.outerHeight) * 0.4;
-    
+
     const checkInterval = setInterval(() => {
       const threshold = getThreshold();
       const heightDiff = window.outerHeight - window.innerHeight;
       const widthDiff = window.outerWidth - window.innerWidth;
-      
+
       // Only trigger if BOTH dimensions suggest dev tools (more reliable)
       if (heightDiff > threshold && widthDiff > 100) {
         if (!devToolsOpen) {
@@ -427,24 +798,11 @@ function detectDevTools(setDevToolsDetected: (detected: boolean) => void, attemp
     }
   };
 
-  // Right-click context menu detection (commented out)
-  // const handleRightClick = (e: MouseEvent) => {
-  //   e.preventDefault();
-  //   console.warn(
-  //     `🚫 RIGHT-CLICK BLOCKED 🚫\n` +
-  //     `Time: ${new Date().toISOString()}\n` +
-  //     `Attempt ID: ${attemptId || 'Unknown'}\n` +
-  //     `⚠️ Context menu disabled for security!`
-  //   );
-  // };
-
   document.addEventListener('keydown', handleKeyDown);
-  // document.addEventListener('contextmenu', handleRightClick);
   const cleanup = detectOpen();
 
   return () => {
     document.removeEventListener('keydown', handleKeyDown);
-    // document.removeEventListener('contextmenu', handleRightClick);
     cleanup();
   };
 }

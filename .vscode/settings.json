@@ -1,4 +1,5 @@
 {
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"claudeCodeChat.permissions.yoloMode": false
+	"claudeCodeChat.permissions.yoloMode": false,
+	"kiroAgent.configureMCP": "Disabled"
 }
