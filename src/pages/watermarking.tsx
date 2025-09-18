@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Layout } from "../components";
 
 export default function Example() {
   const userEmail = "jane.doe@example.com";
@@ -10,23 +10,25 @@ export default function Example() {
   const watermark = `${userEmail} · ${token} · ${when}`;
 
   return (
-    <WatermarkedContainer
-      watermark={watermark}
-      showCenterStamp={false}
-      attemptId={attemptId}
-      className="min-h-screen w-full fixed inset-0 pointer-events-none"
-    >
-      <div className="p-16 max-w-4xl mx-auto pointer-events-auto">
-        <h1 className="text-3xl font-bold mb-6">Two Sum</h1>
-        <p className="text-lg mb-6 text-gray-700 dark:text-gray-300">
-          Given an array of integers nums and an integer target, return indices of
-          the two numbers such that they add up to target.
-        </p>
-        <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
-          <code className="text-sm text-gray-800 dark:text-gray-200">{`function twoSum(nums, target) { /* ... */ }`}</code>
-        </pre>
-      </div>
-    </WatermarkedContainer>
+    <Layout title="Watermarking">
+      <WatermarkedContainer
+        watermark={watermark}
+        showCenterStamp={false}
+        attemptId={attemptId}
+        className="min-h-screen w-full fixed inset-0 pointer-events-none"
+      >
+        <div className="p-16 max-w-4xl mx-auto pointer-events-auto">
+          <h1 className="text-3xl font-bold mb-6">Two Sum</h1>
+          <p className="text-lg mb-6 text-gray-700 dark:text-gray-300">
+            Given an array of integers nums and an integer target, return indices of
+            the two numbers such that they add up to target.
+          </p>
+          <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+            <code className="text-sm text-gray-800 dark:text-gray-200">{`function twoSum(nums, target) { /* ... */ }`}</code>
+          </pre>
+        </div>
+      </WatermarkedContainer>
+    </Layout>
   );
 }
 // Watermark.tsx

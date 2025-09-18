@@ -1,4 +1,5 @@
 import { ImageSlider } from "../components/ImageSlider"
+import { Layout } from "../components";
 
 export const images = [
     "https://imgd.aeplcdn.com/370x208/n/cw/ec/194921/victoris-exterior-right-front-three-quarter-28.jpeg",
@@ -18,8 +19,10 @@ const carImages = [
 
 export default function Slider() {
     return (
-        <div className="max-w-[1200px] w-full aspect-[5/3] m-y-0 m-x-auto ">
-            <ImageSlider images={carImages} />
-        </div>
+        <Layout title="Slider">
+            <div className="max-w-[1200px] w-full aspect-[5/3] m-y-0 m-x-auto ">
+                <ImageSlider images={carImages} />
+            </div>
+        </Layout>
     )
 }

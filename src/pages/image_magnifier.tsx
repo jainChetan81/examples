@@ -1,7 +1,10 @@
 import ImageMagnifier from "../components/ImageMagnifier";
+import { Layout } from "../components";
 
 export default function ImageMagnifierPage() {
   return (
-    <ImageMagnifier />
+    <Layout title="Image Magnifier">
+      <ImageMagnifier />
+    </Layout>
   );
 }
