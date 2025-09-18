@@ -35,6 +35,9 @@ const Home: NextPage = () => {
 				<li>
 					<Link href="/slider">Slider</Link>
 				</li>
+				<li>
+					<Link href="/watermarking">Watermarking</Link>
+				</li>
 			</ul>
 		</Layout>
 	);

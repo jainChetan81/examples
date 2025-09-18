@@ -1,0 +1,1 @@
+export { useDevToolsDetection } from './useDevToolsDetection';
