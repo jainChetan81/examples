@@ -1,465 +1,422 @@
-import React from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Layout } from "../components";
 
-export default function Example() {
-  const userEmail = "jane.doe@example.com";
-  const attemptId = "attempt-7c028163-4e6b";
-  const token = shortToken(userEmail + "|" + attemptId);
-  const when = new Date().toISOString().slice(0, 16).replace("T", " ");
-
-  const watermark = `${userEmail} · ${token} · ${when}`;
-
-  return (
-    <Layout title="Watermarking">
-      <WatermarkedContainer
-        watermark={watermark}
-        showCenterStamp={false}
-        attemptId={attemptId}
-        className="min-h-screen w-full fixed inset-0 pointer-events-none"
-      >
-        <div className="p-16 max-w-4xl mx-auto pointer-events-auto">
-          <h1 className="text-3xl font-bold mb-6">Two Sum</h1>
-          <p className="text-lg mb-6 text-gray-700 dark:text-gray-300">
-            Given an array of integers nums and an integer target, return indices of
-            the two numbers such that they add up to target.
-          </p>
-          <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
-            <code className="text-sm text-gray-800 dark:text-gray-200">{`function twoSum(nums, target) { /* ... */ }`}</code>
-          </pre>
-        </div>
-      </WatermarkedContainer>
-    </Layout>
-  );
-}
-// Watermark.tsx
-import {
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import type { CSSProperties, ReactNode } from "react";
-
-type WatermarkedContainerProps = {
+type WatermarkProps = {
   children: ReactNode;
-  watermark?: string; // e.g., "user@acme.com · A1B2C3 · 2025-09-11 12:00"
-  userEmail?: string; // User's email address
-  userCompany?: string; // User's company name
+  userEmail: string;
+  attemptId?: string;
   className?: string;
   style?: CSSProperties;
-  showCenterStamp?: boolean; // bold, large center mark
-  tile?: { w: number; h: number }; // px tile size
-  angle?: number; // degrees
-  opacity?: number; // 0..1, actual text alpha inside SVG
-  fontSize?: number; // px
-  color?: string; // watermark color
-  attemptId?: string; // passed to tamper logs
+  questionType?: "MCQ" | "CODING";
+  logUrl?: string;
+  onTamperDetected?: (type: string) => void;
 };
 
-export function WatermarkedContainer({
-  children,
-  watermark,
-  userEmail,
-  userCompany,
-  className,
-  style,
-  showCenterStamp = false,
-  tile = { w: 320, h: 220 },
-  angle = -30,
-  opacity = 0.16,
-  fontSize = 18,
-  color = "rgba(0,0,0,1)",
-  attemptId,
-}: WatermarkedContainerProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const centerRef = useRef<HTMLDivElement | null>(null);
+type WatermarkConfig = {
+  chunkWidthText1: number;
+  chunkWidthText2: number;
+  chunkHeight: number;
+  textAlign: CanvasTextAlign;
+  textBaseline: CanvasTextBaseline;
+  globalAlpha: number;
+  font: string;
+  rotateAngle: number;
+  fillStyle: string;
+};
 
+// Utility to calculate text width based on content length
+function calculateTextWidth(text: string): number {
+  const length = text?.length || 0;
+  if (length > 100) return 1300;
+  if (length > 80) return 1000;
+  if (length > 70) return 850;
+  if (length > 45) return 720;
+  return 500;
+}
 
+// Canvas-based watermark generation
+function generateWatermarkCanvas(
+  text1: string,
+  text2: string,
+  config: WatermarkConfig
+): string {
+  try {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-  // Validate that we have either userEmail or userCompany
-  const hasValidIdentifier = userEmail || userCompany;
+    if (!ctx) return "";
 
-  // Generate watermark text if not provided
-  const finalWatermark = watermark || (hasValidIdentifier
-    ? `${userEmail || userCompany} · ${attemptId || 'N/A'} · ${new Date().toISOString().slice(0, 16).replace("T", " ")}`
-    : '');
+    canvas.width = 1700;
+    canvas.height = 3000;
 
-  useEffect(() => {
-    ensureGlobalStyles();
-  }, []);
+    ctx.textAlign = config.textAlign;
+    ctx.textBaseline = config.textBaseline;
+    ctx.globalAlpha = config.globalAlpha;
+    ctx.font = config.font;
 
-  const dataUrl = useMemo(
-    () =>
-      makeSvgDataUrl({
-        text: finalWatermark,
-        tileW: tile.w,
-        tileH: tile.h,
-        angle,
-        opacity,
-        fontSize,
-        color,
-      }),
-    [finalWatermark, tile.w, tile.h, angle, opacity, fontSize, color]
-  );
+    // Apply rotation
+    ctx.translate(850, 1500);
+    ctx.rotate(config.rotateAngle);
+    ctx.translate(-1020, -1800);
 
-  // Create basic watermark overlay
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || (!hasValidIdentifier && !watermark)) return;
+    ctx.fillStyle = config.fillStyle;
 
-    // Create watermark overlay
-    let over = overlayRef.current;
-    if (!over) {
-      over = document.createElement("div");
-      overlayRef.current = over;
-      over.className = "wm-layer";
-      over.setAttribute("aria-hidden", "true");
-      over.dataset.role = "watermark";
-      Object.assign(over.style, {
-        position: "absolute",
-        inset: "0",
-        zIndex: "1",
-        pointerEvents: "none",
-        backgroundRepeat: "repeat",
-        backgroundSize: `${tile.w}px ${tile.h}px`,
-        backgroundImage: `url("${dataUrl}")`,
-        mixBlendMode: "multiply",
-        WebkitPrintColorAdjust: "exact",
-        printColorAdjust: "exact",
-      });
-    }
-    if (!over.parentElement) el.appendChild(over);
+    const positions: Array<{ text: string; x: number; y: number }> = [];
+    const chunkWidthText1 = config.chunkWidthText1;
+    const chunkWidthText2 = config.chunkWidthText2;
+    const chunkHeight = config.chunkHeight;
 
-    // Create center stamp if enabled
-    if (showCenterStamp) {
-      let center = centerRef.current;
-      if (!center) {
-        center = document.createElement("div");
-        centerRef.current = center;
-        center.className = "wm-center-stamp";
-        center.setAttribute("aria-hidden", "true");
-        Object.assign(center.style, {
-          position: "absolute",
-          inset: "0",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          pointerEvents: "none",
-          zIndex: "2",
-          transform: `rotate(${angle}deg)`,
-          fontFamily: "system-ui, sans-serif",
-          fontWeight: "600",
-          fontSize: "42px",
-          opacity: String(Math.min(opacity * 1.8, 0.35)),
-          color: color,
-          textAlign: "center",
-          whiteSpace: "pre-line",
+    const horizontalChunks = Math.ceil(1700 / chunkWidthText1) + 1;
+    const verticalChunks = Math.ceil(3000 / chunkHeight) + 1;
+
+    let currentTextIndex = 0;
+    const verticalOffset = chunkHeight / 2;
+    let staggerOffset = 0;
+
+    for (let row = 0; row <= verticalChunks; row += 2) {
+      staggerOffset = parseInt((row % 2).toString(), 10);
+
+      const currentText = currentTextIndex % 2 === 0 ? text1 : text2;
+      currentTextIndex++;
+
+      for (let col = 0, horizontalOffset = chunkWidthText1 / 2; col <= horizontalChunks; col += 1) {
+        let xPosition = col * chunkWidthText1 + staggerOffset * horizontalOffset;
+
+        if (currentTextIndex % 2 === 0) {
+          xPosition = col * chunkWidthText2 + staggerOffset * horizontalOffset + 75;
+        }
+
+        positions.push({
+          text: currentText,
+          x: xPosition,
+          y: row * chunkHeight + verticalOffset
         });
-        center.textContent = finalWatermark;
       }
-      if (!center.parentElement) el.appendChild(center);
     }
 
-    return () => {
-      // Cleanup on unmount
-      overlayRef.current?.remove();
-      centerRef.current?.remove();
-    };
-  }, [dataUrl, tile.w, tile.h, angle, opacity, fontSize, color, showCenterStamp, finalWatermark, hasValidIdentifier, watermark]);
+    positions.forEach(pos => {
+      ctx.fillText(pos.text, pos.x, pos.y);
+    });
 
-  // Proactive watermark enforcement - removes and recreates every 2 seconds
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || (!hasValidIdentifier && !watermark)) return;
+    return canvas.toDataURL();
+  } catch (error) {
+    console.error("Watermark canvas generation failed:", error);
+    return "";
+  }
+}
 
-    const applyCriticalStyles = (element: HTMLElement, isOverlay: boolean) => {
-      if (isOverlay) {
-        // Overlay styles
-        element.style.setProperty('position', 'absolute', 'important');
-        element.style.setProperty('inset', '0', 'important');
-        element.style.setProperty('z-index', '1', 'important');
-        element.style.setProperty('pointer-events', 'none', 'important');
-        element.style.setProperty('background-repeat', 'repeat', 'important');
-        element.style.setProperty('background-size', `${tile.w}px ${tile.h}px`, 'important');
-        element.style.setProperty('background-image', `url("${dataUrl}")`, 'important');
-        element.style.setProperty('mix-blend-mode', 'multiply', 'important');
-        element.style.setProperty('display', 'block', 'important');
-        element.style.setProperty('visibility', 'visible', 'important');
-        element.style.setProperty('opacity', '1', 'important');
-        element.style.setProperty('width', '100%', 'important');
-        element.style.setProperty('height', '100%', 'important');
-        element.style.setProperty('-webkit-print-color-adjust', 'exact', 'important');
-        element.style.setProperty('print-color-adjust', 'exact', 'important');
-      } else {
-        // Center stamp styles
-        element.style.setProperty('position', 'absolute', 'important');
-        element.style.setProperty('inset', '0', 'important');
-        element.style.setProperty('display', 'flex', 'important');
-        element.style.setProperty('align-items', 'center', 'important');
-        element.style.setProperty('justify-content', 'center', 'important');
-        element.style.setProperty('pointer-events', 'none', 'important');
-        element.style.setProperty('z-index', '2', 'important');
-        element.style.setProperty('transform', `rotate(${angle}deg)`, 'important');
-        element.style.setProperty('font-family', 'system-ui, sans-serif', 'important');
-        element.style.setProperty('font-weight', '600', 'important');
-        element.style.setProperty('font-size', '42px', 'important');
-        element.style.setProperty('opacity', String(Math.min(opacity * 1.8, 0.35)), 'important');
-        element.style.setProperty('color', color, 'important');
-        element.style.setProperty('text-align', 'center', 'important');
-        element.style.setProperty('white-space', 'pre-line', 'important');
-        element.style.setProperty('visibility', 'visible', 'important');
-      }
-    };
+// Security class for tamper protection
+class WatermarkSecurity {
+  private watermarkId: string;
+  private watermarkWrapperId: string;
+  private watermarkStyle: string;
+  private imageUrl: string;
+  private onTamperDetected: (type: string) => void;
+  private DOMRemoveObserver: MutationObserver | null = null;
+  private DOMAttrObserver: MutationObserver | null = null;
 
-    const enforceWatermarks = () => {
-      let needsHeavyOperation = false;
+  constructor(
+    watermarkId: string,
+    watermarkWrapperId: string,
+    watermarkStyle: string,
+    imageUrl: string,
+    onTamperDetected: (type: string) => void
+  ) {
+    this.watermarkId = watermarkId;
+    this.watermarkWrapperId = watermarkWrapperId;
+    this.watermarkStyle = watermarkStyle;
+    this.imageUrl = imageUrl;
+    this.onTamperDetected = onTamperDetected;
 
-      // Check overlay watermark
-      let overlay = overlayRef.current;
-      if (!overlay || !overlay.parentElement || !el.contains(overlay)) {
-        needsHeavyOperation = true;
-      } else {
-        // Lightweight: Just enforce CSS properties
-        applyCriticalStyles(overlay, true);
-
-        // Verify correct attributes
-        if (!overlay.classList.contains('wm-layer')) {
-          overlay.className = 'wm-layer';
-        }
-        if (!overlay.getAttribute('aria-hidden')) {
-          overlay.setAttribute('aria-hidden', 'true');
-        }
-        if (overlay.dataset.role !== 'watermark') {
-          overlay.dataset.role = 'watermark';
-        }
-      }
-
-      // Check center stamp if enabled
-      let center = centerRef.current;
-      if (showCenterStamp) {
-        if (!center || !center.parentElement || !el.contains(center)) {
-          needsHeavyOperation = true;
-        } else {
-          // Lightweight: Just enforce CSS properties
-          applyCriticalStyles(center, false);
-
-          // Verify text content
-          if (center.textContent !== finalWatermark) {
-            center.textContent = finalWatermark;
-          }
-
-          // Verify correct attributes
-          if (!center.classList.contains('wm-center-stamp')) {
-            center.className = 'wm-center-stamp';
-          }
-          if (!center.getAttribute('aria-hidden')) {
-            center.setAttribute('aria-hidden', 'true');
-          }
-        }
-      }
-
-      // Only do heavy DOM operations if elements are missing
-      if (needsHeavyOperation) {
-        console.log('🛡️ Heavy DOM operation: recreating watermarks');
-
-        // Remove ALL existing watermark elements
-        const existingWatermarks = el.querySelectorAll('.wm-layer, .wm-center-stamp');
-        existingWatermarks.forEach(element => element.remove());
-
-        // Clear refs
-        overlayRef.current = null;
-        centerRef.current = null;
-
-        // Create fresh overlay watermark
-        const newOverlay = document.createElement("div");
-        overlayRef.current = newOverlay;
-        newOverlay.className = "wm-layer";
-        newOverlay.setAttribute("aria-hidden", "true");
-        newOverlay.dataset.role = "watermark";
-
-        applyCriticalStyles(newOverlay, true);
-        el.appendChild(newOverlay);
-
-        // Create fresh center stamp if enabled
-        if (showCenterStamp) {
-          const newCenter = document.createElement("div");
-          centerRef.current = newCenter;
-          newCenter.className = "wm-center-stamp";
-          newCenter.setAttribute("aria-hidden", "true");
-
-          applyCriticalStyles(newCenter, false);
-          newCenter.textContent = finalWatermark;
-          el.appendChild(newCenter);
-        }
-      } else {
-        console.log('🛡️ Lightweight operation: CSS enforcement only');
-      }
-    };
-
-    let timeoutId: NodeJS.Timeout | null = null;
-    let isRunning = false;
-
-    const scheduleNextEnforcement = () => {
-      if (isRunning) return; // Prevent multiple scheduling
-
-      timeoutId = setTimeout(async () => {
-        if (isRunning) return; // Double-check before execution
-
-        isRunning = true;
-
-        try {
-          // Run enforcement
-          enforceWatermarks();
-
-          // Small delay to let other tasks run
-          await new Promise(resolve => setTimeout(resolve, 10));
-
-        } catch (error) {
-          console.error('Watermark enforcement error:', error);
-        } finally {
-          isRunning = false;
-
-          // Schedule next enforcement only after current one completes
-          scheduleNextEnforcement();
-        }
-      }, 2000);
-    };
-
-    // Initial enforcement
-    enforceWatermarks();
-
-    // Start the recursive timeout cycle
-    scheduleNextEnforcement();
-
-    return () => {
-      isRunning = false;
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [containerRef, overlayRef, centerRef, dataUrl, tile.w, tile.h, angle, opacity, fontSize, color, showCenterStamp, finalWatermark, hasValidIdentifier, watermark]);
-
-  // If no valid identifier, don't show watermark
-  if (!hasValidIdentifier && !watermark) {
-    return (
-      <div className={className} style={style}>
-        {children}
-      </div>
-    );
+    this.initSecurity();
   }
 
+  private getDOM(id: string): HTMLElement | null {
+    return document.getElementById(id);
+  }
+
+  private initSecurity() {
+    const wrapperElement = this.getDOM(this.watermarkWrapperId);
+    const watermarkElement = this.getDOM(this.watermarkId);
+
+    if (wrapperElement) {
+      this.registerNodeRemoveListener(wrapperElement);
+    }
+
+    if (watermarkElement) {
+      this.registerNodeAttrChangeListener(watermarkElement);
+    }
+  }
+
+  private registerNodeRemoveListener(element: HTMLElement) {
+    if (!window.MutationObserver) return;
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          const removedNodes = mutation.removedNodes;
+          if (removedNodes && removedNodes[0]) {
+            const removedElement = removedNodes[0] as HTMLElement;
+            if (removedElement.id && removedElement.id.indexOf(this.watermarkId) > -1) {
+              this.onTamperDetected("watermark_removed");
+              this.createWatermarkDom(element);
+            }
+          }
+        }
+      });
+    });
+
+    observer.observe(element, {
+      childList: true
+    });
+
+    this.DOMRemoveObserver = observer;
+  }
+
+  private registerNodeAttrChangeListener(element: HTMLElement) {
+    if (!window.MutationObserver) return;
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes") {
+          this.onTamperDetected("watermark_modified");
+          // Remove and recreate the element to prevent style tampering
+          if (element.parentNode) {
+            element.parentNode.removeChild(element);
+            observer.disconnect();
+          }
+        }
+      });
+    });
+
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["style", "class"]
+    });
+
+    this.DOMAttrObserver = observer;
+  }
+
+  private createWatermarkDom(parentElement: HTMLElement) {
+    const watermarkDiv = document.createElement("div");
+    watermarkDiv.id = this.watermarkId;
+
+    const fullStyle = this.watermarkStyle + `background-image: url("${this.imageUrl}");`;
+    watermarkDiv.style.cssText = fullStyle;
+
+    parentElement.appendChild(watermarkDiv);
+
+    // Re-register attribute listener for the new element
+    this.registerNodeAttrChangeListener(watermarkDiv);
+  }
+
+  public cleanup() {
+    if (this.DOMRemoveObserver) {
+      this.DOMRemoveObserver.disconnect();
+      this.DOMRemoveObserver = null;
+    }
+    if (this.DOMAttrObserver) {
+      this.DOMAttrObserver.disconnect();
+      this.DOMAttrObserver = null;
+    }
+  }
+}
+
+export function WatermarkContainer({
+  children,
+  userEmail,
+  attemptId = "default-attempt",
+  className = "",
+  style = {},
+  questionType = "CODING",
+  logUrl = "/api/watermark/tamper",
+  onTamperDetected
+}: WatermarkProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const securityRef = useRef<WatermarkSecurity | null>(null);
+  const [, setIsReady] = useState(false);
+
+  const watermarkId = "watermark";
+  const watermarkWrapperId = "watermark-wrapper";
+
+  // Generate watermark content
+  const confidentialText = "CONFIDENTIAL - DO NOT DISTRIBUTE";
+  const userText = `${userEmail}                           `;
+  const confidentialSpaced = `                 ${confidentialText}`;
+
+  // Log tamper attempts
+  const logTamperAttempt = useCallback(async (type: string) => {
+    try {
+      const payload = {
+        timestamp: Date.now(),
+        type,
+        attemptId,
+        userAgent: navigator.userAgent,
+        userEmail
+      };
+
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(logUrl, JSON.stringify(payload));
+      } else {
+        fetch(logUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).catch(console.error);
+      }
+    } catch (error) {
+      console.error("Failed to log tamper attempt:", error);
+    }
+  }, [logUrl, attemptId, userEmail]);
+
+  // Handle tamper detection
+  const handleTamperDetected = useCallback((type: string) => {
+    console.warn(`🚨 Watermark tamper detected: ${type}`);
+    logTamperAttempt(type);
+    onTamperDetected?.(type);
+  }, [logTamperAttempt, onTamperDetected]);
+
+  // Generate watermark image
+  const generateWatermark = useCallback(() => {
+    const config: WatermarkConfig = {
+      chunkWidthText1: calculateTextWidth(userText),
+      chunkWidthText2: calculateTextWidth(confidentialSpaced),
+      chunkHeight: questionType === "MCQ" ? 180 : 50,
+      textAlign: "left",
+      textBaseline: "bottom",
+      globalAlpha: questionType === "MCQ" ? 0.4 : 0.5,
+      font: "18px Arial",
+      rotateAngle: -0.3,
+      fillStyle: "#777"
+    };
+
+    return generateWatermarkCanvas(userText, confidentialSpaced, config);
+  }, [userText, confidentialSpaced, questionType]);
+
+  // Initialize security when component mounts
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const imageUrl = generateWatermark();
+    if (!imageUrl) return;
+
+    const opacity = questionType === "MCQ" ? 0.4 : 0.5;
+    const watermarkStyle = `
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: ${opacity};
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      background-color: transparent;
+      background-repeat: repeat;
+    `;
+
+    // Create initial watermark element
+    const watermarkDiv = document.createElement("div");
+    watermarkDiv.id = watermarkId;
+    watermarkDiv.style.cssText = watermarkStyle + `background-image: url("${imageUrl}");`;
+    containerRef.current.appendChild(watermarkDiv);
+
+    // Initialize security
+    const security = new WatermarkSecurity(
+      watermarkId,
+      watermarkWrapperId,
+      watermarkStyle,
+      imageUrl,
+      handleTamperDetected
+    );
+
+    securityRef.current = security;
+    setIsReady(true);
+
+    return () => {
+      security.cleanup();
+      securityRef.current = null;
+    };
+  }, [watermarkId, watermarkWrapperId, generateWatermark, questionType, handleTamperDetected]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (securityRef.current) {
+        securityRef.current.cleanup();
+      }
+    };
+  }, []);
 
   const containerStyle: CSSProperties = {
-    // Ensure watermark prints with content
+    position: "relative",
     WebkitPrintColorAdjust: "exact",
     printColorAdjust: "exact",
-    ...style,
+    ...style
   };
 
   return (
-    <div ref={containerRef} className={className} style={containerStyle}>
+    <div
+      ref={containerRef}
+      id={watermarkWrapperId}
+      className={className}
+      style={containerStyle}
+    >
       {children}
     </div>
   );
 }
 
+// Example page component
+export default function WatermarkingExample() {
+  const userEmail = "jane.doe@example.com";
+  const attemptId = "attempt-7c028163-4e6b";
 
-/* Utils */
+  const handleTamperDetected = (type: string) => {
+    console.log(`Tamper detected: ${type}`);
+    // Could show notification, increment counter, etc.
+  };
 
-function makeSvgDataUrl(opts: {
-  text: string;
-  tileW: number;
-  tileH: number;
-  angle: number;
-  opacity: number; // 0..1
-  fontSize: number;
-  color: string; // opaque color; opacity applied separately
-}) {
-  const { text, tileW, tileH, angle, opacity, fontSize, color } = opts;
+  return (
+    <Layout title="Watermarking">
+      <WatermarkContainer
+        userEmail={userEmail}
+        attemptId={attemptId}
+        questionType="CODING"
+        onTamperDetected={handleTamperDetected}
+        className="min-h-screen w-full fixed inset-0 pointer-events-none"
+      >
+        <div className="p-16 max-w-4xl mx-auto pointer-events-auto">
+          <h1 className="text-3xl font-bold mb-6">Watermarking - MutationObserver</h1>
+          <p className="text-lg mb-6 text-gray-700 dark:text-gray-300">
+            This implementation uses MutationObserver for real-time tamper detection
+            and canvas-based watermark generation for enhanced security.
+          </p>
 
-  // Multi-line stagger for denser tiling
-  const lines = [
-    escapeXml(text),
-    escapeXml(text),
-    escapeXml(text),
-    escapeXml(text),
-  ];
+          <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold mb-4">Features:</h2>
+            <ul className="list-disc list-inside space-y-2">
+              <li>Real-time tamper detection using MutationObserver</li>
+              <li>Canvas-based watermark generation</li>
+              <li>Immediate watermark recreation when removed</li>
+              <li>Style modification protection</li>
+              <li>Tamper logging to server endpoint</li>
+              <li>Print protection</li>
+            </ul>
+          </div>
 
-  const fill = colorToRgba(color, opacity);
-
-  const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${tileW}" height="${tileH}">
-  <g transform="rotate(${angle} ${tileW / 2} ${tileH / 2})"
-     font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-     font-size="${fontSize}" fill="${fill}">
-    <text x="0" y="${tileH * 0.3}">${lines[0]}</text>
-    <text x="${tileW * 0.15}" y="${tileH * 0.6}">${lines[1]}</text>
-    <text x="${tileW * 0.3}" y="${tileH * 0.9}">${lines[2]}</text>
-  </g>
-</svg>`.trim();
-
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
-
-function colorToRgba(color: string, alpha: number) {
-  // If color is already rgba(...), just replace alpha at the end best-effort
-  if (color.startsWith("rgba(")) {
-    return color.replace(/\brgba\(([^)]+)\)/, (_, inner) => {
-      const parts = inner.split(",").map((p: string) => p.trim());
-      parts[3] = String(alpha);
-      return `rgba(${parts.join(", ")})`;
-    });
-  }
-  if (color.startsWith("rgb(")) {
-    return color.replace(
-      /\brgb\(([^)]+)\)/,
-      (_, inner) => `rgba(${inner.trim()}, ${alpha})`
-    );
-  }
-  // hex or named colors -> fallback to black with alpha
-  return `rgba(0, 0, 0, ${alpha})`;
-}
-
-function escapeXml(s: string) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-
-function ensureGlobalStyles() {
-  const id = "wm-global-style";
-  if (document.getElementById(id)) return;
-  const style = document.createElement("style");
-  style.id = id;
-  style.textContent = `
-@keyframes wm-drift {
-  0% { background-position: 0px 0px; }
-  100% { background-position: -120px -90px; }
-}
-
-@media print {
-  .wm-layer {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    background-color: transparent !important;
-  }
-}
-`;
-  document.head.appendChild(style);
-}
-
-
-
-/* Optional: small helper to build a short token */
-export function shortToken(input: string, len = 6) {
-  // FNV-1a 32-bit
-  let h = 0x811c9dc5;
-  for (let i = 0; i < input.length; i++) {
-    h ^= input.charCodeAt(i);
-    h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
-  }
-  return ("00000000" + h.toString(16)).slice(-len).toUpperCase();
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
+            <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
+              Try to tamper with the watermark:
+            </h3>
+            <p className="text-blue-700 dark:text-blue-300 text-sm">
+              Open DevTools and try to delete or modify the watermark elements.
+              Watch the console for tamper detection logs.
+            </p>
+          </div>
+        </div>
+      </WatermarkContainer>
+    </Layout>
+  );
 }
